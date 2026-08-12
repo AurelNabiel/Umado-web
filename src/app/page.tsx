@@ -60,12 +60,12 @@ export default function HomePage() {
           </Reveal>
           <Reveal className="relative flex items-end justify-center lg:h-[720px]">
             <div className="absolute left-6 top-14 h-20 w-20 rounded-full border-[16px] border-umado-orange/20" />
-            <div className="absolute left-1 top-20 rounded-3xl bg-umado-navy px-5 py-4 text-white shadow-soft">
+            <div className="absolute -left-24 top-20 rounded-3xl bg-umado-navy px-5 py-4 text-white shadow-soft">
               <div className="text-xs text-sky-200">UMADO CLUB</div>
               <div className="font-bold">カセイ • 漫画 • ダンス</div>
             </div>
             <Image
-              src="/assets/umachan3.png"
+              src="/assets/umagroup.png"
               alt="Mascot Umado"
               width={640}
               height={1300}
