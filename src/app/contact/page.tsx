@@ -1,6 +1,6 @@
 "use client";
 import PageHero from "@/components/PageHero";
-import { Instagram, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Instagram, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
 
 export default function ContactPage() {
   return (
@@ -14,9 +14,9 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
           <div className="space-y-4">
             {[
-              { i: MapPin, t: "Lokasi", d: "Taman Malaka Selatan" },
+              { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada" },
               { i: Mail, t: "Email", d: "-" },
-              { i: Phone, t: "WhatsApp", d: "-" },
+              { i: Youtube, t: "Youtube", d: "Umado TV" },
               { i: Instagram, t: "Instagram", d: "@umado_" },
             ].map(({ i: Icon, t, d }) => (
               <div key={t} className="flex gap-4 rounded-3xl bg-slate-50 p-5">
@@ -30,13 +30,12 @@ export default function ContactPage() {
             <div className="overflow-hidden rounded-3xl border border-slate-100 bg-sky-50">
               <div className="grid h-64 place-items-center text-center text-slate-500">
                 <div>
-                  <MapPin className="mx-auto mb-3 h-10 w-10 text-umado-blue" />
-                  <div className="font-black text-umado-navy">
-                    Map Placeholder
-                  </div>
-                  <div className="mt-1 text-sm">
-                    Embed Google Maps / OpenStreetMap di sini
-                  </div>
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.255117877737!2d106.92155437486164!3d-6.230059561012098!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698cb9fdf4455d%3A0x25ba1bc88e8121ea!2sUniversitas%20Darma%20Persada!5e0!3m2!1sid!2sid!4v1786522961835!5m2!1sid!2sid"
+                    width="600"
+                    height="450"
+                    loading="lazy"
+                  ></iframe>
                 </div>
               </div>
             </div>
