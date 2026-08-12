@@ -32,6 +32,17 @@ export default function DivisionsPage() {
                       fill
                       className="object-contain p-8"
                     />
+                    <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
+                      <div className="whitespace-nowrap rounded-full border border-white/80 bg-white/90 px-5 py-2.5 shadow-lg backdrop-blur">
+                        <span className="text-xs font-black uppercase tracking-[.18em] text-umado-blue">
+                          Mascot
+                        </span>
+                        <span className="mx-2 text-slate-300">•</span>
+                        <span className="font-black text-umado-navy">
+                          {d.mascotName}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex flex-col justify-center p-8 lg:p-12">
                     <div className="flex items-center gap-3">

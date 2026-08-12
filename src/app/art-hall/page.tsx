@@ -4,40 +4,40 @@ import Reveal from "@/components/Reveal";
 
 const artworks = [
   {
-    title: "Character Illustration",
-    artist: "Umado Creative Team",
-    category: "Illustration",
-    image: "/assets/umachan.png",
+    title: "Merchandise Design",
+    artist: "@len",
+    category: "Merch",
+    image: "/assets/art-hall/irohasketch.jpeg",
   },
   {
-    title: "Umado Visual Project",
-    artist: "Umado Creative Team",
+    title: "Deskmat Project",
+    artist: "Deasy Kartika",
+    category: "Merch",
+    image: "/assets/art-hall/Deskmat.png",
+  },
+  {
+    title: "Haloween Monthly Art",
+    artist: "Selenophine",
+    category: "Artwork",
+    image: "/assets/art-hall/haloween.png",
+  },
+  {
+    title: "Best Horor Artwork",
+    artist: "Ayesha Listiani",
+    category: "Artwork",
+    image: "/assets/art-hall/horor.png",
+  },
+  {
+    title: "Valentine Day Artwork",
+    artist: "Najwa Meizahra",
+    category: "Artwork",
+    image: "/assets/art-hall/Valentine.png",
+  },
+  {
+    title: "Umado Maskot Design",
+    artist: "Tama",
     category: "Character Design",
-    image: "/assets/umachan2.png",
-  },
-  {
-    title: "Stage & Performance Concept",
-    artist: "Umado Performance Team",
-    category: "Performance",
-    image: "/assets/umachan3.png",
-  },
-  {
-    title: "Creative Collaboration",
-    artist: "Umado Members",
-    category: "Collaboration",
-    image: "/assets/home-hero-trio.png",
-  },
-  {
-    title: "Manga Study",
-    artist: "Manga Division",
-    category: "Manga",
-    image: "/assets/umachan.png",
-  },
-  {
-    title: "Kasei Creative Session",
-    artist: "Kasei Division",
-    category: "Audio & Voice",
-    image: "/assets/umachan2.png",
+    image: "/assets/art-hall/Maskot.png",
   },
 ];
 
