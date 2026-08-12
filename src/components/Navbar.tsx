@@ -11,7 +11,7 @@ const links = [
   ["/about", "Tentang"],
   ["/gallery", "Galeri"],
   ["/divisions", "Divisi"],
-  ["/blog", "Berita"],
+  ["/art-hall", "Art Hall"],
   ["/contact", "Kontak"]
 ];
 
