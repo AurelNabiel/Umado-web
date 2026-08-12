@@ -12,7 +12,7 @@ export default function GalleryGrid() {
       {galleryItems.map((item, i) => (
         <button key={`${item.title}-${i}`} onClick={() => setSelected(item)} className="group relative overflow-hidden rounded-[28px] border border-slate-100 bg-slate-50 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
           <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-sky-50 to-orange-50">
-            <Image src={item.image} alt={item.title} fill className="object-contain p-5 transition duration-500 group-hover:scale-105" />
+            <Image src={item.image} alt={item.title} fill className="object-cover p-5 transition duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-umado-navy/80 via-transparent to-transparent opacity-75" />
             <ZoomIn className="absolute right-4 top-4 h-10 w-10 rounded-full bg-white/90 p-2.5 text-umado-navy opacity-0 transition group-hover:opacity-100" />
             <div className="absolute bottom-0 p-5 text-white"><div className="text-xs font-bold uppercase tracking-widest text-sky-200">{item.category}</div><div className="mt-1 text-lg font-bold">{item.title}</div></div>

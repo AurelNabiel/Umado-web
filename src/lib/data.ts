@@ -31,10 +31,10 @@ export const divisions = [
 ];
 
 export const galleryItems = [
-  { title: "Umado Gathering", category: "Community", image: "/assets/umachan3.png" },
-  { title: "Manga Creative Session", category: "Manga", image: "/assets/umachan2.png" },
-  { title: "Kasei Recording Day", category: "Kasei", image: "/assets/umachan.png" },
-  { title: "Dance Cover Practice", category: "Dance", image: "/assets/umachan3.png" },
-  { title: "Japanese Culture Meetup", category: "Culture", image: "/assets/umachan2.png" },
-  { title: "Collaboration Project", category: "Project", image: "/assets/umachan.png" }
+  { title: "Kegiatan Umado", category: "Community", image: "/assets/galery/kegiatan.jpg" },
+  { title: "Manga Creative Session", category: "Manga", image: "/assets/galery/kegimanga.jpg" },
+  { title: "Kasei Session", category: "Kasei", image: "/assets/galery/kegikasei.jpg" },
+  { title: "Merch Selling Session", category: "Community", image: "/assets/galery/dagang.jpeg" },
+  { title: "Benkyoukai 2025", category: "Community", image: "/assets/galery/benkyou.jpg" },
+  { title: "KLBB Dance Cover Performance", category: "Dance", image: "/assets/galery/dance.jpg" }
 ];
