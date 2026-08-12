@@ -74,10 +74,10 @@ export default function RegisterPage() {
           title="Terima kasih sudah mendaftar!"
           description="Data pendaftaran kamu sudah berhasil dikirim dan tercatat. Tim Umado akan menghubungi kamu melalui kontak yang diberikan."
         />
-        <section className="py-24">
-          <div className="mx-auto max-w-xl px-5 text-center">
-            <CheckCircle2 className="mx-auto h-20 w-20 text-umado-blue" />
-            <h2 className="mt-6 text-3xl font-black text-umado-navy">
+        <section className="py-16 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-xl px-4 text-center sm:px-5">
+            <CheckCircle2 className="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-umado-blue" />
+            <h2 className="mt-6 text-2xl font-black sm:text-3xl text-umado-navy">
               Welcome to the next step.
             </h2>
             <button
@@ -99,13 +99,13 @@ export default function RegisterPage() {
         title="Mulai perjalanan kreatifmu bersama Umado."
         description=""
       />
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto max-w-3xl px-5">
+      <section className="bg-slate-50 py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-3xl px-4 sm:px-5">
           <form
             onSubmit={handleSubmit}
-            className="rounded-[32px] bg-white p-6 shadow-soft md:p-10"
+            className="rounded-[24px] bg-white p-4 shadow-soft sm:rounded-[32px] sm:p-6 md:p-10"
           >
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
               <Field label="Nama Lengkap">
                 <input
                   required
@@ -176,7 +176,7 @@ export default function RegisterPage() {
             </Field>
 
             <Field label="Portfolio / Dokumen (opsional)">
-              <label className="flex cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-200 p-7 text-slate-500 hover:border-umado-blue hover:bg-sky-50">
+              <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl text-center sm:flex-row sm:gap-3 border-2 border-dashed border-slate-200 p-7 text-slate-500 hover:border-umado-blue hover:bg-sky-50">
                 <Upload />
                 <span>{portfolioName || "Pilih file portfolio / dokumen"}</span>
                 <input
@@ -195,7 +195,7 @@ export default function RegisterPage() {
               )}
             </Field>
 
-            <label className="mt-5 flex items-start gap-3 text-sm text-slate-600">
+            <label className="mt-5 flex items-start gap-3 text-xs sm:text-sm text-slate-600">
               <input
                 required
                 type="checkbox"

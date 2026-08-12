@@ -7,7 +7,7 @@ export const divisions = [
     japanese: "カセイ",
     description: "Divisi song cover & dubbing yang menjadi ruang bagi anggota untuk berkembang dalam vokal dan voice acting.",
     lead: "Coming Soon",
-    mascotName: "Otoha",
+    mascotName: "Coming Soon",
     icon: Mic2,
     image: "/assets/umachan2.png"
   },
@@ -17,7 +17,7 @@ export const divisions = [
     japanese: "マンガ",
     description: "Divisi ilustrasi dan manga untuk komikus, illustrator, serta anggota yang tertarik pada visual gambar.",
     lead: "Coming Soon",
-    mascotName: "Iroha",
+    mascotName: "Coming Soon",
     icon: BookOpenText,
     image: "/assets/umachan.png"
   },
@@ -27,7 +27,7 @@ export const divisions = [
     japanese: "ダンス",
     description: "Divisi performance yang berfokus pada dance cover, latihan koreografi, stage performance, dan kolaborasi untuk event komunitas.",
     lead: "Coming Soon",
-    mascotName: "Mai",
+    mascotName: "Coming Soon",
     icon: Music2,
     image: "/assets/umachan3.png"
   }

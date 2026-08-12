@@ -55,26 +55,26 @@ export default function ArtHallPage() {
         description="Kumpulan ilustrasi, manga, visual, performance, dan karya kreatif yang pernah dibuat oleh anggota Umado."
       />
 
-      <section className="bg-white py-16 md:py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="bg-white py-12 sm:py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
             {artworks.map((work) => (
               <Reveal key={`${work.title}-${work.artist}`}>
-                <article className="group overflow-hidden rounded-[24px] border border-slate-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <article className="group overflow-hidden rounded-[20px] sm:rounded-[24px] border border-slate-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                   <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
                     <Image
                       src={work.image}
                       alt={work.title}
                       fill
-                      className="object-contain p-5 transition duration-500 group-hover:scale-[1.03]"
+                      className="object-contain p-3 sm:p-5 transition duration-500 group-hover:scale-[1.03]"
                     />
                   </div>
 
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <span className="text-xs font-bold uppercase tracking-[.16em] text-umado-blue">
                       {work.category}
                     </span>
-                    <h2 className="mt-2 text-xl font-black text-umado-navy">
+                    <h2 className="mt-2 break-words text-lg font-black sm:text-xl text-umado-navy">
                       {work.title}
                     </h2>
                     <p className="mt-1 text-sm text-slate-500">{work.artist}</p>

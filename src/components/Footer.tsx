@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-umado-navy text-white">
       <div className="absolute inset-0 wave-pattern opacity-20" />
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 py-14 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <div className="mb-5 flex items-center gap-3">
             <Image
@@ -23,7 +23,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <p className="text-sm leading-6 text-slate-300">
+          <p className="max-w-md text-sm leading-6 text-slate-300">
             Komunitas kreatif untuk berkarya bersama melalui
             suara, manga, dan dance performance.
           </p>
@@ -51,12 +51,12 @@ export default function Footer() {
         <div>
           <h3 className="mb-4 font-bold">Kontak</h3>
           <div className="space-y-3 text-sm text-slate-300">
-            <div className="flex gap-2">
+            <div className="flex min-w-0 gap-2">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0" /> Jl. Taman Malaka
               Selatan No.8, RT.8/RW.6, Pd. Klp., Kec. Duren Sawit, Kota Jakarta
               Timur, Daerah Khusus Ibukota Jakarta 13450
             </div>
-            <div className="flex gap-2">
+            <div className="flex min-w-0 gap-2">
               <Mail className="h-4 w-4 shrink-0" /> -{" "}
             </div>
           </div>

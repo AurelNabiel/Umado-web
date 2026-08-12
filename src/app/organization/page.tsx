@@ -59,7 +59,7 @@ const divisionCoordinators: Member[] = [
 
 function Portrait({ member, priority = false }: { member: Member; priority?: boolean }) {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-50 via-white to-orange-50">
+    <div className="relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-gradient-to-br from-sky-50 via-white to-orange-50">
       <div className="relative aspect-[4/5] w-full">
         <Image
           src={member.photo}
@@ -77,7 +77,7 @@ function Portrait({ member, priority = false }: { member: Member; priority?: boo
 
 function MemberCard({ member }: { member: Member }) {
   return (
-    <article className="group overflow-hidden rounded-[2rem] border border-slate-200/70 bg-white p-2 shadow-[0_18px_50px_rgba(15,35,65,0.08)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_24px_70px_rgba(10,131,200,0.16)]">
+    <article className="group overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200/70 bg-white p-2 shadow-[0_18px_50px_rgba(15,35,65,0.08)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_24px_70px_rgba(10,131,200,0.16)]">
       <Portrait member={member} />
       <div className="px-4 pb-5 pt-5 text-center">
         {member.division && (
@@ -101,11 +101,11 @@ export default function OrganizationPage() {
         description="Kenali para pengurus yang menjaga organisasi tetap aktif, hangat, dan terus berkembang bersama komunitas kreatif Unsada."
       />
 
-      <section className="relative overflow-hidden py-20 sm:py-24">
+      <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24">
         <div className="pointer-events-none absolute -left-24 top-16 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
         <div className="pointer-events-none absolute -right-28 bottom-16 h-80 w-80 rounded-full bg-orange-100/70 blur-3xl" />
 
-        <div className="relative mx-auto max-w-6xl px-5">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-5">
           <Reveal>
             <div className="mb-10 flex flex-col gap-3 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -124,11 +124,11 @@ export default function OrganizationPage() {
           </Reveal>
 
           <Reveal>
-            <div className="mx-auto max-w-4xl overflow-hidden rounded-[2.4rem] border border-white/50 bg-gradient-to-br from-[#081d39] via-[#0A315A] to-[#0A83C8] p-3 shadow-[0_30px_90px_rgba(8,29,57,0.22)] sm:p-4">
-              <div className="grid items-center gap-7 rounded-[2rem] bg-white/[0.06] p-4 backdrop-blur md:grid-cols-[290px_1fr] md:p-7">
+            <div className="mx-auto max-w-4xl overflow-hidden rounded-[1.7rem] sm:rounded-[2.4rem] border border-white/50 bg-gradient-to-br from-[#081d39] via-[#0A315A] to-[#0A83C8] p-3 shadow-[0_30px_90px_rgba(8,29,57,0.22)] sm:p-4">
+              <div className="grid items-center gap-5 rounded-[1.45rem] sm:gap-7 sm:rounded-[2rem] bg-white/[0.06] p-4 backdrop-blur md:grid-cols-[290px_1fr] md:p-7">
                 <div className="group relative">
                   <Portrait member={chairman} priority />
-                  <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-black text-umado-navy shadow-lg">
+                  <div className="absolute left-3 top-3 inline-flex sm:left-4 sm:top-4 items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-black text-umado-navy shadow-lg">
                     <Crown size={15} className="text-orange-500" />
                     Ketua Umado
                   </div>
@@ -139,7 +139,7 @@ export default function OrganizationPage() {
                     <Sparkles size={15} />
                     Ketua Organisasi
                   </div>
-                  <h3 className="text-3xl font-black tracking-tight sm:text-4xl">{chairman.name}</h3>
+                  <h3 className="break-words text-2xl font-black tracking-tight sm:text-3xl md:text-4xl">{chairman.name}</h3>
                   <p className="mt-3 text-base font-bold text-sky-100">{chairman.role}</p>
                   <div className="mt-6 h-px w-full bg-white/15" />
                   <p className="mt-6 max-w-xl text-sm leading-7 text-slate-200">
@@ -153,7 +153,7 @@ export default function OrganizationPage() {
           <div className="mx-auto my-7 h-14 w-px bg-gradient-to-b from-umado-blue to-slate-200" />
 
           <Reveal>
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {executiveBoard.map((member) => (
                 <MemberCard key={member.role} member={member} />
               ))}
@@ -161,9 +161,9 @@ export default function OrganizationPage() {
           </Reveal>
 
           <Reveal>
-            <div className="mb-8 mt-20 text-center">
+            <div className="mb-7 mt-14 text-center sm:mb-8 sm:mt-20">
               <div className="text-xs font-black uppercase tracking-[0.24em] text-umado-blue">Creative Divisions</div>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-umado-navy">Koordinator Divisi</h2>
+              <h2 className="mt-3 text-2xl font-black sm:text-3xl tracking-tight text-umado-navy">Koordinator Divisi</h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-500">
                 Penggerak utama kegiatan kreatif di masing-masing divisi Umado.
               </p>
@@ -171,7 +171,7 @@ export default function OrganizationPage() {
           </Reveal>
 
           <Reveal>
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {divisionCoordinators.map((member) => (
                 <MemberCard key={member.division} member={member} />
               ))}

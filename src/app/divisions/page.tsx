@@ -16,24 +16,24 @@ export default function DivisionsPage() {
         title="Tiga divisi, satu semangat kreatif."
         description="Pilih divisi yang paling sesuai dengan minatmu. Anggota tetap dapat berkolaborasi lintas divisi dalam project bersama."
       />
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl space-y-10 px-5 lg:px-8">
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl space-y-7 px-4 sm:space-y-10 sm:px-5 lg:px-8">
           {divisions.map((d, index) => {
             const Icon = d.icon;
             return (
               <Reveal key={d.slug}>
                 <article
-                  className={`grid overflow-hidden rounded-[36px] border border-slate-100 bg-white shadow-sm lg:grid-cols-2 ${index % 2 ? "lg:[&>div:first-child]:order-2" : ""}`}
+                  className={`grid overflow-hidden rounded-[26px] sm:rounded-[36px] border border-slate-100 bg-white shadow-sm lg:grid-cols-2 ${index % 2 ? "lg:[&>div:first-child]:order-2" : ""}`}
                 >
-                  <div className="relative min-h-[440px] bg-gradient-to-br from-sky-50 to-orange-50">
+                  <div className="relative min-h-[330px] sm:min-h-[400px] lg:min-h-[440px] bg-gradient-to-br from-sky-50 to-orange-50">
                     <Image
                       src={d.image}
                       alt={d.name}
                       fill
-                      className="object-contain p-8"
+                      className="object-contain p-5 pb-16 sm:p-8 sm:pb-20"
                     />
-                    <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
-                      <div className="whitespace-nowrap rounded-full border border-white/80 bg-white/90 px-5 py-2.5 shadow-lg backdrop-blur">
+                    <div className="absolute bottom-4 left-1/2 z-10 w-[calc(100%-2rem)] -translate-x-1/2 text-center sm:bottom-6 sm:w-auto">
+                      <div className="inline-flex max-w-full flex-wrap items-center justify-center rounded-full border border-white/80 bg-white/90 px-5 py-2.5 shadow-lg backdrop-blur">
                         <span className="text-xs font-black uppercase tracking-[.18em] text-umado-blue">
                           Mascot
                         </span>
@@ -44,22 +44,22 @@ export default function DivisionsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-center p-8 lg:p-12">
+                  <div className="flex flex-col justify-center p-5 sm:p-8 lg:p-12">
                     <div className="flex items-center gap-3">
-                      <Icon className="h-12 w-12 rounded-2xl bg-umado-navy p-3 text-white" />
+                      <Icon className="h-11 w-11 shrink-0 rounded-2xl sm:h-12 sm:w-12 bg-umado-navy p-3 text-white" />
                       <div>
                         <div className="text-sm font-bold uppercase tracking-[.2em] text-umado-blue">
                           {d.japanese}
                         </div>
-                        <h2 className="text-3xl font-black text-umado-navy">
+                        <h2 className="break-words text-2xl font-black text-umado-navy sm:text-3xl">
                           {d.name}
                         </h2>
                       </div>
                     </div>
-                    <p className="mt-6 text-lg leading-8 text-slate-600">
+                    <p className="mt-5 text-base leading-7 sm:mt-6 sm:text-lg sm:leading-8 text-slate-600">
                       {d.description}
                     </p>
-                    <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                    <div className="mt-6 grid gap-3 sm:mt-7 sm:grid-cols-2">
                       {(index === 0
                         ? [
                             "Song Cover",

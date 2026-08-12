@@ -9,6 +9,9 @@
 }
 
 * { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, canvas { max-width: 100%; }
+iframe { max-width: 100%; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -54,4 +57,15 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+
+@media (max-width: 640px) {
+  .torii-ring::before {
+    width: 250px;
+    height: 250px;
+    border-width: 22px;
+    right: -110px;
+    top: -85px;
+  }
 }

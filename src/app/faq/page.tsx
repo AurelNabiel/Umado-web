@@ -38,20 +38,20 @@ export default function FAQPage() {
         title="Pertanyaan yang sering ditanyakan."
         description="Informasi singkat sebelum kamu bergabung atau berkolaborasi dengan Umado."
       />
-      <section className="py-24">
-        <div className="mx-auto max-w-4xl space-y-4 px-5">
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-4xl space-y-3 px-4 sm:space-y-4 sm:px-5">
           {faqs.map(([q, a]) => (
             <details
               key={q}
-              className="group rounded-3xl border border-slate-100 bg-white p-6 shadow-sm"
+              className="group rounded-2xl border border-slate-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6"
             >
-              <summary className="cursor-pointer list-none font-black text-umado-navy">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-sm font-black text-umado-navy sm:text-base">
                 {q}
-                <span className="float-right text-umado-blue group-open:rotate-45">
+                <span className="shrink-0 text-lg text-umado-blue transition group-open:rotate-45">
                   ＋
                 </span>
               </summary>
-              <p className="mt-4 leading-7 text-slate-600">{a}</p>
+              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">{a}</p>
             </details>
           ))}
         </div>
