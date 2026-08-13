@@ -24,10 +24,6 @@ const faqs = [
     "Apakah ada biaya keanggotaan?",
     "aturan biaya dapat disesuaikan oleh pengurus Umado.",
   ],
-  [
-    "Bagaimana proses seleksi anggota?",
-    "Pendaftar mengisi form, tim Umado melakukan review, lalu calon anggota dihubungi untuk tahap berikutnya.",
-  ],
 ];
 export const metadata = { title: "FAQ" };
 export default function FAQPage() {
