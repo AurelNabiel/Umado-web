@@ -7,7 +7,7 @@ const artworks = [
     title: "Merchandise Design",
     artist: "@len",
     category: "Merch",
-    image: "/assets/art-hall/irohasketch.jpeg",
+    image: "/assets/art-hall/Irohasketch.jpeg",
   },
   {
     title: "Deskmat Project",
