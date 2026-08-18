@@ -1,43 +1,58 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 
 const artworks = [
   {
     title: "Merchandise Design",
-    artist: "@len",
+    artist: "len",
     category: "Merch",
     image: "/assets/art-hall/Irohasketch.jpeg",
+    socialUrl: "https://www.instagram.com/lenkyun02",
   },
   {
     title: "Deskmat Project",
     artist: "Deasy Kartika",
     category: "Merch",
     image: "/assets/art-hall/Deskmat.png",
+    socialUrl: "",
   },
   {
     title: "Haloween Monthly Art",
     artist: "Selenophine",
     category: "Artwork",
     image: "/assets/art-hall/haloween.png",
+    socialUrl: "",
   },
   {
     title: "Best Horor Artwork",
-    artist: "Ayesha Listiani",
+    artist: "Kevin Flygonitus Seminiferus",
     category: "Artwork",
     image: "/assets/art-hall/horor.png",
+    socialUrl: "",
   },
   {
     title: "Valentine Day Artwork",
-    artist: "Najwa Meizahra",
+    artist: "Najwa",
     category: "Artwork",
     image: "/assets/art-hall/Valentine.png",
+    socialUrl: "",
   },
   {
     title: "Umado Maskot Design",
-    artist: "Tama",
+    artist: "Tamago",
     category: "Character Design",
     image: "/assets/art-hall/Maskot.png",
+    socialUrl: "https://www.instagram.com/tama_.x",
+  },
+  {
+    title: "Umado Maskot Design",
+    artist: "Kale",
+    category: "Character Design",
+    image: "/assets/art-hall/kale.jpg",
+    socialUrl: "https://www.instagram.com/kaleyptus",
   },
 ];
 
@@ -58,15 +73,18 @@ export default function ArtHallPage() {
       <section className="bg-white py-12 sm:py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
-            {artworks.map((work) => (
-              <Reveal key={`${work.title}-${work.artist}`}>
-                <article className="group overflow-hidden rounded-[20px] sm:rounded-[24px] border border-slate-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+            {artworks.map((work) => {
+              const href = work.socialUrl || "/art-hall/anonymous-author";
+              const hasSocialLink = Boolean(work.socialUrl);
+
+              const card = (
+                <article className="group h-full overflow-hidden rounded-[20px] border border-slate-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-[24px]">
                   <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
                     <Image
                       src={work.image}
                       alt={work.title}
                       fill
-                      className="object-contain p-3 sm:p-5 transition duration-500 group-hover:scale-[1.03]"
+                      className="object-contain p-3 transition duration-500 group-hover:scale-[1.03] sm:p-5"
                     />
                   </div>
 
@@ -74,14 +92,44 @@ export default function ArtHallPage() {
                     <span className="text-xs font-bold uppercase tracking-[.16em] text-umado-blue">
                       {work.category}
                     </span>
-                    <h2 className="mt-2 break-words text-lg font-black sm:text-xl text-umado-navy">
+                    <h2 className="mt-2 break-words text-lg font-black text-umado-navy sm:text-xl">
                       {work.title}
                     </h2>
-                    <p className="mt-1 text-sm text-slate-500">{work.artist}</p>
+                    <div className="mt-2 flex items-center justify-between gap-3">
+                      <p className="text-sm text-slate-500">{work.artist}</p>
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-umado-blue opacity-70 transition group-hover:opacity-100">
+                        {hasSocialLink ? "Sosmed" : "Author"}
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </article>
-              </Reveal>
-            ))}
+              );
+
+              return (
+                <Reveal key={`${work.title}-${work.artist}`}>
+                  {hasSocialLink ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full"
+                      aria-label={`Buka sosial media ${work.artist}`}
+                    >
+                      {card}
+                    </a>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="block h-full"
+                      aria-label={`Lihat informasi author ${work.artist}`}
+                    >
+                      {card}
+                    </Link>
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

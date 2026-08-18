@@ -1,6 +1,10 @@
 import PageHero from "@/components/PageHero";
 const faqs = [
   [
+    "Tujuan Umado apa sih?",
+    "Umado adalah komunitas kreatif yang bertujuan untuk mengembangkan bakat dan minat anggotanya dalam bidang seni,dan budaya. Kami menyediakan wadah bagi anggota untuk belajar, berkolaborasi, dan mengekspresikan kreativitas mereka.",
+  ],
+  [
     "Apakah harus sudah mahir untuk bergabung?",
     "Tidak. Umado terbuka untuk anggota pemula maupun yang sudah berpengalaman. Yang terpenting adalah komitmen untuk belajar dan berpartisipasi.",
   ],
@@ -19,10 +23,6 @@ const faqs = [
   [
     "apakah divisi Manga menggunakan digital atau tradisional?",
     "Divisi Manga menerima kedua metode, digital maupun tradisional. Anggota dapat memilih sesuai preferensi dan kemampuan mereka.",
-  ],
-  [
-    "Apakah ada biaya keanggotaan?",
-    "aturan biaya dapat disesuaikan oleh pengurus Umado.",
   ],
 ];
 export const metadata = { title: "FAQ" };

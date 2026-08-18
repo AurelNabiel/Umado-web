@@ -12,7 +12,9 @@ const links = [
   ["/gallery", "Galeri"],
   ["/divisions", "Divisi"],
   ["/art-hall", "Art Hall"],
-  ["/contact", "Kontak"]
+  ["/contact", "Kontak"],
+  ["/faq", "FAQ"],
+  ["/organization", "Struktur Organisasi"],
 ];
 
 export default function Navbar() {

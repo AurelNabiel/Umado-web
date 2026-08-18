@@ -4,6 +4,7 @@ import { ArrowRight, Heart, Sparkles, Users, CalendarDays } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SectionTitle from "@/components/SectionTitle";
 import { divisions } from "@/lib/data";
+import TcgBubble from "@/components/TcgBubble";
 
 export default function HomePage() {
   return (
@@ -192,6 +193,8 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
+
+      <TcgBubble />
     </>
   );
 }
