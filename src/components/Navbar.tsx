@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -35,7 +34,7 @@ export default function Navbar() {
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${solid ? "bg-white/95 shadow-md backdrop-blur" : "bg-white/75 backdrop-blur-sm"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:px-5 sm:py-3 lg:px-8">
         <Link href="/" className="min-w-0 flex items-center gap-2.5 sm:gap-3">
-          <Image src="/assets/Umado.png" alt="Umado Club" width={58} height={58} className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12" priority />
+          <img src="https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/Umado.png" alt="Umado Club" width={58} height={58} className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12" />
           <div className="min-w-0">
             <div className="text-base font-black tracking-[0.13em] text-umado-navy sm:text-lg sm:tracking-[0.16em]">UMADO</div>
             <div className="max-w-[170px] truncate text-[9px] font-semibold uppercase tracking-[0.14em] text-umado-blue sm:max-w-none sm:text-[10px] sm:tracking-[0.22em]">Organisasi kreatif Unsada</div>

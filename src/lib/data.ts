@@ -9,7 +9,7 @@ export const divisions = [
     lead: "Coming Soon",
     mascotName: "Otoha",
     icon: Mic2,
-    image: "/assets/umachan2.png"
+    image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan2.png"
   },
   {
     slug: "manga",
@@ -19,7 +19,7 @@ export const divisions = [
     lead: "Coming Soon",
     mascotName: "Iroha",
     icon: BookOpenText,
-    image: "/assets/umachan.png"
+    image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan.png"
   },
   {
     slug: "dance-cover",
@@ -29,15 +29,15 @@ export const divisions = [
     lead: "Coming Soon",
     mascotName: "Mai",
     icon: Music2,
-    image: "/assets/umachan3.png"
+    image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan3.png"
   }
 ];
 
 export const galleryItems = [
-  { title: "Kegiatan Umado", category: "Community", image: "/assets/galery/kegiatan.jpg" },
-  { title: "Manga Creative Session", category: "Manga", image: "/assets/galery/kegimanga.jpg" },
-  { title: "Kasei Session", category: "Kasei", image: "/assets/galery/kaseisong.jpg" },
-  { title: "Merch Selling Session", category: "Community", image: "/assets/galery/dagang.jpeg" },
-  { title: "Benkyoukai 2025", category: "Community", image: "/assets/galery/benkyou.jpg" },
-  { title: "KLBB Dance Cover Performance", category: "Dance", image: "/assets/galery/dancecover.jpg" }
+  { title: "Kegiatan Umado", category: "Community", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kegiatan.jpg" },
+  { title: "Manga Creative Session", category: "Manga", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kegimanga.jpg" },
+  { title: "Kasei Session", category: "Kasei", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kaseisong.jpg" },
+  { title: "Merch Selling Session", category: "Community", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/dagang.jpeg" },
+  { title: "Benkyoukai 2025", category: "Community", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/benkyou.jpg" },
+  { title: "KLBB Dance Cover Performance", category: "Dance", image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/dancecover.jpg" }
 ];

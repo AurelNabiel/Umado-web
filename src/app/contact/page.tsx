@@ -15,7 +15,7 @@ export default function ContactPage() {
           <div className="space-y-4">
             {[
               { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada" },
-              { i: Mail, t: "Email", d: "-" },
+              { i: Mail, t: "Email", d: "umadoteimai@gmail.com" },
               { i: Youtube, t: "Youtube", d: "Umado TV" },
               { i: Instagram, t: "Instagram", d: "@umado_" },
             ].map(({ i: Icon, t, d }) => (
