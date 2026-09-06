@@ -200,6 +200,66 @@
     }
 
     /* =========================================================
+       EXPRESSION PARTICLE BUBBLE
+       Particle mengikuti posisi kepala karakter yang sedang aktif.
+       Asset:
+       /visual-novel/particles/happy.png
+       /visual-novel/particles/sad.png
+       /visual-novel/particles/angry.png
+       ========================================================= */
+    .expression-particle {
+      position: absolute;
+      z-index: 25;
+      width: clamp(110px, 14vw, 190px);
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.72);
+      transform-origin: center;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.20));
+      transition: left .22s ease, top .22s ease, opacity .18s ease, transform .22s ease;
+    }
+
+    .expression-particle.visible {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      animation: particleFloat 1.8s ease-in-out infinite;
+    }
+
+    .expression-particle.particle-angry {
+      animation: particleAngry .46s ease-in-out infinite alternate;
+    }
+
+    .expression-particle.particle-sad {
+      animation: particleSad 2.1s ease-in-out infinite;
+    }
+
+    .expression-particle.particle-happy {
+      animation: particleHappy 1.35s ease-in-out infinite;
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
+      50% { transform: translate(-50%, -50%) translateY(-7px) scale(1.035); }
+    }
+
+    @keyframes particleHappy {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
+      50% { transform: translate(-50%, -50%) translateY(-9px) scale(1.07); }
+    }
+
+    @keyframes particleSad {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(.98); opacity: .9; }
+      50% { transform: translate(-50%, -50%) translateY(5px) scale(1.02); opacity: 1; }
+    }
+
+    @keyframes particleAngry {
+      0% { transform: translate(-50%, -50%) translateX(-3px) rotate(-3deg) scale(1); }
+      100% { transform: translate(-50%, -50%) translateX(3px) rotate(3deg) scale(1.05); }
+    }
+
+    /* =========================================================
        DIALOGUE
        ========================================================= */
     .dialogue {
@@ -389,64 +449,6 @@
       text-align: right;
     }
 
-    /* =========================================================
-       DIALOGUE PANEL TOGGLE
-       ========================================================= */
-    .dialog-toggle-btn {
-      position: absolute;
-      right: 14px;
-      bottom: 14px;
-      z-index: 70;
-      min-height: 38px;
-      padding: 8px 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 999px;
-      background: rgba(0,0,0,.34);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity .18s ease, visibility .18s ease, transform .18s ease;
-      transform: translateY(6px);
-    }
-
-    .dialog-toggle-btn.visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .dialogue {
-      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-    }
-
-    .dialogue.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(18px);
-    }
-
-    .dialog-hide-btn {
-      margin-left: 2px;
-      min-width: 42px;
-      padding-inline: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .dialog-toggle-btn {
-        right: 8px;
-        bottom: 8px;
-        min-height: 36px;
-        padding: 8px 11px;
-        font-size: 11px;
-      }
-    }
-
     .end-card {
       position: absolute;
       inset: 0;
@@ -561,6 +563,10 @@
         width: 34%;
       }
 
+      .expression-particle {
+        width: clamp(88px, 28vw, 132px);
+      }
+
       .dialogue {
         left: 7px;
         right: 7px;
@@ -643,6 +649,7 @@
       <img class="character" id="char-eve" src="/visual-novel/characters/idol1.png" alt="Eve" />
       <img class="character" id="char-ai" src="/visual-novel/characters/idol2.png" alt="Ai" />
       <img class="character" id="char-aya" src="/visual-novel/characters/idol3.png" alt="Aya" />
+      <img class="expression-particle" id="expressionParticle" alt="Expression particle" aria-hidden="true" />
     </div>
 
     <div class="dialogue" id="dialogue">
@@ -654,17 +661,14 @@
         <div class="controls">
           <button type="button" class="secondary" id="prevBtn">Back</button>
           <button type="button" class="primary" id="nextBtn">Next</button>
-          <button type="button" class="secondary dialog-hide-btn" id="dialogHideBtn" aria-label="Sembunyikan panel dialog">✕ Dialog</button>
         </div>
       </div>
     </div>
 
-    <button type="button" class="dialog-toggle-btn" id="dialogShowBtn" aria-label="Tampilkan panel dialog">💬 Tampilkan Dialog</button>
-
     <div class="end-card" id="endCard">
       <div class="end-panel">
         <h2>Tamat ✨</h2>
-        <p>Kurabu 2026 selesai. Karakter dan background bisa lo ganti kapan saja tanpa mengubah sistem Visual Novel.</p>
+        <p>Visual Novel selesai Umadol telah selesai, terima kasih sudah membaca!</p>
         <button type="button" class="primary" id="restartBtn">Ulang dari Awal</button>
       </div>
     </div>
@@ -963,13 +967,11 @@
       volumeSlider: document.getElementById('volumeSlider'),
       volumeValue: document.getElementById('volumeValue'),
       stage: document.getElementById('stage'),
+      expressionParticle: document.getElementById('expressionParticle'),
       speaker: document.getElementById('speaker'),
       text: document.getElementById('text'),
       prevBtn: document.getElementById('prevBtn'),
       nextBtn: document.getElementById('nextBtn'),
-      dialogHideBtn: document.getElementById('dialogHideBtn'),
-      dialogShowBtn: document.getElementById('dialogShowBtn'),
-      dialogue: document.getElementById('dialogue'),
       restartBtn: document.getElementById('restartBtn'),
       endCard: document.getElementById('endCard'),
       chars: {
@@ -1058,6 +1060,100 @@
         }
       });
     });
+
+    /* =========================================================
+       ACTIVE CHARACTER PARTICLE BUBBLE
+
+       Taruh asset PNG transparan di:
+       public/visual-novel/particles/happy.png
+       public/visual-novel/particles/sad.png
+       public/visual-novel/particles/angry.png
+
+       Bubble hanya muncul untuk karakter ACTIVE dan mood yang cocok.
+       ========================================================= */
+    const PARTICLE_ASSETS = {
+      happy: '/visual-novel/particles/happy.png',
+      sad: '/visual-novel/particles/sad.png',
+      angry: '/visual-novel/particles/angry.png'
+    };
+
+    // Posisi kepala relatif terhadap bounding box masing-masing gambar.
+    // Bisa disetel per karakter kalau model final punya proporsi berbeda.
+    const CHARACTER_HEAD_POSITION = {
+      manager: { x: .60, y: .18, offsetX: 0, offsetY: -10 },
+      eve:    { x: .50, y: .18  , offsetX: 0, offsetY: -5 },
+      ai:     { x: .50, y: .18, offsetX: 0, offsetY: -10 },
+      aya:    { x: .50, y: .18, offsetX: 0, offsetY: -10 }
+    };
+
+    function particleMoodForMode(mode) {
+      const value = normalizeExpressionName(mode);
+
+      if (value === 'angry') return 'angry';
+      if (value === 'sad' || value === 'depressed' || value === 'shy') return 'sad';
+      if (value === 'happy' || value === 'excited' || value === 'amazed' || value === 'proud') return 'happy';
+
+      return null;
+    }
+
+    function hideExpressionParticle() {
+      const particle = dom.expressionParticle;
+      if (!particle) return;
+      particle.className = 'expression-particle';
+      particle.removeAttribute('src');
+    }
+
+    function positionExpressionParticle(step) {
+      const particle = dom.expressionParticle;
+      if (!particle || !step || !step.active) {
+        hideExpressionParticle();
+        return;
+      }
+
+      const activeKey = step.active;
+      const character = dom.chars[activeKey];
+      if (!character || !character.classList.contains('visible')) {
+        hideExpressionParticle();
+        return;
+      }
+
+      const mode = getCharacterMode(step, activeKey);
+      const mood = particleMoodForMode(mode);
+      const source = PARTICLE_ASSETS[mood];
+
+      if (!source) {
+        hideExpressionParticle();
+        return;
+      }
+
+      const stageRect = dom.stage.getBoundingClientRect();
+      const charRect = character.getBoundingClientRect();
+      const head = CHARACTER_HEAD_POSITION[activeKey] || { x: .5, y: .18, offsetX: 0, offsetY: -10 };
+
+      const left = charRect.left - stageRect.left + (charRect.width * head.x) + head.offsetX;
+      const top = charRect.top - stageRect.top + (charRect.height * head.y) + head.offsetY;
+
+      particle.style.left = `${left}px`;
+      particle.style.top = `${top}px`;
+      particle.className = `expression-particle visible particle-${mood}`;
+
+      if (particle.getAttribute('src') !== source) {
+        particle.setAttribute('src', source);
+      }
+
+      particle.onerror = function () {
+        console.warn(`Particle ${mood} tidak ditemukan: ${source}`);
+        hideExpressionParticle();
+      };
+    }
+
+    let particleResizeFrame = null;
+    function refreshParticlePosition() {
+      if (particleResizeFrame) cancelAnimationFrame(particleResizeFrame);
+      particleResizeFrame = requestAnimationFrame(function () {
+        positionExpressionParticle(steps[current]);
+      });
+    }
 
     /* =========================================================
        SOUND & EXPRESSION ENGINE
@@ -1291,6 +1387,9 @@
       applyBackground(step.bgKey);
       applyCharacters(step);
       applyExpression(step);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { positionExpressionParticle(step); });
+      });
 
       dom.progress.textContent = `${current + 1} / ${steps.length}`;
       dom.speaker.textContent = step.speaker || 'Narasi';
@@ -1392,23 +1491,6 @@
       event.stopPropagation();
     });
 
-    function setDialogueVisible(visible) {
-      dom.dialogue.classList.toggle('hidden', !visible);
-      dom.dialogShowBtn.classList.toggle('visible', !visible);
-      dom.dialogShowBtn.setAttribute('aria-hidden', String(visible));
-      localStorage.setItem('kurabuDialogueHidden', String(!visible));
-    }
-
-    dom.dialogHideBtn.addEventListener('click', function (event) {
-      event.stopPropagation();
-      setDialogueVisible(false);
-    });
-
-    dom.dialogShowBtn.addEventListener('click', function (event) {
-      event.stopPropagation();
-      setDialogueVisible(true);
-    });
-
     dom.restartBtn.addEventListener('click', function () {
       current = 0;
       dom.endCard.classList.remove('visible');
@@ -1482,9 +1564,11 @@
     document.addEventListener('fullscreenchange', updateFullscreenButton);
     document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
     document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+    window.addEventListener('resize', refreshParticlePosition);
+    document.addEventListener('fullscreenchange', refreshParticlePosition);
+    document.addEventListener('webkitfullscreenchange', refreshParticlePosition);
     updateFullscreenButton();
     updateSoundUI();
-    setDialogueVisible(localStorage.getItem('kurabuDialogueHidden') !== 'true');
 
     render();
   </script>
