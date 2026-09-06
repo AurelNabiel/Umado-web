@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import SectionTitle from "@/components/SectionTitle";
 import { divisions } from "@/lib/data";
 import TcgBubble from "@/components/TcgBubble";
+import SecretVisualNovelImage from "@/components/SecretVisualNovelImage";
 
 export default function HomePage() {
   return (
@@ -65,12 +66,12 @@ export default function HomePage() {
               <div className="text-xs text-sky-200">UMADO CLUB</div>
               <div className="font-bold">カセイ • マンガ • ダンス</div>
             </div>
-            <Image
+            <SecretVisualNovelImage
               src="/assets/umagroup.png"
               alt="Mascot Umado"
               width={640}
               height={1300}
-              className="relative z-10 max-h-[480px] w-full max-w-[560px] object-contain sm:max-h-[580px] lg:max-h-[720px] lg:w-auto drop-shadow-2xl"
+              className="max-h-[480px] w-full max-w-[560px] object-contain sm:max-h-[580px] lg:max-h-[720px] lg:w-auto drop-shadow-2xl"
               priority
             />
           </Reveal>
