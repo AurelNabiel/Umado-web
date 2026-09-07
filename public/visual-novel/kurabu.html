@@ -1,205 +1,280 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kurabu 2026</title>
-  <style>
-    :root {
-      --panel: rgba(6, 16, 30, .92);
-      --border: rgba(255, 255, 255, .14);
-      --text: #f8fbff;
-      --muted: rgba(248, 251, 255, .70);
-      --accent: #159dda;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kurabu 2026</title>
+    <style>
+      :root {
+        --panel: rgba(6, 16, 30, 0.92);
+        --border: rgba(255, 255, 255, 0.14);
+        --text: #f8fbff;
+        --muted: rgba(248, 251, 255, 0.7);
+        --accent: #159dda;
+      }
 
-    * { box-sizing: border-box; }
-    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
-    body {
-      background: #07182b;
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      user-select: none;
-    }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        background: #07182b;
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        user-select: none;
+      }
 
-    .app {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #07182b;
-    }
+      .app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #07182b;
+      }
 
-    .background {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image .4s ease, background .4s ease;
-    }
+      .background {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition:
+          background-image 0.4s ease,
+          background 0.4s ease;
+      }
 
-    .background::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.42));
-      pointer-events: none;
-    }
+      .background::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.08),
+          rgba(0, 0, 0, 0.42)
+        );
+        pointer-events: none;
+      }
 
-    .progress {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      z-index: 50;
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.28);
-      color: rgba(255,255,255,.78);
-      font-size: 11px;
-      font-weight: 700;
-      backdrop-filter: blur(8px);
-    }
+      .progress {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        z-index: 50;
+        padding: 6px 9px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.28);
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 11px;
+        font-weight: 700;
+        backdrop-filter: blur(8px);
+      }
 
-    /* =========================================================
+      /* =========================================================
        CHARACTER STAGE
        Setiap karakter masuk ke slot sendiri supaya tidak tabrakan.
        ========================================================= */
-    .stage {
-      position: absolute;
-      inset: 8px 0 156px;
-      z-index: 10;
-      overflow: hidden;
-      pointer-events: none;
-    }
+      .stage {
+        position: absolute;
+        inset: 8px 0 156px;
+        z-index: 10;
+        overflow: hidden;
+        pointer-events: none;
+      }
 
-    .character {
-      position: absolute;
-      bottom: 0;
-      height: 100%;
-      width: 30%;
-      object-fit: contain;
-      object-position: center bottom;
-      opacity: 0;
-      filter: drop-shadow(0 18px 28px rgba(0,0,0,.35));
-      transform: translateY(18px) scale(.96);
-      transition: opacity .25s ease, transform .25s ease, filter .25s ease;
-    }
+      .character {
+        position: absolute;
+        bottom: 0;
+        height: 100%;
+        width: 30%;
+        object-fit: contain;
+        object-position: center bottom;
+        opacity: 0;
+        filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+        transform: translateY(18px) scale(0.96);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          filter 0.25s ease;
+      }
 
-    .character.visible {
-      opacity: .48;
-      transform: translateY(0) scale(1);
-    }
+      .character.visible {
+        opacity: 0.48;
+        transform: translateY(0) scale(1);
+      }
 
-    .character.dim { opacity: .64; }
+      .character.dim {
+        opacity: 0.64;
+      }
 
-    .character.active {
-      opacity: .98;
-      transform: translateY(0) scale(1.035);
-      z-index: 5;
-    }
+      .character.active {
+        opacity: 0.98;
+        transform: translateY(0) scale(1.035);
+        z-index: 5;
+      }
 
-
-    /* =========================================================
+      /* =========================================================
        CHARACTER EXPRESSIONS
        Animasi dipasang ulang tiap dialog agar ekspresi selalu terasa.
        ========================================================= */
-    .character.expr-happy { animation: exprHappy .55s ease both; }
-    .character.expr-excited { animation: exprExcited .55s ease both; }
-    .character.expr-surprise { animation: exprSurprise .42s ease both; }
-    .character.expr-angry { animation: exprAngry .36s ease both; }
-    .character.expr-shy { animation: exprShy .65s ease both; }
-    .character.expr-deadpan { animation: exprDeadpan .45s ease both; }
+      .character.expr-happy {
+        animation: exprHappy 0.55s ease both;
+      }
+      .character.expr-excited {
+        animation: exprExcited 0.55s ease both;
+      }
+      .character.expr-surprise {
+        animation: exprSurprise 0.42s ease both;
+      }
+      .character.expr-angry {
+        animation: exprAngry 0.36s ease both;
+      }
+      .character.expr-shy {
+        animation: exprShy 0.65s ease both;
+      }
+      .character.expr-deadpan {
+        animation: exprDeadpan 0.45s ease both;
+      }
 
-    @keyframes exprHappy {
-      0% { transform: translateY(0) scale(1.035); }
-      35% { transform: translateY(-18px) scale(1.07); }
-      65% { transform: translateY(-5px) scale(1.05); }
-      100% { transform: translateY(0) scale(1.035); }
-    }
+      @keyframes exprHappy {
+        0% {
+          transform: translateY(0) scale(1.035);
+        }
+        35% {
+          transform: translateY(-18px) scale(1.07);
+        }
+        65% {
+          transform: translateY(-5px) scale(1.05);
+        }
+        100% {
+          transform: translateY(0) scale(1.035);
+        }
+      }
 
-    @keyframes exprExcited {
-      0% { transform: translateY(0) scale(1.035) rotate(0deg); }
-      25% { transform: translateY(-10px) scale(1.075) rotate(-1.5deg); }
-      55% { transform: translateY(-4px) scale(1.06) rotate(1.5deg); }
-      100% { transform: translateY(0) scale(1.035) rotate(0deg); }
-    }
+      @keyframes exprExcited {
+        0% {
+          transform: translateY(0) scale(1.035) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-10px) scale(1.075) rotate(-1.5deg);
+        }
+        55% {
+          transform: translateY(-4px) scale(1.06) rotate(1.5deg);
+        }
+        100% {
+          transform: translateY(0) scale(1.035) rotate(0deg);
+        }
+      }
 
-    @keyframes exprSurprise {
-      0% { transform: translateY(0) scale(1.035); }
-      30% { transform: translateY(-14px) scale(1.09); }
-      100% { transform: translateY(0) scale(1.035); }
-    }
+      @keyframes exprSurprise {
+        0% {
+          transform: translateY(0) scale(1.035);
+        }
+        30% {
+          transform: translateY(-14px) scale(1.09);
+        }
+        100% {
+          transform: translateY(0) scale(1.035);
+        }
+      }
 
-    @keyframes exprAngry {
-      0%, 100% { transform: translateX(0) translateY(0) scale(1.035); }
-      20% { transform: translateX(-9px) translateY(0) scale(1.045); }
-      40% { transform: translateX(9px) translateY(0) scale(1.045); }
-      60% { transform: translateX(-6px) translateY(0) scale(1.045); }
-      80% { transform: translateX(6px) translateY(0) scale(1.045); }
-    }
+      @keyframes exprAngry {
+        0%,
+        100% {
+          transform: translateX(0) translateY(0) scale(1.035);
+        }
+        20% {
+          transform: translateX(-9px) translateY(0) scale(1.045);
+        }
+        40% {
+          transform: translateX(9px) translateY(0) scale(1.045);
+        }
+        60% {
+          transform: translateX(-6px) translateY(0) scale(1.045);
+        }
+        80% {
+          transform: translateX(6px) translateY(0) scale(1.045);
+        }
+      }
 
-    @keyframes exprShy {
-      0% { transform: translateY(0) scale(1.035); }
-      40% { transform: translateY(10px) scale(.995) rotate(-1deg); }
-      100% { transform: translateY(0) scale(1.035); }
-    }
+      @keyframes exprShy {
+        0% {
+          transform: translateY(0) scale(1.035);
+        }
+        40% {
+          transform: translateY(10px) scale(0.995) rotate(-1deg);
+        }
+        100% {
+          transform: translateY(0) scale(1.035);
+        }
+      }
 
-    @keyframes exprDeadpan {
-      0% { transform: translateY(0) scale(1.035); }
-      45% { transform: translateY(5px) scale(1.005); }
-      100% { transform: translateY(0) scale(1.035); }
-    }
+      @keyframes exprDeadpan {
+        0% {
+          transform: translateY(0) scale(1.035);
+        }
+        45% {
+          transform: translateY(5px) scale(1.005);
+        }
+        100% {
+          transform: translateY(0) scale(1.035);
+        }
+      }
 
-    /* 1 CHARACTER */
-    .stage.layout-1 .slot-1 {
-      left: 25%;
-      width: 50%;
-    }
+      /* 1 CHARACTER */
+      .stage.layout-1 .slot-1 {
+        left: 25%;
+        width: 50%;
+      }
 
-    /* 2 CHARACTERS */
-    .stage.layout-2 .slot-1 {
-      left: 4%;
-      width: 42%;
-    }
-    .stage.layout-2 .slot-2 {
-      left: 54%;
-      width: 42%;
-    }
+      /* 2 CHARACTERS */
+      .stage.layout-2 .slot-1 {
+        left: 4%;
+        width: 42%;
+      }
+      .stage.layout-2 .slot-2 {
+        left: 54%;
+        width: 42%;
+      }
 
-    /* 3 CHARACTERS - dibuat sedikit overlap supaya idol tidak terlalu kecil */
-    .stage.layout-3 .slot-1 {
-      left: -3%;
-      width: 38%;
-    }
-    .stage.layout-3 .slot-2 {
-      left: 30.5%;
-      width: 38%;
-    }
-    .stage.layout-3 .slot-3 {
-      left: 64%;
-      width: 38%;
-    }
+      /* 3 CHARACTERS - dibuat sedikit overlap supaya idol tidak terlalu kecil */
+      .stage.layout-3 .slot-1 {
+        left: -3%;
+        width: 38%;
+      }
+      .stage.layout-3 .slot-2 {
+        left: 30.5%;
+        width: 38%;
+      }
+      .stage.layout-3 .slot-3 {
+        left: 64%;
+        width: 38%;
+      }
 
-    /* 4 CHARACTERS - tetap muat tapi sedikit bertumpuk agar terlihat lebih besar */
-    .stage.layout-4 .slot-1 {
-      left: -7%;
-      width: 30%;
-    }
-    .stage.layout-4 .slot-2 {
-      left: 17%;
-      width: 30%;
-    }
-    .stage.layout-4 .slot-3 {
-      left: 41%;
-      width: 30%;
-    }
-    .stage.layout-4 .slot-4 {
-      left: 65%;
-      width: 30%;
-    }
+      /* 4 CHARACTERS - tetap muat tapi sedikit bertumpuk agar terlihat lebih besar */
+      .stage.layout-4 .slot-1 {
+        left: -7%;
+        width: 30%;
+      }
+      .stage.layout-4 .slot-2 {
+        left: 17%;
+        width: 30%;
+      }
+      .stage.layout-4 .slot-3 {
+        left: 41%;
+        width: 30%;
+      }
+      .stage.layout-4 .slot-4 {
+        left: 65%;
+        width: 30%;
+      }
 
-    /* =========================================================
+      /* =========================================================
        EXPRESSION PARTICLE BUBBLE
        Particle mengikuti posisi kepala karakter yang sedang aktif.
        Asset:
@@ -207,475 +282,640 @@
        /visual-novel/particles/sad.png
        /visual-novel/particles/angry.png
        ========================================================= */
-    .expression-particle {
-      position: absolute;
-      z-index: 25;
-      width: clamp(110px, 14vw, 190px);
-      height: auto;
-      object-fit: contain;
-      pointer-events: none;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(.72);
-      transform-origin: center;
-      filter: drop-shadow(0 8px 18px rgba(0,0,0,.20));
-      transition: left .22s ease, top .22s ease, opacity .18s ease, transform .22s ease;
-    }
+      .expression-particle {
+        position: absolute;
+        z-index: 25;
+        width: clamp(110px, 14vw, 190px);
+        height: auto;
+        object-fit: contain;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.72);
+        transform-origin: center;
+        filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.2));
+        transition:
+          left 0.22s ease,
+          top 0.22s ease,
+          opacity 0.18s ease,
+          transform 0.22s ease;
+      }
 
-    .expression-particle.visible {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-      animation: particleFloat 1.8s ease-in-out infinite;
-    }
+      .expression-particle.visible {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        animation: particleFloat 1.8s ease-in-out infinite;
+      }
 
-    .expression-particle.particle-angry {
-      animation: particleAngry .46s ease-in-out infinite alternate;
-    }
+      .expression-particle.particle-angry {
+        animation: particleAngry 0.46s ease-in-out infinite alternate;
+      }
 
-    .expression-particle.particle-sad {
-      animation: particleSad 2.1s ease-in-out infinite;
-    }
+      .expression-particle.particle-sad {
+        animation: particleSad 2.1s ease-in-out infinite;
+      }
 
-    .expression-particle.particle-happy {
-      animation: particleHappy 1.35s ease-in-out infinite;
-    }
+      .expression-particle.particle-happy {
+        animation: particleHappy 1.35s ease-in-out infinite;
+      }
 
-    @keyframes particleFloat {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
-      50% { transform: translate(-50%, -50%) translateY(-7px) scale(1.035); }
-    }
+      @keyframes particleFloat {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0) scale(1);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(-7px) scale(1.035);
+        }
+      }
 
-    @keyframes particleHappy {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1); }
-      50% { transform: translate(-50%, -50%) translateY(-9px) scale(1.07); }
-    }
+      @keyframes particleHappy {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0) scale(1);
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(-9px) scale(1.07);
+        }
+      }
 
-    @keyframes particleSad {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(.98); opacity: .9; }
-      50% { transform: translate(-50%, -50%) translateY(5px) scale(1.02); opacity: 1; }
-    }
+      @keyframes particleSad {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) translateY(0) scale(0.98);
+          opacity: 0.9;
+        }
+        50% {
+          transform: translate(-50%, -50%) translateY(5px) scale(1.02);
+          opacity: 1;
+        }
+      }
 
-    @keyframes particleAngry {
-      0% { transform: translate(-50%, -50%) translateX(-3px) rotate(-3deg) scale(1); }
-      100% { transform: translate(-50%, -50%) translateX(3px) rotate(3deg) scale(1.05); }
-    }
+      @keyframes particleAngry {
+        0% {
+          transform: translate(-50%, -50%) translateX(-3px) rotate(-3deg)
+            scale(1);
+        }
+        100% {
+          transform: translate(-50%, -50%) translateX(3px) rotate(3deg)
+            scale(1.05);
+        }
+      }
 
-    /* =========================================================
+      /* =========================================================
        DIALOGUE
        ========================================================= */
-    .dialogue {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      z-index: 30;
-      padding: 15px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: var(--panel);
-      box-shadow: 0 18px 42px rgba(0,0,0,.32);
-      backdrop-filter: blur(14px);
-    }
-
-    .speaker {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.09);
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .speaker.narrator {
-      background: rgba(21,157,218,.16);
-      color: #bde8ff;
-    }
-
-    .text-box {
-      margin-top: 10px;
-      min-height: 70px;
-      color: var(--text);
-      font-size: 17px;
-      line-height: 1.55;
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .controls { display: flex; gap: 8px; }
-
-    button {
-      min-height: 42px;
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 16px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 800;
-      transition: transform .15s ease, opacity .15s ease;
-    }
-
-    button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    button:disabled { cursor: default; }
-
-    .secondary {
-      background: rgba(255,255,255,.09);
-      color: #fff;
-    }
-
-    .primary {
-      background: var(--accent);
-      color: #fff;
-    }
-
-
-    .fullscreen-btn {
-      position: absolute;
-      top: 12px;
-      left: 14px;
-      z-index: 60;
-      min-height: 38px;
-      padding: 8px 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 999px;
-      background: rgba(0,0,0,.30);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 800;
-      backdrop-filter: blur(8px);
-    }
-
-    .fullscreen-btn:hover {
-      background: rgba(0,0,0,.44);
-    }
-
-
-    .sound-settings-btn {
-      position: absolute;
-      top: 12px;
-      left: 126px;
-      z-index: 61;
-      width: 38px;
-      height: 38px;
-      min-height: 38px;
-      padding: 0;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 999px;
-      background: rgba(0,0,0,.30);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 800;
-      backdrop-filter: blur(8px);
-    }
-
-    .sound-settings-btn:hover { background: rgba(0,0,0,.44); }
-
-    .sound-controls {
-      position: absolute;
-      top: 12px;
-      left: 172px;
-      z-index: 60;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 5px 7px 5px 5px;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 999px;
-      background: rgba(0,0,0,.38);
-      color: #fff;
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateX(-8px) scale(.98);
-      transform-origin: left center;
-      pointer-events: none;
-      transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
-    }
-
-    .sound-controls.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .sound-btn,
-    .sound-close-btn {
-      min-height: 28px;
-      padding: 6px 9px;
-      border: 0;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .sound-close-btn {
-      width: 28px;
-      min-width: 28px;
-      padding: 0;
-      font-size: 15px;
-    }
-
-    .sound-btn:hover,
-    .sound-close-btn:hover { background: rgba(255,255,255,.16); }
-
-    .volume-slider {
-      width: 92px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-
-    .volume-value {
-      min-width: 34px;
-      color: rgba(255,255,255,.82);
-      font-size: 10px;
-      font-weight: 800;
-      text-align: right;
-    }
-
-    .end-card {
-      position: absolute;
-      inset: 0;
-      z-index: 80;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(2,8,16,.62);
-      backdrop-filter: blur(8px);
-    }
-
-    .end-card.visible { display: flex; }
-
-    .end-panel {
-      width: min(430px, 100%);
-      padding: 26px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background: rgba(6,16,30,.96);
-      text-align: center;
-    }
-
-    .end-panel h2 { margin: 0 0 10px; font-size: 26px; }
-    .end-panel p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
-
-    /* =========================================================
-       MOBILE
-       3 dan 4 karakter dibuat sedikit overlap agar tidak terlihat terlalu kecil.
-       ========================================================= */
-    @media (max-width: 640px) {
-      .progress { top: 8px; right: 9px; }
-
-      .fullscreen-btn {
-        top: 8px;
-        left: 9px;
-        min-height: 34px;
-        padding: 7px 10px;
-        font-size: 11px;
-      }
-
-
-      .sound-controls {
-        top: 8px;
-        left: 112px;
-        min-height: 34px;
-        gap: 5px;
-        padding: 4px 7px 4px 4px;
-      }
-
-      .sound-btn {
-        min-height: 26px;
-        padding: 5px 7px;
-        font-size: 10px;
-      }
-
-      .volume-slider { width: 62px; }
-      .volume-value { min-width: 28px; font-size: 9px; }
-
-
-      .stage {
-        inset: 4px 0 194px;
-      }
-
-      .character {
-        height: 100%;
-        object-fit: contain;
-        object-position: center bottom;
-      }
-
-      .stage.layout-1 .slot-1 {
-        left: 12%;
-        width: 76%;
-      }
-
-      .stage.layout-2 .slot-1 {
-        left: 0;
-        width: 48%;
-      }
-      .stage.layout-2 .slot-2 {
-        left: 52%;
-        width: 48%;
-      }
-
-      .stage.layout-3 .slot-1 {
-        left: -8%;
-        width: 40%;
-      }
-      .stage.layout-3 .slot-2 {
-        left: 30%;
-        width: 40%;
-      }
-      .stage.layout-3 .slot-3 {
-        left: 68%;
-        width: 40%;
-      }
-
-      .stage.layout-4 .slot-1 {
-        left: -14%;
-        width: 34%;
-      }
-      .stage.layout-4 .slot-2 {
-        left: 12%;
-        width: 34%;
-      }
-      .stage.layout-4 .slot-3 {
-        left: 38%;
-        width: 34%;
-      }
-      .stage.layout-4 .slot-4 {
-        left: 64%;
-        width: 34%;
-      }
-
-      .expression-particle {
-        width: clamp(88px, 28vw, 132px);
-      }
-
       .dialogue {
-        left: 7px;
-        right: 7px;
-        bottom: 7px;
-        max-height: 184px;
-        overflow-y: auto;
-        padding: 11px;
-        border-radius: 17px;
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        z-index: 30;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--panel);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+        backdrop-filter: blur(14px);
       }
 
       .speaker {
-        min-height: 28px;
-        padding: 5px 10px;
-        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.09);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .speaker.narrator {
+        background: rgba(21, 157, 218, 0.16);
+        color: #bde8ff;
       }
 
       .text-box {
-        margin-top: 7px;
-        min-height: 58px;
+        margin-top: 10px;
+        min-height: 70px;
+        color: var(--text);
+        font-size: 17px;
+        line-height: 1.55;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 16px;
+        cursor: pointer;
         font-size: 13px;
-        line-height: 1.48;
+        font-weight: 800;
+        transition:
+          transform 0.15s ease,
+          opacity 0.15s ease;
       }
 
-      .actions { margin-top: 7px; }
-      .hint { display: none; }
-      .controls { width: 100%; }
-      button { flex: 1; min-height: 42px; padding: 9px 12px; }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      button:disabled {
+        cursor: default;
+      }
 
-      .end-panel { padding: 21px 17px; border-radius: 20px; }
-      .end-panel h2 { font-size: 22px; }
-      .end-panel p { font-size: 13px; }
-    }
+      .secondary {
+        background: rgba(255, 255, 255, 0.09);
+        color: #fff;
+      }
 
-    @media (max-width: 430px) {
+      .primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .fullscreen-btn {
+        position: absolute;
+        top: 12px;
+        left: 14px;
+        z-index: 60;
+        min-height: 38px;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        backdrop-filter: blur(8px);
+      }
+
+      .fullscreen-btn:hover {
+        background: rgba(0, 0, 0, 0.44);
+      }
+
+      .sound-settings-btn {
+        position: absolute;
+        top: 12px;
+        left: 126px;
+        z-index: 61;
+        width: 38px;
+        height: 38px;
+        min-height: 38px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 16px;
+        font-weight: 800;
+        backdrop-filter: blur(8px);
+      }
+
+      .sound-settings-btn:hover {
+        background: rgba(0, 0, 0, 0.44);
+      }
+
       .sound-controls {
-        right: 8px;
-        left: auto;
-        top: 48px;
+        position: absolute;
+        top: 12px;
+        left: 172px;
+        z-index: 60;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 5px 7px 5px 5px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.38);
+        color: #fff;
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-8px) scale(0.98);
+        transform-origin: left center;
+        pointer-events: none;
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease,
+          visibility 0.18s ease;
       }
-      .volume-slider { width: 78px; }
-    }
 
-    @media (max-width: 380px) {
-      .stage { inset: 4px 0 190px; }
-      .dialogue { max-height: 180px; }
-      .text-box { font-size: 12.5px; }
-    }
-
-    @media (orientation: landscape) and (max-height: 560px) {
-      .stage { inset: 2px 0 132px; }
-      .dialogue {
-        left: 8px;
-        right: 8px;
-        bottom: 6px;
-        max-height: 126px;
-        padding: 8px 10px;
+      .sound-controls.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0) scale(1);
+        pointer-events: auto;
       }
-      .speaker { min-height: 25px; padding: 4px 9px; }
-      .text-box { margin-top: 5px; min-height: 38px; font-size: 12.5px; line-height: 1.38; }
-      .actions { margin-top: 5px; }
-      button { min-height: 34px; padding: 7px 10px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="app" id="app">
-    <div class="background" id="background"></div>
-    <button type="button" class="fullscreen-btn" id="fullscreenBtn" aria-label="Buka fullscreen">⛶ Fullscreen</button>
-    <button type="button" class="sound-settings-btn" id="soundSettingsBtn" aria-label="Buka pengaturan suara" aria-expanded="false">🔊</button>
-    <div class="sound-controls" id="soundControls" aria-hidden="true">
-      <button type="button" class="sound-btn" id="soundBtn" aria-label="Aktifkan atau matikan suara">🔊 Sound</button>
-      <input class="volume-slider" id="volumeSlider" type="range" min="0" max="100" value="70" aria-label="Volume SFX" />
-      <span class="volume-value" id="volumeValue">70%</span>
-      <button type="button" class="sound-close-btn" id="soundCloseBtn" aria-label="Tutup pengaturan suara">×</button>
-    </div>
-    <div class="progress" id="progress">1 / 1</div>
 
-    <div class="stage" id="stage">
-      <img class="character" id="char-manager" src="/visual-novel/characters/manager.png" alt="Mane-chan" />
-      <img class="character" id="char-eve" src="/visual-novel/characters/idol1.png" alt="Eve" />
-      <img class="character" id="char-ai" src="/visual-novel/characters/idol2.png" alt="Ai" />
-      <img class="character" id="char-aya" src="/visual-novel/characters/idol3.png" alt="Aya" />
-      <img class="expression-particle" id="expressionParticle" alt="Expression particle" aria-hidden="true" />
-    </div>
+      .sound-btn,
+      .sound-close-btn {
+        min-height: 28px;
+        padding: 6px 9px;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
 
-    <div class="dialogue" id="dialogue">
-      <div class="speaker narrator" id="speaker">Narasi</div>
-      <div class="text-box" id="text"></div>
+      .sound-close-btn {
+        width: 28px;
+        min-width: 28px;
+        padding: 0;
+        font-size: 15px;
+      }
 
-      <div class="actions">
-        <div class="hint">Klik area cerita / Space / → untuk lanjut</div>
-        <div class="controls">
-          <button type="button" class="secondary" id="prevBtn">Back</button>
-          <button type="button" class="primary" id="nextBtn">Next</button>
+      .sound-btn:hover,
+      .sound-close-btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .volume-slider {
+        width: 92px;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+
+      .volume-value {
+        min-width: 34px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 10px;
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .end-card {
+        position: absolute;
+        inset: 0;
+        z-index: 80;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(2, 8, 16, 0.62);
+        backdrop-filter: blur(8px);
+      }
+
+      .end-card.visible {
+        display: flex;
+      }
+
+      .end-panel {
+        width: min(430px, 100%);
+        padding: 26px;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: rgba(6, 16, 30, 0.96);
+        text-align: center;
+      }
+
+      .end-panel h2 {
+        margin: 0 0 10px;
+        font-size: 26px;
+      }
+      .end-panel p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      /* =========================================================
+       MOBILE
+       3 dan 4 karakter dibuat sedikit overlap agar tidak terlihat terlalu kecil.
+       ========================================================= */
+      @media (max-width: 640px) {
+        .progress {
+          top: 8px;
+          right: 9px;
+        }
+
+        .fullscreen-btn {
+          top: 8px;
+          left: 9px;
+          min-height: 34px;
+          padding: 7px 10px;
+          font-size: 11px;
+        }
+
+        .sound-controls {
+          top: 8px;
+          left: 112px;
+          min-height: 34px;
+          gap: 5px;
+          padding: 4px 7px 4px 4px;
+        }
+
+        .sound-btn {
+          min-height: 26px;
+          padding: 5px 7px;
+          font-size: 10px;
+        }
+
+        .volume-slider {
+          width: 62px;
+        }
+        .volume-value {
+          min-width: 28px;
+          font-size: 9px;
+        }
+
+        .stage {
+          inset: 4px 0 194px;
+        }
+
+        .character {
+          height: 100%;
+          object-fit: contain;
+          object-position: center bottom;
+        }
+
+        .stage.layout-1 .slot-1 {
+          left: 12%;
+          width: 76%;
+        }
+
+        .stage.layout-2 .slot-1 {
+          left: 0;
+          width: 48%;
+        }
+        .stage.layout-2 .slot-2 {
+          left: 52%;
+          width: 48%;
+        }
+
+        .stage.layout-3 .slot-1 {
+          left: -8%;
+          width: 40%;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 30%;
+          width: 40%;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 68%;
+          width: 40%;
+        }
+
+        .stage.layout-4 .slot-1 {
+          left: -14%;
+          width: 34%;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 12%;
+          width: 34%;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 38%;
+          width: 34%;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 64%;
+          width: 34%;
+        }
+
+        .expression-particle {
+          width: clamp(88px, 28vw, 132px);
+        }
+
+        .dialogue {
+          left: 7px;
+          right: 7px;
+          bottom: 7px;
+          max-height: 184px;
+          overflow-y: auto;
+          padding: 11px;
+          border-radius: 17px;
+        }
+
+        .speaker {
+          min-height: 28px;
+          padding: 5px 10px;
+          font-size: 12px;
+        }
+
+        .text-box {
+          margin-top: 7px;
+          min-height: 58px;
+          font-size: 13px;
+          line-height: 1.48;
+        }
+
+        .actions {
+          margin-top: 7px;
+        }
+        .hint {
+          display: none;
+        }
+        .controls {
+          width: 100%;
+        }
+        button {
+          flex: 1;
+          min-height: 42px;
+          padding: 9px 12px;
+        }
+
+        .end-panel {
+          padding: 21px 17px;
+          border-radius: 20px;
+        }
+        .end-panel h2 {
+          font-size: 22px;
+        }
+        .end-panel p {
+          font-size: 13px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .sound-controls {
+          right: 8px;
+          left: auto;
+          top: 48px;
+        }
+        .volume-slider {
+          width: 78px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .stage {
+          inset: 4px 0 190px;
+        }
+        .dialogue {
+          max-height: 180px;
+        }
+        .text-box {
+          font-size: 12.5px;
+        }
+      }
+
+      @media (orientation: landscape) and (max-height: 560px) {
+        .stage {
+          inset: 2px 0 132px;
+        }
+        .dialogue {
+          left: 8px;
+          right: 8px;
+          bottom: 6px;
+          max-height: 126px;
+          padding: 8px 10px;
+        }
+        .speaker {
+          min-height: 25px;
+          padding: 4px 9px;
+        }
+        .text-box {
+          margin-top: 5px;
+          min-height: 38px;
+          font-size: 12.5px;
+          line-height: 1.38;
+        }
+        .actions {
+          margin-top: 5px;
+        }
+        button {
+          min-height: 34px;
+          padding: 7px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app" id="app">
+      <div class="background" id="background"></div>
+      <button
+        type="button"
+        class="fullscreen-btn"
+        id="fullscreenBtn"
+        aria-label="Buka fullscreen"
+      >
+        ⛶ Fullscreen
+      </button>
+      <button
+        type="button"
+        class="sound-settings-btn"
+        id="soundSettingsBtn"
+        aria-label="Buka pengaturan suara"
+        aria-expanded="false"
+      >
+        🔊
+      </button>
+      <div class="sound-controls" id="soundControls" aria-hidden="true">
+        <button
+          type="button"
+          class="sound-btn"
+          id="soundBtn"
+          aria-label="Aktifkan atau matikan suara"
+        >
+          🔊 Sound
+        </button>
+        <input
+          class="volume-slider"
+          id="volumeSlider"
+          type="range"
+          min="0"
+          max="100"
+          value="70"
+          aria-label="Volume SFX"
+        />
+        <span class="volume-value" id="volumeValue">70%</span>
+        <button
+          type="button"
+          class="sound-close-btn"
+          id="soundCloseBtn"
+          aria-label="Tutup pengaturan suara"
+        >
+          ×
+        </button>
+      </div>
+      <div class="progress" id="progress">1 / 1</div>
+
+      <div class="stage" id="stage">
+        <img
+          class="character"
+          id="char-manager"
+          src="/visual-novel/characters/manager.png"
+          alt="Mane-chan"
+        />
+        <img
+          class="character"
+          id="char-eve"
+          src="/visual-novel/characters/idol1.png"
+          alt="Eve"
+        />
+        <img
+          class="character"
+          id="char-ai"
+          src="/visual-novel/characters/idol2.png"
+          alt="Ai"
+        />
+        <img
+          class="character"
+          id="char-aya"
+          src="/visual-novel/characters/idol3.png"
+          alt="Aya"
+        />
+        <img
+          class="expression-particle"
+          id="expressionParticle"
+          alt="Expression particle"
+          aria-hidden="true"
+        />
+      </div>
+
+      <div class="dialogue" id="dialogue">
+        <div class="speaker narrator" id="speaker">Narasi</div>
+        <div class="text-box" id="text"></div>
+
+        <div class="actions">
+          <div class="hint">Klik area cerita / Space / → untuk lanjut</div>
+          <div class="controls">
+            <button type="button" class="secondary" id="prevBtn">Back</button>
+            <button type="button" class="primary" id="nextBtn">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="end-card" id="endCard">
+        <div class="end-panel">
+          <h2>Tamat ✨</h2>
+          <p>
+            Visual Novel selesai Umadol telah selesai, terima kasih sudah
+            membaca!
+          </p>
+          <button type="button" class="primary" id="restartBtn">
+            Ulang dari Awal
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="end-card" id="endCard">
-      <div class="end-panel">
-        <h2>Tamat ✨</h2>
-        <p>Visual Novel selesai Umadol telah selesai, terima kasih sudah membaca!</p>
-        <button type="button" class="primary" id="restartBtn">Ulang dari Awal</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /* =========================================================
+    <script>
+      /* =========================================================
        BACKGROUND
 
        Tinggal tambahkan file berikut ke:
@@ -690,299 +930,311 @@
 
        Kalau file belum ada, otomatis menggunakan gradient fallback.
        ========================================================= */
-    const BACKGROUNDS = {
-      
-      scene1: '/visual-novel/backgrounds/scene1.png',
-      scene2: '/visual-novel/backgrounds/scene2.png',
-      scene3: '/visual-novel/backgrounds/scene3.png',
-      scene4: '/visual-novel/backgrounds/scene4.png',
-      scene5: '/visual-novel/backgrounds/scene5.png',
+      const BLOB_BASE =
+        "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com";
 
-      finale: '/visual-novel/backgrounds/finale.png'
-    };
+      const BACKGROUNDS = {
+        scene1: `${BLOB_BASE}/visual-novel/backgrounds/scene1.png`,
+        scene2: `${BLOB_BASE}/visual-novel/backgrounds/scene2.png`,
+        scene3: `${BLOB_BASE}/visual-novel/backgrounds/scene3.png`,
+        scene4: `${BLOB_BASE}/visual-novel/backgrounds/scene4.png`,
+        scene5: `${BLOB_BASE}/visual-novel/backgrounds/scene5.png`,
 
-    const FALLBACKS = {
-      opening: 'linear-gradient(180deg, #0a2647 0%, #09131d 100%)',
-      scene1: 'linear-gradient(180deg, #dff2ff 0%, #c5e4fb 100%)',
-      scene2: 'linear-gradient(180deg, #e6f9dd 0%, #ccebc4 100%)',
-      scene3: 'linear-gradient(180deg, #fff0d8 0%, #ffddb1 100%)',
-      scene4: 'linear-gradient(180deg, #f0e7ff 0%, #d9cbf5 100%)',
-      finale: 'linear-gradient(180deg, #07182b 0%, #0d2d52 100%)'
-    };
+        finale: `${BLOB_BASE}/visual-novel/backgrounds/finale.png`,
+      };
 
-    /* =========================================================
+      const FALLBACKS = {
+        opening: "linear-gradient(180deg, #0a2647 0%, #09131d 100%)",
+        scene1: "linear-gradient(180deg, #dff2ff 0%, #c5e4fb 100%)",
+        scene2: "linear-gradient(180deg, #e6f9dd 0%, #ccebc4 100%)",
+        scene3: "linear-gradient(180deg, #fff0d8 0%, #ffddb1 100%)",
+        scene4: "linear-gradient(180deg, #f0e7ff 0%, #d9cbf5 100%)",
+        finale: "linear-gradient(180deg, #07182b 0%, #0d2d52 100%)",
+      };
+
+      /* =========================================================
        STORY
        show = karakter yang tampil pada panel.
        active = karakter yang sedang bicara.
        expressions = mode ekspresi masing-masing karakter.
        bgKey = background scene.
        ========================================================= */
-    const steps = [
-      {
-        bgKey: 'scene1',
-        speaker: 'Narasi',
-        text: 'Mane-chan sedang mencari kandidat untuk membentuk sebuah idol group. Tiga gadis unik akan menjadi bagian dari perjalanan ini.',
-        show: []
-      },
+      const steps = [
+        {
+          bgKey: "scene1",
+          speaker: "Narasi",
+          text: "Mane-chan sedang mencari kandidat untuk membentuk sebuah idol group. Tiga gadis unik akan menjadi bagian dari perjalanan ini.",
+          show: [],
+        },
 
-      // SCENE 1 — MEETING EVE
-      {
-        bgKey: 'scene1',
-        speaker: 'Narasi',
-        text: 'Mane-chan bertemu seorang gadis yang sedang merawat ayamnya.',
-        show: ['manager', 'eve'],
-        active: 'eve',
-      },
-      {
-        bgKey: 'scene1',
-        speaker: 'Mane-chan',
-        text: 'Dia terlihat punya potensi menjadi idol! Ini kesempatan bagus! Hey kamu! Apa kamu mau menjadi idol?!',
-        show: ['manager', 'eve'],
-        active: 'manager',
-        expressions: { manager: 'excited', eve: 'basic' }
-      },
-      {
-        bgKey: 'scene1',
-        speaker: 'Gadis',
-        text: 'Gak mau.',
-        show: ['manager', 'eve'],
-        active: 'eve',
-        expressions: { manager: 'shocked', eve: 'basic' }
-      },
-      {
-        bgKey: 'scene1',
-        speaker: 'Mane-chan',
-        text: 'Oke, gini deh. Gimana kalau pangan ayammu aku tanggung?',
-        show: ['manager', 'eve'],
-        active: 'manager'
-      },
-      {
-        bgKey: 'scene1',
-        speaker: 'Gadis',
-        text: 'Oke, deal!',
-        show: ['manager', 'eve'],
-        active: 'eve',
-        expressions: { manager: 'amazed', eve: 'amazed' }
-      },
-      {
-        bgKey: 'scene1',
-        speaker: 'Eve',
-        text: 'Aku Eve! Salam kenal, manager!',
-        show: ['manager', 'eve'],
-        active: 'eve'
-      },
+        // SCENE 1 — MEETING EVE
+        {
+          bgKey: "scene1",
+          speaker: "Narasi",
+          text: "Mane-chan bertemu seorang gadis yang sedang merawat ayamnya.",
+          show: ["manager", "eve"],
+          active: "eve",
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Mane-chan",
+          text: "Dia terlihat punya potensi menjadi idol! Ini kesempatan bagus! Hey kamu! Apa kamu mau menjadi idol?!",
+          show: ["manager", "eve"],
+          active: "manager",
+          expressions: { manager: "excited", eve: "basic" },
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Gadis",
+          text: "Gak mau.",
+          show: ["manager", "eve"],
+          active: "eve",
+          expressions: { manager: "shocked", eve: "basic" },
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Mane-chan",
+          text: "Oke, gini deh. Gimana kalau pangan ayammu aku tanggung?",
+          show: ["manager", "eve"],
+          active: "manager",
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Gadis",
+          text: "Oke, deal!",
+          show: ["manager", "eve"],
+          active: "eve",
+          expressions: { manager: "amazed", eve: "amazed" },
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Eve",
+          text: "Aku Eve! Salam kenal, manager!",
+          show: ["manager", "eve"],
+          active: "eve",
+        },
 
-      // SCENE 2 — MEETING AI
-      {
-        bgKey: 'scene2',
-        speaker: 'Narasi',
-        text: 'Di taman, Mane-chan dan Eve mendengar suara nyanyian yang indah.',
-        show: ['manager', 'eve', 'ai'],
-        active: 'ai'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Mane-chan',
-        text: 'Suara siapa ini? Indah sekali! Membuatku merasa berapi-api!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'manager',
-        expressions: { manager: 'amazed', eve: 'amazed', ai: 'shy' }
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Eve',
-        text: 'Iya, iya! Bener banget!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'eve'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Mane-chan',
-        text: 'Halo! Suara kamu bagus sekali! Kamu cocok sekali menjadi idol!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'manager'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Gadis',
-        text: 'Uh… um… anu…',
-        show: ['manager', 'eve', 'ai'],
-        active: 'ai',
-        expressions: { manager: 'basic', eve: 'basic', ai: 'shy' }
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Narasi',
-        text: 'Gadis itu mengeluarkan handphone.',
-        show: ['manager', 'eve', 'ai'],
-        active: 'ai'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Gadis',
-        text: 'Maaf aku pemalu. Apakah tidak apa-apa kalau aku jadi idol?',
-        show: ['manager', 'eve', 'ai'],
-        active: 'ai',
-        expressions: { manager: 'basic', eve: 'basic', ai: 'shy' }
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Mane-chan',
-        text: 'Ya! Aku yakin kamu bisa menjadi idol yang bagus!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'manager'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Eve',
-        text: 'Iya, iya! Bener banget!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'eve'
-      },
-      {
-        bgKey: 'scene2',
-        speaker: 'Ai',
-        text: 'Oke baiklah! Terima kasih banyak manager! Nama ku Ai. Salam kenal!',
-        show: ['manager', 'eve', 'ai'],
-        active: 'ai'
-      },
+        // SCENE 2 — MEETING AI
+        {
+          bgKey: "scene2",
+          speaker: "Narasi",
+          text: "Di taman, Mane-chan dan Eve mendengar suara nyanyian yang indah.",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Mane-chan",
+          text: "Suara siapa ini? Indah sekali! Membuatku merasa berapi-api!",
+          show: ["manager", "eve", "ai"],
+          active: "manager",
+          expressions: { manager: "amazed", eve: "amazed", ai: "shy" },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Eve",
+          text: "Iya, iya! Bener banget!",
+          show: ["manager", "eve", "ai"],
+          active: "eve",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Mane-chan",
+          text: "Halo! Suara kamu bagus sekali! Kamu cocok sekali menjadi idol!",
+          show: ["manager", "eve", "ai"],
+          active: "manager",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Gadis",
+          text: "Uh… um… anu…",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+          expressions: { manager: "basic", eve: "basic", ai: "shy" },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Narasi",
+          text: "Gadis itu mengeluarkan handphone.",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Gadis",
+          text: "Maaf aku pemalu. Apakah tidak apa-apa kalau aku jadi idol?",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+          expressions: { manager: "basic", eve: "basic", ai: "shy" },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Mane-chan",
+          text: "Ya! Aku yakin kamu bisa menjadi idol yang bagus!",
+          show: ["manager", "eve", "ai"],
+          active: "manager",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Eve",
+          text: "Iya, iya! Bener banget!",
+          show: ["manager", "eve", "ai"],
+          active: "eve",
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Ai",
+          text: "Oke baiklah! Terima kasih banyak manager! Nama ku Ai. Salam kenal!",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+        },
 
-      // SCENE 3 — MEETING AYA
-      {
-        bgKey: 'scene3',
-        speaker: '???',
-        text: 'Tunggu, tunggu! Aku juga mau jadi idol!!',
-        show: ['manager', 'eve', 'ai', 'aya'],
-        active: 'aya',
-        expressions: { manager: 'shocked', eve: 'surprised', ai: 'shy', aya: 'excited' }
-      },
-      {
-        bgKey: 'scene3',
-        speaker: 'Mane-chan',
-        text: 'Oke, oke. Jadi kamu mau join jadi idol kan?',
-        show: ['manager', 'eve', 'ai', 'aya'],
-        active: 'manager'
-      },
-      {
-        bgKey: 'scene3',
-        speaker: 'Aya',
-        text: 'Iya, mau! Aku Aya, salam kenal!',
-        show: ['manager', 'eve', 'ai', 'aya'],
-        active: 'aya',
-        expressions: { manager: 'amazed', eve: 'amazed', ai: 'basic', aya: 'proud' }
-      },
+        // SCENE 3 — MEETING AYA
+        {
+          bgKey: "scene3",
+          speaker: "???",
+          text: "Tunggu, tunggu! Aku juga mau jadi idol!!",
+          show: ["manager", "eve", "ai", "aya"],
+          active: "aya",
+          expressions: {
+            manager: "shocked",
+            eve: "surprised",
+            ai: "shy",
+            aya: "excited",
+          },
+        },
+        {
+          bgKey: "scene3",
+          speaker: "Mane-chan",
+          text: "Oke, oke. Jadi kamu mau join jadi idol kan?",
+          show: ["manager", "eve", "ai", "aya"],
+          active: "manager",
+        },
+        {
+          bgKey: "scene3",
+          speaker: "Aya",
+          text: "Iya, mau! Aku Aya, salam kenal!",
+          show: ["manager", "eve", "ai", "aya"],
+          active: "aya",
+          expressions: {
+            manager: "amazed",
+            eve: "amazed",
+            ai: "basic",
+            aya: "proud",
+          },
+        },
 
-      // SCENE 4 — DEBUT PERFORMANCE / CONFLICT
-      {
-        bgKey: 'scene4',
-        speaker: 'Narasi',
-        text: 'Debut performance mereka tidak berjalan mulus. Setelah tampil, mereka terlibat konflik di backstage.',
-        show: '',
-        active: ''
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Aya',
-        text: 'Gimana sih kalian?! Kalian harusnya ngikutin tempo ku!',
-        show: ['eve', 'ai', 'aya'],
-        active: 'aya',
-        expressions: { eve: 'angry', ai: 'sad', aya: 'angry' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Eve',
-        text: 'Kamu gak bisa nyalahin kita gitu dong! Kan kita juga baru ketemu! Wajar aja kalau kita belum ketemu kemistrinya!',
-        show: ['eve', 'ai', 'aya'],
-        active: 'eve',
-        expressions: { eve: 'angry', ai: 'depressed', aya: 'angry' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Aya',
-        text: 'Itu mah kalian aja yang amatiran! Kalian beneran mau gak sih jadi idol?!',
-        show: ['eve', 'ai', 'aya'],
-        active: 'aya',
-        expressions: { eve: 'angry', ai: 'depressed', aya: 'proud' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Ai',
-        text: 'Kalian berdua jangan bertengkar!! Kita seharusnya menjalin hubungan dengan baik, agar kita bisa bekerja sama sebagai unit idol!',
-        show: ['eve', 'ai', 'aya'],
-        active: 'ai',
-        expressions: { eve: 'surprised', ai: 'sad', aya: 'amazed' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Eve',
-        text: 'Dia benar. Maaf kalian berdua. Aku terbawa suasana.',
-        show: ['eve', 'ai', 'aya'],
-        active: 'eve',
-        expressions: { eve: 'sad', ai: 'basic', aya: 'basic' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Aya',
-        text: 'Aku juga minta maaf. Aku terlalu naif.',
-        show: ['eve', 'ai', 'aya'],
-        active: 'aya',
-        expressions: { eve: 'basic', ai: 'sad', aya: 'basic' }
-      },
-      {
-        bgKey: 'scene5',
-        speaker: 'Eve',
-        text: 'Baiklah! Ayo kita coba lagi dari awal!',
-        show: ['eve', 'ai', 'aya'],
-        active: 'eve',
-        expressions: { eve: 'amazed', ai: 'basic', aya: 'excited' }
-      },
+        // SCENE 4 — DEBUT PERFORMANCE / CONFLICT
+        {
+          bgKey: "scene4",
+          speaker: "Narasi",
+          text: "Debut performance mereka tidak berjalan mulus. Setelah tampil, mereka terlibat konflik di backstage.",
+          show: "",
+          active: "",
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Aya",
+          text: "Gimana sih kalian?! Kalian harusnya ngikutin tempo ku!",
+          show: ["eve", "ai", "aya"],
+          active: "aya",
+          expressions: { eve: "angry", ai: "sad", aya: "angry" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Eve",
+          text: "Kamu gak bisa nyalahin kita gitu dong! Kan kita juga baru ketemu! Wajar aja kalau kita belum ketemu kemistrinya!",
+          show: ["eve", "ai", "aya"],
+          active: "eve",
+          expressions: { eve: "angry", ai: "depressed", aya: "angry" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Aya",
+          text: "Itu mah kalian aja yang amatiran! Kalian beneran mau gak sih jadi idol?!",
+          show: ["eve", "ai", "aya"],
+          active: "aya",
+          expressions: { eve: "angry", ai: "depressed", aya: "proud" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Ai",
+          text: "Kalian berdua jangan bertengkar!! Kita seharusnya menjalin hubungan dengan baik, agar kita bisa bekerja sama sebagai unit idol!",
+          show: ["eve", "ai", "aya"],
+          active: "ai",
+          expressions: { eve: "surprised", ai: "sad", aya: "amazed" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Eve",
+          text: "Dia benar. Maaf kalian berdua. Aku terbawa suasana.",
+          show: ["eve", "ai", "aya"],
+          active: "eve",
+          expressions: { eve: "sad", ai: "basic", aya: "basic" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Aya",
+          text: "Aku juga minta maaf. Aku terlalu naif.",
+          show: ["eve", "ai", "aya"],
+          active: "aya",
+          expressions: { eve: "basic", ai: "sad", aya: "basic" },
+        },
+        {
+          bgKey: "scene5",
+          speaker: "Eve",
+          text: "Baiklah! Ayo kita coba lagi dari awal!",
+          show: ["eve", "ai", "aya"],
+          active: "eve",
+          expressions: { eve: "amazed", ai: "basic", aya: "excited" },
+        },
 
-      // FINALE
-      {
-        bgKey: 'finale',
-        speaker: 'Narasi',
-        text: 'Mereka kembali ke panggung, mencoba sekali lagi, dan menutup performance bersama.',
-        show: '',
-        active: ''
-      },
-      {
-        bgKey: 'finale',
-        speaker: 'Narasi',
-        text: 'TAMAT — KURABU 2026',
-        show: ['eve', 'ai', 'aya'],
-        active: 'ai',
-        end: true
-      }
-    ];
+        // FINALE
+        {
+          bgKey: "finale",
+          speaker: "Narasi",
+          text: "Mereka kembali ke panggung, mencoba sekali lagi, dan menutup performance bersama.",
+          show: "",
+          active: "",
+        },
+        {
+          bgKey: "finale",
+          speaker: "Narasi",
+          text: "TAMAT — KURABU 2026",
+          show: ["eve", "ai", "aya"],
+          active: "ai",
+          end: true,
+        },
+      ];
 
-    const dom = {
-      app: document.getElementById('app'),
-      background: document.getElementById('background'),
-      progress: document.getElementById('progress'),
-      fullscreenBtn: document.getElementById('fullscreenBtn'),
-      soundSettingsBtn: document.getElementById('soundSettingsBtn'),
-      soundBtn: document.getElementById('soundBtn'),
-      soundCloseBtn: document.getElementById('soundCloseBtn'),
-      soundControls: document.getElementById('soundControls'),
-      volumeSlider: document.getElementById('volumeSlider'),
-      volumeValue: document.getElementById('volumeValue'),
-      stage: document.getElementById('stage'),
-      expressionParticle: document.getElementById('expressionParticle'),
-      speaker: document.getElementById('speaker'),
-      text: document.getElementById('text'),
-      prevBtn: document.getElementById('prevBtn'),
-      nextBtn: document.getElementById('nextBtn'),
-      restartBtn: document.getElementById('restartBtn'),
-      endCard: document.getElementById('endCard'),
-      chars: {
-        manager: document.getElementById('char-manager'),
-        eve: document.getElementById('char-eve'),
-        ai: document.getElementById('char-ai'),
-        aya: document.getElementById('char-aya')
-      }
-    };
+      const dom = {
+        app: document.getElementById("app"),
+        background: document.getElementById("background"),
+        progress: document.getElementById("progress"),
+        fullscreenBtn: document.getElementById("fullscreenBtn"),
+        soundSettingsBtn: document.getElementById("soundSettingsBtn"),
+        soundBtn: document.getElementById("soundBtn"),
+        soundCloseBtn: document.getElementById("soundCloseBtn"),
+        soundControls: document.getElementById("soundControls"),
+        volumeSlider: document.getElementById("volumeSlider"),
+        volumeValue: document.getElementById("volumeValue"),
+        stage: document.getElementById("stage"),
+        expressionParticle: document.getElementById("expressionParticle"),
+        speaker: document.getElementById("speaker"),
+        text: document.getElementById("text"),
+        prevBtn: document.getElementById("prevBtn"),
+        nextBtn: document.getElementById("nextBtn"),
+        restartBtn: document.getElementById("restartBtn"),
+        endCard: document.getElementById("endCard"),
+        chars: {
+          manager: document.getElementById("char-manager"),
+          eve: document.getElementById("char-eve"),
+          ai: document.getElementById("char-ai"),
+          aya: document.getElementById("char-aya"),
+        },
+      };
 
-    /* =========================================================
+      /* =========================================================
        CHARACTER EXPRESSION ASSETS
 
        Folder yang bisa lo isi nanti:
@@ -994,74 +1246,78 @@
        Kalau file ekspresi belum ada / gagal dimuat, otomatis fallback
        ke gambar basic/siluet karakter yang sekarang.
        ========================================================= */
-    const CHARACTER_EXPRESSIONS = {
-      manager: {
-        basic: '/visual-novel/characters/mane-chan/basic.png',
-        angry: '/visual-novel/characters/mane-chan/angry.png',
-        excited: '/visual-novel/characters/mane-chan/excited.png',
-        shocked: '/visual-novel/characters/mane-chan/shocked.png',
-        amazed: '/visual-novel/characters/mane-chan/amazed.png'
-      },
-      aya: {
-        basic: '/visual-novel/characters/aya/basic.png',
-        angry: '/visual-novel/characters/aya/angry.png',
-        excited: '/visual-novel/characters/aya/excited.png',
-        proud: '/visual-novel/characters/aya/proud.png',
-        amazed: '/visual-novel/characters/aya/amazed.png'
-      },
-      ai: {
-        basic: '/visual-novel/characters/ai/basic.png',
-        sad: '/visual-novel/characters/ai/sad.png',
-        shy: '/visual-novel/characters/ai/shy.png',
-        depressed: '/visual-novel/characters/ai/depressed.png'
-      },
-      eve: {
-        basic: '/visual-novel/characters/eve/basic.png',
-        angry: '/visual-novel/characters/eve/angry.png',
-        sad: '/visual-novel/characters/eve/sad.png',
-        surprised: '/visual-novel/characters/eve/surprised.png',
-        amazed: '/visual-novel/characters/eve/amazed.png'
+      const CHARACTER_EXPRESSIONS = {
+        manager: {
+          basic: `${BLOB_BASE}/visual-novel/characters/mane-chan/basic.png`,
+          angry: `${BLOB_BASE}/visual-novel/characters/mane-chan/angry.png`,
+          excited: `${BLOB_BASE}/visual-novel/characters/mane-chan/excited.png`,
+          shocked: `${BLOB_BASE}/visual-novel/characters/mane-chan/shocked.png`,
+          amazed: `${BLOB_BASE}/visual-novel/characters/mane-chan/amazed.png`,
+        },
+        aya: {
+          basic: `${BLOB_BASE}/visual-novel/characters/aya/basic.png`,
+          angry: `${BLOB_BASE}/visual-novel/characters/aya/angry.png`,
+          excited: `${BLOB_BASE}/visual-novel/characters/aya/excited.png`,
+          proud: `${BLOB_BASE}/visual-novel/characters/aya/proud.png`,
+          amazed: `${BLOB_BASE}/visual-novel/characters/aya/amazed.png`,
+        },
+        ai: {
+          basic: `${BLOB_BASE}/visual-novel/characters/ai/basic.png`,
+          sad: `${BLOB_BASE}/visual-novel/characters/ai/sad.png`,
+          shy: `${BLOB_BASE}/visual-novel/characters/ai/shy.png`,
+          depressed: `${BLOB_BASE}/visual-novel/characters/ai/depressed.png`,
+        },
+        eve: {
+          basic: `${BLOB_BASE}/visual-novel/characters/eve/basic.png`,
+          angry: `${BLOB_BASE}/visual-novel/characters/eve/angry.png`,
+          sad: `${BLOB_BASE}/visual-novel/characters/eve/sad.png`,
+          surprised: `${BLOB_BASE}/visual-novel/characters/eve/surprised.png`,
+          amazed: `${BLOB_BASE}/visual-novel/characters/eve/amazed.png`,
+        },
+      };
+
+      const CHARACTER_BASIC = {
+        manager:
+          "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/visual-novel/characters/manager.png",
+        eve: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/visual-novel/characters/idol1.png",
+        ai: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/visual-novel/characters/idol2.png",
+        aya: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/visual-novel/characters/idol3.png",
+      };
+
+      function normalizeExpressionName(value) {
+        return String(value || "basic")
+          .trim()
+          .toLowerCase();
       }
-    };
 
-    const CHARACTER_BASIC = {
-      manager: '/visual-novel/characters/manager.png',
-      eve: '/visual-novel/characters/idol1.png',
-      ai: '/visual-novel/characters/idol2.png',
-      aya: '/visual-novel/characters/idol3.png'
-    };
+      function setCharacterExpression(characterKey, expressionName) {
+        const el = dom.chars[characterKey];
+        if (!el) return;
 
-    function normalizeExpressionName(value) {
-      return String(value || 'basic').trim().toLowerCase();
-    }
+        const expression = normalizeExpressionName(expressionName);
+        const map = CHARACTER_EXPRESSIONS[characterKey] || {};
+        const desired =
+          map[expression] || map.basic || CHARACTER_BASIC[characterKey];
+        const fallback = map.basic || CHARACTER_BASIC[characterKey];
 
-    function setCharacterExpression(characterKey, expressionName) {
-      const el = dom.chars[characterKey];
-      if (!el) return;
+        el.dataset.expression = expression;
+        el.dataset.fallbackSrc = fallback;
 
-      const expression = normalizeExpressionName(expressionName);
-      const map = CHARACTER_EXPRESSIONS[characterKey] || {};
-      const desired = map[expression] || map.basic || CHARACTER_BASIC[characterKey];
-      const fallback = map.basic || CHARACTER_BASIC[characterKey];
-
-      el.dataset.expression = expression;
-      el.dataset.fallbackSrc = fallback;
-
-      if (el.getAttribute('src') !== desired) {
-        el.setAttribute('src', desired);
-      }
-    }
-
-    Object.entries(dom.chars).forEach(function ([key, el]) {
-      el.addEventListener('error', function () {
-        const fallback = el.dataset.fallbackSrc || CHARACTER_BASIC[key];
-        if (fallback && el.getAttribute('src') !== fallback) {
-          el.setAttribute('src', fallback);
+        if (el.getAttribute("src") !== desired) {
+          el.setAttribute("src", desired);
         }
-      });
-    });
+      }
 
-    /* =========================================================
+      Object.entries(dom.chars).forEach(function ([key, el]) {
+        el.addEventListener("error", function () {
+          const fallback = el.dataset.fallbackSrc || CHARACTER_BASIC[key];
+          if (fallback && el.getAttribute("src") !== fallback) {
+            el.setAttribute("src", fallback);
+          }
+        });
+      });
+
+      /* =========================================================
        ACTIVE CHARACTER PARTICLE BUBBLE
 
        Taruh asset PNG transparan di:
@@ -1071,506 +1327,671 @@
 
        Bubble hanya muncul untuk karakter ACTIVE dan mood yang cocok.
        ========================================================= */
-    const PARTICLE_ASSETS = {
-      happy: '/visual-novel/particles/happy.png',
-      sad: '/visual-novel/particles/sad.png',
-      angry: '/visual-novel/particles/angry.png'
-    };
-
-    // Posisi kepala relatif terhadap bounding box masing-masing gambar.
-    // Bisa disetel per karakter kalau model final punya proporsi berbeda.
-    const CHARACTER_HEAD_POSITION = {
-      manager: { x: .60, y: .18, offsetX: 0, offsetY: -10 },
-      eve:    { x: .50, y: .18  , offsetX: 0, offsetY: -5 },
-      ai:     { x: .50, y: .18, offsetX: 0, offsetY: -10 },
-      aya:    { x: .50, y: .18, offsetX: 0, offsetY: -10 }
-    };
-
-    function particleMoodForMode(mode) {
-      const value = normalizeExpressionName(mode);
-
-      if (value === 'angry') return 'angry';
-      if (value === 'sad' || value === 'depressed' || value === 'shy') return 'sad';
-      if (value === 'happy' || value === 'excited' || value === 'amazed' || value === 'proud') return 'happy';
-
-      return null;
-    }
-
-    function hideExpressionParticle() {
-      const particle = dom.expressionParticle;
-      if (!particle) return;
-      particle.className = 'expression-particle';
-      particle.removeAttribute('src');
-    }
-
-    function positionExpressionParticle(step) {
-      const particle = dom.expressionParticle;
-      if (!particle || !step || !step.active) {
-        hideExpressionParticle();
-        return;
-      }
-
-      const activeKey = step.active;
-      const character = dom.chars[activeKey];
-      if (!character || !character.classList.contains('visible')) {
-        hideExpressionParticle();
-        return;
-      }
-
-      const mode = getCharacterMode(step, activeKey);
-      const mood = particleMoodForMode(mode);
-      const source = PARTICLE_ASSETS[mood];
-
-      if (!source) {
-        hideExpressionParticle();
-        return;
-      }
-
-      const stageRect = dom.stage.getBoundingClientRect();
-      const charRect = character.getBoundingClientRect();
-      const head = CHARACTER_HEAD_POSITION[activeKey] || { x: .5, y: .18, offsetX: 0, offsetY: -10 };
-
-      const left = charRect.left - stageRect.left + (charRect.width * head.x) + head.offsetX;
-      const top = charRect.top - stageRect.top + (charRect.height * head.y) + head.offsetY;
-
-      particle.style.left = `${left}px`;
-      particle.style.top = `${top}px`;
-      particle.className = `expression-particle visible particle-${mood}`;
-
-      if (particle.getAttribute('src') !== source) {
-        particle.setAttribute('src', source);
-      }
-
-      particle.onerror = function () {
-        console.warn(`Particle ${mood} tidak ditemukan: ${source}`);
-        hideExpressionParticle();
+      const PARTICLE_ASSETS = {
+        happy: `${BLOB_BASE}/visual-novel/particles/happy.png`,
+        sad: `${BLOB_BASE}/visual-novel/particles/sad.png`,
+        angry: `${BLOB_BASE}/visual-novel/particles/angry.png`,
       };
-    }
 
-    let particleResizeFrame = null;
-    function refreshParticlePosition() {
-      if (particleResizeFrame) cancelAnimationFrame(particleResizeFrame);
-      particleResizeFrame = requestAnimationFrame(function () {
-        positionExpressionParticle(steps[current]);
-      });
-    }
+      // Posisi kepala relatif terhadap bounding box masing-masing gambar.
+      // Bisa disetel per karakter kalau model final punya proporsi berbeda.
+      const CHARACTER_HEAD_POSITION = {
+        manager: { x: 0.7, y: 0.12, offsetX: 0, offsetY: -10 },
+        eve: { x: 0.6, y: 0.18, offsetX: 0, offsetY: -10 },
+        ai: { x: 0.6, y: 0.18, offsetX: 0, offsetY: -10 },
+        aya: { x: 0.6, y: 0.12, offsetX: 0, offsetY: -10 },
+      };
 
-    /* =========================================================
+      function particleMoodForMode(mode) {
+        const value = normalizeExpressionName(mode);
+
+        if (value === "angry") return "angry";
+        if (value === "sad" || value === "depressed" || value === "shy")
+          return "sad";
+        if (
+          value === "happy" ||
+          value === "excited" ||
+          value === "amazed" ||
+          value === "proud"
+        )
+          return "happy";
+
+        return null;
+      }
+
+      function hideExpressionParticle() {
+        const particle = dom.expressionParticle;
+        if (!particle) return;
+        particle.className = "expression-particle";
+        particle.removeAttribute("src");
+      }
+
+      function positionExpressionParticle(step) {
+        const particle = dom.expressionParticle;
+        if (!particle || !step || !step.active) {
+          hideExpressionParticle();
+          return;
+        }
+
+        const activeKey = step.active;
+        const character = dom.chars[activeKey];
+        if (!character || !character.classList.contains("visible")) {
+          hideExpressionParticle();
+          return;
+        }
+
+        const mode = getCharacterMode(step, activeKey);
+        const mood = particleMoodForMode(mode);
+        const source = PARTICLE_ASSETS[mood];
+
+        if (!source) {
+          hideExpressionParticle();
+          return;
+        }
+
+        const stageRect = dom.stage.getBoundingClientRect();
+        const charRect = character.getBoundingClientRect();
+        const head = CHARACTER_HEAD_POSITION[activeKey] || {
+          x: 0.5,
+          y: 0.18,
+          offsetX: 0,
+          offsetY: -10,
+        };
+
+        const left =
+          charRect.left -
+          stageRect.left +
+          charRect.width * head.x +
+          head.offsetX;
+        const top =
+          charRect.top -
+          stageRect.top +
+          charRect.height * head.y +
+          head.offsetY;
+
+        particle.style.left = `${left}px`;
+        particle.style.top = `${top}px`;
+        particle.className = `expression-particle visible particle-${mood}`;
+
+        if (particle.getAttribute("src") !== source) {
+          particle.setAttribute("src", source);
+        }
+
+        particle.onerror = function () {
+          console.warn(`Particle ${mood} tidak ditemukan: ${source}`);
+          hideExpressionParticle();
+        };
+      }
+
+      let particleResizeFrame = null;
+      function refreshParticlePosition() {
+        if (particleResizeFrame) cancelAnimationFrame(particleResizeFrame);
+        particleResizeFrame = requestAnimationFrame(function () {
+          positionExpressionParticle(steps[current]);
+        });
+      }
+
+      /* =========================================================
        SOUND & EXPRESSION ENGINE
        Tidak membutuhkan file MP3/WAV. SFX dibuat dengan Web Audio API.
        Volume diatur oleh sfxVolume (0.0 - 1.0) dan slider UI 0 - 100%.
        Browser mobile baru mengaktifkan audio setelah tap pertama.
        ========================================================= */
-    let audioContext = null;
-    let soundEnabled = localStorage.getItem('kurabuSfxMuted') !== 'true';
-    let audioUnlocked = false;
-    let sfxVolume = Math.min(1, Math.max(0, Number(localStorage.getItem('kurabuSfxVolume') || '70') / 100));
-
-    const EXPRESSION_BY_TEXT = {
-      'Gak mau.': 'deadpan',
-      'Oke, deal!': 'happy',
-      'Aku Eve! Salam kenal, manager!': 'happy',
-      'Suara siapa ini? Indah sekali! Membuatku merasa berapi-api!': 'excited',
-      'Iya, iya! Bener banget!': 'happy',
-      'Uh… um… anu…': 'shy',
-      'Maaf aku pemalu. Apakah tidak apa-apa kalau aku jadi idol?': 'shy',
-      'Oke baiklah! Terima kasih banyak manager! Nama ku Ai. Salam kenal!': 'happy',
-      'Tunggu, tunggu! Aku juga mau jadi idol!!': 'surprise',
-      'Iya, mau! Aku Aya, salam kenal!': 'excited',
-      'Gimana sih kalian?! Kalian harusnya ngikutin tempo ku!': 'angry',
-      'Kamu gak bisa nyalahin kita gitu dong! Kan kita juga baru ketemu! Wajar aja kalau kita belum ketemu kemistrinya!': 'angry',
-      'Itu mah kalian aja yang amatiran! Kalian beneran mau gak sih jadi idol?!': 'angry',
-      'Kalian berdua jangan bertengkar!! Kita seharusnya menjalin hubungan dengan baik, agar kita bisa bekerja sama sebagai unit idol!': 'surprise',
-      'Dia benar. Maaf kalian berdua. Aku terbawa suasana.': 'shy',
-      'Aku juga minta maaf. Aku terlalu naif.': 'shy',
-      'Baiklah! Ayo kita coba lagi dari awal!': 'happy'
-    };
-
-    function getAudioContext() {
-      if (!audioContext) {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return null;
-        audioContext = new AudioCtx();
-      }
-      return audioContext;
-    }
-
-    async function unlockAudio() {
-      if (!soundEnabled) return;
-      const ctx = getAudioContext();
-      if (!ctx) return;
-      try {
-        if (ctx.state === 'suspended') await ctx.resume();
-        audioUnlocked = ctx.state === 'running';
-      } catch (_) {}
-    }
-
-    function tone({ frequency = 440, duration = .055, volume = .035, type = 'sine', delay = 0, endFrequency = null }) {
-      if (!soundEnabled || !audioUnlocked) return;
-      const ctx = getAudioContext();
-      if (!ctx || ctx.state !== 'running') return;
-
-      const start = ctx.currentTime + delay;
-      const end = start + duration;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = type;
-      osc.frequency.setValueAtTime(frequency, start);
-      if (endFrequency) osc.frequency.exponentialRampToValueAtTime(Math.max(30, endFrequency), end);
-
-      gain.gain.setValueAtTime(.0001, start);
-      const finalVolume = Math.max(.0001, volume * sfxVolume);
-      gain.gain.exponentialRampToValueAtTime(finalVolume, start + Math.min(.015, duration / 3));
-      gain.gain.exponentialRampToValueAtTime(.0001, end);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(start);
-      osc.stop(end + .02);
-    }
-
-    function playDialogueSound(speaker) {
-      if (!soundEnabled || !audioUnlocked || speaker === 'Narasi') return;
-
-      const pitch = {
-        'Mane-chan': 390,
-        'Manager': 390,
-        'Eve': 560,
-        'Gadis': 520,
-        'Ai': 650,
-        'Aya': 720,
-        '???': 700
-      }[speaker] || 500;
-
-      tone({ frequency: pitch, duration: .045, volume: .022, type: 'triangle' });
-      tone({ frequency: pitch * 1.08, duration: .04, volume: .014, type: 'sine', delay: .055 });
-    }
-
-    function playExpressionSound(expression) {
-      if (!soundEnabled || !audioUnlocked || !expression) return;
-
-      if (expression === 'happy' || expression === 'proud') {
-        tone({ frequency: 620, endFrequency: 880, duration: .11, volume: .026, type: 'sine' });
-        tone({ frequency: 880, duration: .08, volume: .018, type: 'sine', delay: .09 });
-      } else if (expression === 'excited') {
-        tone({ frequency: 460, endFrequency: 920, duration: .16, volume: .028, type: 'triangle' });
-      } else if (expression === 'surprise' || expression === 'surprised' || expression === 'shocked' || expression === 'amazed') {
-        tone({ frequency: 920, endFrequency: 1450, duration: .09, volume: .025, type: 'square' });
-      } else if (expression === 'angry') {
-        tone({ frequency: 155, endFrequency: 105, duration: .12, volume: .035, type: 'sawtooth' });
-        tone({ frequency: 125, duration: .08, volume: .022, type: 'square', delay: .07 });
-      } else if (expression === 'shy' || expression === 'sad') {
-        tone({ frequency: 410, endFrequency: 330, duration: .13, volume: .018, type: 'sine' });
-      } else if (expression === 'deadpan' || expression === 'depressed') {
-        tone({ frequency: 245, endFrequency: 220, duration: .08, volume: .016, type: 'triangle' });
-      }
-    }
-
-    function getExpression(step) {
-      return step.expression || EXPRESSION_BY_TEXT[step.text] || null;
-    }
-
-    function getCharacterMode(step, characterKey) {
-      if (step.expressions && step.expressions[characterKey]) {
-        return normalizeExpressionName(step.expressions[characterKey]);
-      }
-
-      if (step.active === characterKey) {
-        const inferred = getExpression(step);
-        if (inferred) return normalizeExpressionName(inferred);
-      }
-
-      return 'basic';
-    }
-
-    function applyExpression(step) {
-      const expression = getExpression(step);
-      if (!expression || !step.active) return;
-      const el = dom.chars[step.active];
-      if (!el) return;
-
-      // restart animation even when same expression appears twice in a row
-      el.classList.remove(
-        'expr-happy', 'expr-excited', 'expr-surprise', 'expr-surprised',
-        'expr-shocked', 'expr-amazed', 'expr-angry', 'expr-shy',
-        'expr-sad', 'expr-depressed', 'expr-proud', 'expr-deadpan'
+      let audioContext = null;
+      let soundEnabled = localStorage.getItem("kurabuSfxMuted") !== "true";
+      let audioUnlocked = false;
+      let sfxVolume = Math.min(
+        1,
+        Math.max(
+          0,
+          Number(localStorage.getItem("kurabuSfxVolume") || "70") / 100,
+        ),
       );
-      void el.offsetWidth;
 
-      const animationAlias = {
-        surprised: 'surprise',
-        shocked: 'surprise',
-        amazed: 'surprise',
-        sad: 'shy',
-        depressed: 'deadpan',
-        proud: 'happy'
-      }[expression] || expression;
+      const EXPRESSION_BY_TEXT = {
+        "Gak mau.": "deadpan",
+        "Oke, deal!": "happy",
+        "Aku Eve! Salam kenal, manager!": "happy",
+        "Suara siapa ini? Indah sekali! Membuatku merasa berapi-api!":
+          "excited",
+        "Iya, iya! Bener banget!": "happy",
+        "Uh… um… anu…": "shy",
+        "Maaf aku pemalu. Apakah tidak apa-apa kalau aku jadi idol?": "shy",
+        "Oke baiklah! Terima kasih banyak manager! Nama ku Ai. Salam kenal!":
+          "happy",
+        "Tunggu, tunggu! Aku juga mau jadi idol!!": "surprise",
+        "Iya, mau! Aku Aya, salam kenal!": "excited",
+        "Gimana sih kalian?! Kalian harusnya ngikutin tempo ku!": "angry",
+        "Kamu gak bisa nyalahin kita gitu dong! Kan kita juga baru ketemu! Wajar aja kalau kita belum ketemu kemistrinya!":
+          "angry",
+        "Itu mah kalian aja yang amatiran! Kalian beneran mau gak sih jadi idol?!":
+          "angry",
+        "Kalian berdua jangan bertengkar!! Kita seharusnya menjalin hubungan dengan baik, agar kita bisa bekerja sama sebagai unit idol!":
+          "surprise",
+        "Dia benar. Maaf kalian berdua. Aku terbawa suasana.": "shy",
+        "Aku juga minta maaf. Aku terlalu naif.": "shy",
+        "Baiklah! Ayo kita coba lagi dari awal!": "happy",
+      };
 
-      el.classList.add(`expr-${animationAlias}`);
-    }
-
-    function playStepSound(step) {
-      playDialogueSound(step.speaker || 'Narasi');
-      const expression = getExpression(step);
-      if (expression) {
-        window.setTimeout(function () { playExpressionSound(expression); }, 45);
-      }
-    }
-
-    const bgCache = {};
-    let current = 0;
-
-    function applyBackground(bgKey) {
-      const fallback = FALLBACKS[bgKey] || FALLBACKS.opening;
-      const source = BACKGROUNDS[bgKey];
-
-      dom.background.style.backgroundImage = 'none';
-      dom.background.style.background = fallback;
-
-      if (!source) return;
-
-      if (bgCache[source] === true) {
-        dom.background.style.background = fallback;
-        dom.background.style.backgroundImage = `url("${source}")`;
-        return;
-      }
-
-      if (bgCache[source] === false) return;
-
-      const image = new Image();
-      image.onload = function () {
-        bgCache[source] = true;
-        const step = steps[current];
-        if (step && step.bgKey === bgKey) {
-          dom.background.style.background = fallback;
-          dom.background.style.backgroundImage = `url("${source}")`;
+      function getAudioContext() {
+        if (!audioContext) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return null;
+          audioContext = new AudioCtx();
         }
-      };
-      image.onerror = function () {
-        bgCache[source] = false;
-      };
-      image.src = source;
-    }
+        return audioContext;
+      }
 
-    function applyCharacters(step) {
-      const shown = Array.isArray(step.show) ? step.show : [];
-      const count = Math.min(Math.max(shown.length, 1), 4);
+      async function unlockAudio() {
+        if (!soundEnabled) return;
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        try {
+          if (ctx.state === "suspended") await ctx.resume();
+          audioUnlocked = ctx.state === "running";
+        } catch (_) {}
+      }
 
-      Object.keys(dom.chars).forEach(function (key) {
-        setCharacterExpression(key, getCharacterMode(step, key));
-      });
+      function tone({
+        frequency = 440,
+        duration = 0.055,
+        volume = 0.035,
+        type = "sine",
+        delay = 0,
+        endFrequency = null,
+      }) {
+        if (!soundEnabled || !audioUnlocked) return;
+        const ctx = getAudioContext();
+        if (!ctx || ctx.state !== "running") return;
 
-      dom.stage.className = `stage layout-${count}`;
+        const start = ctx.currentTime + delay;
+        const end = start + duration;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
 
-      Object.values(dom.chars).forEach(function (el) {
-        el.className = 'character';
-      });
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, start);
+        if (endFrequency)
+          osc.frequency.exponentialRampToValueAtTime(
+            Math.max(30, endFrequency),
+            end,
+          );
 
-      shown.forEach(function (key, index) {
-        const el = dom.chars[key];
+        gain.gain.setValueAtTime(0.0001, start);
+        const finalVolume = Math.max(0.0001, volume * sfxVolume);
+        gain.gain.exponentialRampToValueAtTime(
+          finalVolume,
+          start + Math.min(0.015, duration / 3),
+        );
+        gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(end + 0.02);
+      }
+
+      function playDialogueSound(speaker) {
+        if (!soundEnabled || !audioUnlocked || speaker === "Narasi") return;
+
+        const pitch =
+          {
+            "Mane-chan": 390,
+            Manager: 390,
+            Eve: 560,
+            Gadis: 520,
+            Ai: 650,
+            Aya: 720,
+            "???": 700,
+          }[speaker] || 500;
+
+        tone({
+          frequency: pitch,
+          duration: 0.045,
+          volume: 0.022,
+          type: "triangle",
+        });
+        tone({
+          frequency: pitch * 1.08,
+          duration: 0.04,
+          volume: 0.014,
+          type: "sine",
+          delay: 0.055,
+        });
+      }
+
+      function playExpressionSound(expression) {
+        if (!soundEnabled || !audioUnlocked || !expression) return;
+
+        if (expression === "happy" || expression === "proud") {
+          tone({
+            frequency: 620,
+            endFrequency: 880,
+            duration: 0.11,
+            volume: 0.026,
+            type: "sine",
+          });
+          tone({
+            frequency: 880,
+            duration: 0.08,
+            volume: 0.018,
+            type: "sine",
+            delay: 0.09,
+          });
+        } else if (expression === "excited") {
+          tone({
+            frequency: 460,
+            endFrequency: 920,
+            duration: 0.16,
+            volume: 0.028,
+            type: "triangle",
+          });
+        } else if (
+          expression === "surprise" ||
+          expression === "surprised" ||
+          expression === "shocked" ||
+          expression === "amazed"
+        ) {
+          tone({
+            frequency: 920,
+            endFrequency: 1450,
+            duration: 0.09,
+            volume: 0.025,
+            type: "square",
+          });
+        } else if (expression === "angry") {
+          tone({
+            frequency: 155,
+            endFrequency: 105,
+            duration: 0.12,
+            volume: 0.035,
+            type: "sawtooth",
+          });
+          tone({
+            frequency: 125,
+            duration: 0.08,
+            volume: 0.022,
+            type: "square",
+            delay: 0.07,
+          });
+        } else if (expression === "shy" || expression === "sad") {
+          tone({
+            frequency: 410,
+            endFrequency: 330,
+            duration: 0.13,
+            volume: 0.018,
+            type: "sine",
+          });
+        } else if (expression === "deadpan" || expression === "depressed") {
+          tone({
+            frequency: 245,
+            endFrequency: 220,
+            duration: 0.08,
+            volume: 0.016,
+            type: "triangle",
+          });
+        }
+      }
+
+      function getExpression(step) {
+        return step.expression || EXPRESSION_BY_TEXT[step.text] || null;
+      }
+
+      function getCharacterMode(step, characterKey) {
+        if (step.expressions && step.expressions[characterKey]) {
+          return normalizeExpressionName(step.expressions[characterKey]);
+        }
+
+        if (step.active === characterKey) {
+          const inferred = getExpression(step);
+          if (inferred) return normalizeExpressionName(inferred);
+        }
+
+        return "basic";
+      }
+
+      function applyExpression(step) {
+        const expression = getExpression(step);
+        if (!expression || !step.active) return;
+        const el = dom.chars[step.active];
         if (!el) return;
 
-        el.classList.add('visible', `slot-${index + 1}`);
+        // restart animation even when same expression appears twice in a row
+        el.classList.remove(
+          "expr-happy",
+          "expr-excited",
+          "expr-surprise",
+          "expr-surprised",
+          "expr-shocked",
+          "expr-amazed",
+          "expr-angry",
+          "expr-shy",
+          "expr-sad",
+          "expr-depressed",
+          "expr-proud",
+          "expr-deadpan",
+        );
+        void el.offsetWidth;
 
-        if (step.active === key) {
-          el.classList.add('active');
-        } else if (step.active) {
-          el.classList.add('dim');
+        const animationAlias =
+          {
+            surprised: "surprise",
+            shocked: "surprise",
+            amazed: "surprise",
+            sad: "shy",
+            depressed: "deadpan",
+            proud: "happy",
+          }[expression] || expression;
+
+        el.classList.add(`expr-${animationAlias}`);
+      }
+
+      function playStepSound(step) {
+        playDialogueSound(step.speaker || "Narasi");
+        const expression = getExpression(step);
+        if (expression) {
+          window.setTimeout(function () {
+            playExpressionSound(expression);
+          }, 45);
         }
-      });
-    }
-
-    function render() {
-      const step = steps[current];
-
-      applyBackground(step.bgKey);
-      applyCharacters(step);
-      applyExpression(step);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { positionExpressionParticle(step); });
-      });
-
-      dom.progress.textContent = `${current + 1} / ${steps.length}`;
-      dom.speaker.textContent = step.speaker || 'Narasi';
-      dom.speaker.className = 'speaker' + ((step.speaker === 'Narasi' || !step.speaker) ? ' narrator' : '');
-      dom.text.textContent = step.text;
-      playStepSound(step);
-
-      dom.prevBtn.disabled = current === 0;
-      dom.prevBtn.style.opacity = current === 0 ? '.45' : '1';
-      dom.nextBtn.textContent = step.end ? 'Selesai' : 'Next';
-
-      dom.endCard.classList.toggle('visible', !!step.end && current === steps.length - 1);
-    }
-
-    async function next() {
-      await unlockAudio();
-      if (current < steps.length - 1) {
-        current += 1;
-        render();
-      }
-    }
-
-    async function previous() {
-      await unlockAudio();
-      if (current > 0) {
-        current -= 1;
-        render();
-      }
-    }
-
-    dom.nextBtn.addEventListener('click', next);
-    dom.prevBtn.addEventListener('click', previous);
-
-
-    function updateSoundUI() {
-      const percent = Math.round(sfxVolume * 100);
-      dom.volumeSlider.value = String(percent);
-      dom.volumeValue.textContent = `${percent}%`;
-      dom.soundBtn.textContent = soundEnabled && percent > 0 ? '🔊 Sound' : '🔇 Muted';
-      dom.soundBtn.setAttribute('aria-label', soundEnabled && percent > 0 ? 'Matikan suara' : 'Aktifkan suara');
-      dom.soundSettingsBtn.textContent = soundEnabled && percent > 0 ? '🔊' : '🔇';
-    }
-
-    function setSoundPanel(open) {
-      dom.soundControls.classList.toggle('open', open);
-      dom.soundControls.setAttribute('aria-hidden', String(!open));
-      dom.soundSettingsBtn.setAttribute('aria-expanded', String(open));
-      dom.soundSettingsBtn.setAttribute('aria-label', open ? 'Tutup pengaturan suara' : 'Buka pengaturan suara');
-    }
-
-    dom.soundSettingsBtn.addEventListener('click', function (event) {
-      event.stopPropagation();
-      setSoundPanel(!dom.soundControls.classList.contains('open'));
-    });
-
-    dom.soundCloseBtn.addEventListener('click', function (event) {
-      event.stopPropagation();
-      setSoundPanel(false);
-    });
-
-    dom.soundBtn.addEventListener('click', async function (event) {
-      event.stopPropagation();
-      soundEnabled = !soundEnabled;
-      localStorage.setItem('kurabuSfxMuted', String(!soundEnabled));
-
-      if (soundEnabled && sfxVolume === 0) {
-        sfxVolume = .7;
-        localStorage.setItem('kurabuSfxVolume', '70');
       }
 
-      updateSoundUI();
+      const bgCache = {};
+      let current = 0;
 
-      if (soundEnabled) {
+      function applyBackground(bgKey) {
+        const fallback = FALLBACKS[bgKey] || FALLBACKS.opening;
+        const source = BACKGROUNDS[bgKey];
+
+        dom.background.style.backgroundImage = "none";
+        dom.background.style.background = fallback;
+
+        if (!source) return;
+
+        if (bgCache[source] === true) {
+          dom.background.style.background = fallback;
+          dom.background.style.backgroundImage = `url("${source}")`;
+          return;
+        }
+
+        if (bgCache[source] === false) return;
+
+        const image = new Image();
+        image.onload = function () {
+          bgCache[source] = true;
+          const step = steps[current];
+          if (step && step.bgKey === bgKey) {
+            dom.background.style.background = fallback;
+            dom.background.style.backgroundImage = `url("${source}")`;
+          }
+        };
+        image.onerror = function () {
+          bgCache[source] = false;
+        };
+        image.src = source;
+      }
+
+      function applyCharacters(step) {
+        const shown = Array.isArray(step.show) ? step.show : [];
+        const count = Math.min(Math.max(shown.length, 1), 4);
+
+        Object.keys(dom.chars).forEach(function (key) {
+          setCharacterExpression(key, getCharacterMode(step, key));
+        });
+
+        dom.stage.className = `stage layout-${count}`;
+
+        Object.values(dom.chars).forEach(function (el) {
+          el.className = "character";
+        });
+
+        shown.forEach(function (key, index) {
+          const el = dom.chars[key];
+          if (!el) return;
+
+          el.classList.add("visible", `slot-${index + 1}`);
+
+          if (step.active === key) {
+            el.classList.add("active");
+          } else if (step.active) {
+            el.classList.add("dim");
+          }
+        });
+      }
+
+      function render() {
+        const step = steps[current];
+
+        applyBackground(step.bgKey);
+        applyCharacters(step);
+        applyExpression(step);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            positionExpressionParticle(step);
+          });
+        });
+
+        dom.progress.textContent = `${current + 1} / ${steps.length}`;
+        dom.speaker.textContent = step.speaker || "Narasi";
+        dom.speaker.className =
+          "speaker" +
+          (step.speaker === "Narasi" || !step.speaker ? " narrator" : "");
+        dom.text.textContent = step.text;
+        playStepSound(step);
+
+        dom.prevBtn.disabled = current === 0;
+        dom.prevBtn.style.opacity = current === 0 ? ".45" : "1";
+        dom.nextBtn.textContent = step.end ? "Selesai" : "Next";
+
+        dom.endCard.classList.toggle(
+          "visible",
+          !!step.end && current === steps.length - 1,
+        );
+      }
+
+      async function next() {
         await unlockAudio();
-        tone({ frequency: 660, endFrequency: 820, duration: .1, volume: .025, type: 'sine' });
+        if (current < steps.length - 1) {
+          current += 1;
+          render();
+        }
       }
-    });
 
-    dom.volumeSlider.addEventListener('input', async function (event) {
-      event.stopPropagation();
-      sfxVolume = Number(dom.volumeSlider.value) / 100;
-      localStorage.setItem('kurabuSfxVolume', String(Math.round(sfxVolume * 100)));
+      async function previous() {
+        await unlockAudio();
+        if (current > 0) {
+          current -= 1;
+          render();
+        }
+      }
 
-      soundEnabled = sfxVolume > 0;
-      localStorage.setItem('kurabuSfxMuted', String(!soundEnabled));
+      dom.nextBtn.addEventListener("click", next);
+      dom.prevBtn.addEventListener("click", previous);
+
+      function updateSoundUI() {
+        const percent = Math.round(sfxVolume * 100);
+        dom.volumeSlider.value = String(percent);
+        dom.volumeValue.textContent = `${percent}%`;
+        dom.soundBtn.textContent =
+          soundEnabled && percent > 0 ? "🔊 Sound" : "🔇 Muted";
+        dom.soundBtn.setAttribute(
+          "aria-label",
+          soundEnabled && percent > 0 ? "Matikan suara" : "Aktifkan suara",
+        );
+        dom.soundSettingsBtn.textContent =
+          soundEnabled && percent > 0 ? "🔊" : "🔇";
+      }
+
+      function setSoundPanel(open) {
+        dom.soundControls.classList.toggle("open", open);
+        dom.soundControls.setAttribute("aria-hidden", String(!open));
+        dom.soundSettingsBtn.setAttribute("aria-expanded", String(open));
+        dom.soundSettingsBtn.setAttribute(
+          "aria-label",
+          open ? "Tutup pengaturan suara" : "Buka pengaturan suara",
+        );
+      }
+
+      dom.soundSettingsBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        setSoundPanel(!dom.soundControls.classList.contains("open"));
+      });
+
+      dom.soundCloseBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        setSoundPanel(false);
+      });
+
+      dom.soundBtn.addEventListener("click", async function (event) {
+        event.stopPropagation();
+        soundEnabled = !soundEnabled;
+        localStorage.setItem("kurabuSfxMuted", String(!soundEnabled));
+
+        if (soundEnabled && sfxVolume === 0) {
+          sfxVolume = 0.7;
+          localStorage.setItem("kurabuSfxVolume", "70");
+        }
+
+        updateSoundUI();
+
+        if (soundEnabled) {
+          await unlockAudio();
+          tone({
+            frequency: 660,
+            endFrequency: 820,
+            duration: 0.1,
+            volume: 0.025,
+            type: "sine",
+          });
+        }
+      });
+
+      dom.volumeSlider.addEventListener("input", async function (event) {
+        event.stopPropagation();
+        sfxVolume = Number(dom.volumeSlider.value) / 100;
+        localStorage.setItem(
+          "kurabuSfxVolume",
+          String(Math.round(sfxVolume * 100)),
+        );
+
+        soundEnabled = sfxVolume > 0;
+        localStorage.setItem("kurabuSfxMuted", String(!soundEnabled));
+        updateSoundUI();
+
+        if (soundEnabled) await unlockAudio();
+      });
+
+      dom.volumeSlider.addEventListener("change", async function (event) {
+        event.stopPropagation();
+        if (!soundEnabled) return;
+        await unlockAudio();
+        tone({
+          frequency: 600,
+          endFrequency: 760,
+          duration: 0.08,
+          volume: 0.025,
+          type: "sine",
+        });
+      });
+
+      dom.soundControls.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+
+      dom.restartBtn.addEventListener("click", function () {
+        current = 0;
+        dom.endCard.classList.remove("visible");
+        render();
+      });
+
+      dom.app.addEventListener("click", function (event) {
+        if (event.target.closest("button")) return;
+        if (dom.endCard.classList.contains("visible")) return;
+        next();
+      });
+
+      window.addEventListener("keydown", function (event) {
+        if (
+          event.key === "ArrowRight" ||
+          event.key === " " ||
+          event.key === "Enter"
+        ) {
+          event.preventDefault();
+          next();
+        }
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          previous();
+        }
+      });
+
+      function isFullscreen() {
+        return Boolean(
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.msFullscreenElement,
+        );
+      }
+
+      function updateFullscreenButton() {
+        if (!dom.fullscreenBtn) return;
+        dom.fullscreenBtn.textContent = isFullscreen()
+          ? "↙ Exit Fullscreen"
+          : "⛶ Fullscreen";
+        dom.fullscreenBtn.setAttribute(
+          "aria-label",
+          isFullscreen() ? "Keluar dari fullscreen" : "Buka fullscreen",
+        );
+      }
+
+      async function toggleFullscreen() {
+        const target = document.documentElement;
+
+        try {
+          if (!isFullscreen()) {
+            if (target.requestFullscreen) {
+              await target.requestFullscreen();
+            } else if (target.webkitRequestFullscreen) {
+              target.webkitRequestFullscreen();
+            } else if (target.msRequestFullscreen) {
+              target.msRequestFullscreen();
+            }
+          } else {
+            if (document.exitFullscreen) {
+              await document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen();
+            }
+          }
+        } catch (error) {
+          console.warn("Fullscreen tidak dapat diaktifkan:", error);
+        }
+      }
+
+      dom.fullscreenBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        toggleFullscreen();
+      });
+
+      document.addEventListener("fullscreenchange", updateFullscreenButton);
+      document.addEventListener(
+        "webkitfullscreenchange",
+        updateFullscreenButton,
+      );
+      document.addEventListener("MSFullscreenChange", updateFullscreenButton);
+      window.addEventListener("resize", refreshParticlePosition);
+      document.addEventListener("fullscreenchange", refreshParticlePosition);
+      document.addEventListener(
+        "webkitfullscreenchange",
+        refreshParticlePosition,
+      );
+      updateFullscreenButton();
       updateSoundUI();
 
-      if (soundEnabled) await unlockAudio();
-    });
-
-    dom.volumeSlider.addEventListener('change', async function (event) {
-      event.stopPropagation();
-      if (!soundEnabled) return;
-      await unlockAudio();
-      tone({ frequency: 600, endFrequency: 760, duration: .08, volume: .025, type: 'sine' });
-    });
-
-    dom.soundControls.addEventListener('click', function (event) {
-      event.stopPropagation();
-    });
-
-    dom.restartBtn.addEventListener('click', function () {
-      current = 0;
-      dom.endCard.classList.remove('visible');
       render();
-    });
-
-    dom.app.addEventListener('click', function (event) {
-      if (event.target.closest('button')) return;
-      if (dom.endCard.classList.contains('visible')) return;
-      next();
-    });
-
-    window.addEventListener('keydown', function (event) {
-      if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        next();
-      }
-
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        previous();
-      }
-    });
-
-
-    function isFullscreen() {
-      return Boolean(
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.msFullscreenElement
-      );
-    }
-
-    function updateFullscreenButton() {
-      if (!dom.fullscreenBtn) return;
-      dom.fullscreenBtn.textContent = isFullscreen() ? '↙ Exit Fullscreen' : '⛶ Fullscreen';
-      dom.fullscreenBtn.setAttribute('aria-label', isFullscreen() ? 'Keluar dari fullscreen' : 'Buka fullscreen');
-    }
-
-    async function toggleFullscreen() {
-      const target = document.documentElement;
-
-      try {
-        if (!isFullscreen()) {
-          if (target.requestFullscreen) {
-            await target.requestFullscreen();
-          } else if (target.webkitRequestFullscreen) {
-            target.webkitRequestFullscreen();
-          } else if (target.msRequestFullscreen) {
-            target.msRequestFullscreen();
-          }
-        } else {
-          if (document.exitFullscreen) {
-            await document.exitFullscreen();
-          } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          }
-        }
-      } catch (error) {
-        console.warn('Fullscreen tidak dapat diaktifkan:', error);
-      }
-    }
-
-    dom.fullscreenBtn.addEventListener('click', function (event) {
-      event.stopPropagation();
-      toggleFullscreen();
-    });
-
-    document.addEventListener('fullscreenchange', updateFullscreenButton);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
-    document.addEventListener('MSFullscreenChange', updateFullscreenButton);
-    window.addEventListener('resize', refreshParticlePosition);
-    document.addEventListener('fullscreenchange', refreshParticlePosition);
-    document.addEventListener('webkitfullscreenchange', refreshParticlePosition);
-    updateFullscreenButton();
-    updateSoundUI();
-
-    render();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
