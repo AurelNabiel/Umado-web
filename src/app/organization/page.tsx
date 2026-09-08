@@ -13,24 +13,24 @@ type Member = {
 };
 
 const chairman: Member = {
-  name: "Nama Ketua Umado",
+  name: "Emil Qinthara Hakim",
   role: "Ketua Umado",
   photo: "/assets/umachan.png",
 };
 
 const executiveBoard: Member[] = [
   {
-    name: "Nama Wakil Ketua",
+    name: "Aurelio Nabiel Rizqullah",
     role: "Wakil Ketua",
     photo: "/assets/umachan2.png",
   },
   {
-    name: "Nama Sekretaris",
+    name: "Fajar Ramadan",
     role: "Sekretaris",
     photo: "/assets/umachan3.png",
   },
   {
-    name: "Nama Bendahara",
+    name: "Fawwaz Sathria Putra",
     role: "Bendahara",
     photo: "/assets/umachan.png",
   },
@@ -38,19 +38,19 @@ const executiveBoard: Member[] = [
 
 const divisionCoordinators: Member[] = [
   {
-    name: "Nama Koordinator Kasei",
+    name: "Dika Apriadi",
     role: "Koordinator",
     division: "Kasei",
     photo: "/assets/umachan2.png",
   },
   {
-    name: "Nama Koordinator Manga",
+    name: "Raihan Majid",
     role: "Koordinator",
     division: "Manga",
     photo: "/assets/umachan3.png",
   },
   {
-    name: "Nama Koordinator Dance Cover",
+    name: "Permata Atqia",
     role: "Koordinator",
     division: "Dance Cover",
     photo: "/assets/umachan.png",
