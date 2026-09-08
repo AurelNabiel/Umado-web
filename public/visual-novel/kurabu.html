@@ -41,7 +41,7 @@
       .background {
         position: absolute;
         inset: 0;
-        background-size: cover;
+        background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
         transition:
@@ -49,6 +49,11 @@
           background 0.4s ease;
       }
 
+      .background {
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        background-size: 100% 100% !important;
+      }
       .background::after {
         content: "";
         position: absolute;
@@ -96,7 +101,7 @@
         object-position: center bottom;
         opacity: 0;
         filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
-        transform: translateY(18px) scale(0.96);
+        transform: translateY(18px) scale(var(--char-scale, 0.96));
         transition:
           opacity 0.25s ease,
           transform 0.25s ease,
@@ -105,7 +110,7 @@
 
       .character.visible {
         opacity: 0.48;
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(var(--char-scale, 1));
       }
 
       .character.dim {
@@ -114,7 +119,7 @@
 
       .character.active {
         opacity: 0.98;
-        transform: translateY(0) scale(1.035);
+        transform: translateY(0) scale(var(--char-active-scale, 1.035));
         z-index: 5;
       }
 
@@ -143,7 +148,7 @@
 
       @keyframes exprHappy {
         0% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
         35% {
           transform: translateY(-18px) scale(1.07);
@@ -152,7 +157,7 @@
           transform: translateY(-5px) scale(1.05);
         }
         100% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
       }
 
@@ -173,13 +178,13 @@
 
       @keyframes exprSurprise {
         0% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
         30% {
           transform: translateY(-14px) scale(1.09);
         }
         100% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
       }
 
@@ -204,25 +209,25 @@
 
       @keyframes exprShy {
         0% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
         40% {
           transform: translateY(10px) scale(0.995) rotate(-1deg);
         }
         100% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
       }
 
       @keyframes exprDeadpan {
         0% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
         45% {
           transform: translateY(5px) scale(1.005);
         }
         100% {
-          transform: translateY(0) scale(1.035);
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
         }
       }
 
@@ -258,20 +263,40 @@
 
       /* 4 CHARACTERS - tetap muat tapi sedikit bertumpuk agar terlihat lebih besar */
       .stage.layout-4 .slot-1 {
-        left: -7%;
-        width: 30%;
+        left: -4%;
+        width: 31%;
       }
       .stage.layout-4 .slot-2 {
-        left: 17%;
-        width: 30%;
+        left: 21%;
+        width: 31%;
       }
       .stage.layout-4 .slot-3 {
-        left: 41%;
-        width: 30%;
+        left: 46%;
+        width: 31%;
       }
       .stage.layout-4 .slot-4 {
-        left: 65%;
-        width: 30%;
+        left: 71%;
+        width: 31%;
+      }
+
+      /* Normalisasi visual 4 karakter.
+         Source PNG tiap karakter bisa punya ruang transparan berbeda,
+         jadi skala per karakter dibuat lebih seimbang. */
+      .stage.layout-4 #char-manager {
+        --char-scale: 1.02;
+        --char-active-scale: 1.055;
+      }
+      .stage.layout-4 #char-eve {
+        --char-scale: 1.02;
+        --char-active-scale: 1.055;
+      }
+      .stage.layout-4 #char-ai {
+        --char-scale: 1.02;
+        --char-active-scale: 1.055;
+      }
+      .stage.layout-4 #char-aya {
+        --char-scale: 1;
+        --char-active-scale: 1.035;
       }
 
       /* =========================================================
@@ -680,20 +705,37 @@
         }
 
         .stage.layout-4 .slot-1 {
-          left: -14%;
-          width: 34%;
+          left: -8%;
+          width: 32%;
         }
         .stage.layout-4 .slot-2 {
-          left: 12%;
-          width: 34%;
+          left: 18%;
+          width: 32%;
         }
         .stage.layout-4 .slot-3 {
-          left: 38%;
-          width: 34%;
+          left: 44%;
+          width: 32%;
         }
         .stage.layout-4 .slot-4 {
-          left: 64%;
-          width: 34%;
+          left: 70%;
+          width: 32%;
+        }
+
+        .stage.layout-4 #char-manager {
+          --char-scale: 0.88;
+          --char-active-scale: 0.915;
+        }
+        .stage.layout-4 #char-eve {
+          --char-scale: 0.9;
+          --char-active-scale: 0.935;
+        }
+        .stage.layout-4 #char-ai {
+          --char-scale: 0.98;
+          --char-active-scale: 1.015;
+        }
+        .stage.layout-4 #char-aya {
+          --char-scale: 0.96;
+          --char-active-scale: 0.995;
         }
 
         .expression-particle {
@@ -802,6 +844,1120 @@
           padding: 7px 10px;
         }
       }
+
+      /* =========================================================
+         VN OVERLAY LAYOUT — characters continue behind dialogue
+         Mobile controls are compact and proportionally spaced.
+         ========================================================= */
+
+      /* Let character artwork use the whole frame. The dialogue box now
+         sits in front of the models instead of reserving empty space. */
+      .stage {
+        inset: 8px 0 0;
+      }
+
+      .character {
+        bottom: 0;
+        height: calc(100% - 6px);
+      }
+
+      .dialogue {
+        z-index: 40;
+        background: rgba(6, 16, 30, 0.9);
+      }
+
+      /* Keep utility controls above characters/dialogue without taking
+         visual focus away from the scene. */
+      .fullscreen-btn,
+      .sound-settings-btn,
+      .sound-controls,
+      .progress {
+        z-index: 70;
+      }
+
+      @media (max-width: 640px) {
+        /* Full-height character stage; lower body can naturally disappear
+           behind the dialogue panel like a conventional visual novel. */
+        .stage {
+          inset: 0;
+        }
+
+        .character {
+          bottom: 0;
+          height: 92%;
+          max-height: none;
+          object-fit: contain;
+          object-position: center bottom;
+        }
+
+        /* 1 character */
+        .stage.layout-1 .slot-1 {
+          left: 8%;
+          width: 84%;
+        }
+
+        /* 2 characters */
+        .stage.layout-2 .slot-1 {
+          left: -4%;
+          width: 58%;
+        }
+        .stage.layout-2 .slot-2 {
+          left: 46%;
+          width: 58%;
+        }
+
+        /* 3 characters: intentionally overlap a little so models stay large. */
+        .stage.layout-3 .slot-1 {
+          left: -10%;
+          width: 46%;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 27%;
+          width: 46%;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 64%;
+          width: 46%;
+        }
+
+        /* 4 characters: tighter overlap, still readable on narrow phones. */
+        .stage.layout-4 .slot-1 {
+          left: -15%;
+          width: 39%;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 10%;
+          width: 39%;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 35%;
+          width: 39%;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 60%;
+          width: 39%;
+        }
+
+        /* Compact mobile top bar. Fullscreen becomes icon-only. */
+        .fullscreen-btn {
+          top: 8px;
+          left: 8px;
+          width: 40px;
+          height: 40px;
+          min-height: 40px;
+          padding: 0;
+          font-size: 0;
+          display: grid;
+          place-items: center;
+          border-radius: 12px;
+        }
+
+        .fullscreen-btn::before {
+          content: "⛶";
+          font-size: 18px;
+          line-height: 1;
+        }
+
+        .sound-settings-btn {
+          top: 8px;
+          left: 56px;
+          width: 40px;
+          height: 40px;
+          min-height: 40px;
+          padding: 0;
+          display: grid;
+          place-items: center;
+          border-radius: 12px;
+          font-size: 17px;
+          line-height: 1;
+        }
+
+        .progress {
+          top: 8px;
+          right: 8px;
+          min-height: 40px;
+          display: flex;
+          align-items: center;
+          padding: 0 11px;
+          border-radius: 12px;
+          font-size: 10px;
+        }
+
+        /* Sound panel opens below the two utility icons instead of stretching
+           across or colliding with the top controls. */
+        .sound-controls,
+        .sound-controls.open {
+          top: 56px;
+          left: 8px;
+          right: auto;
+          width: min(286px, calc(100% - 16px));
+          min-height: 46px;
+          padding: 7px;
+          gap: 7px;
+          border-radius: 14px;
+          transform-origin: top left;
+        }
+
+        .sound-controls {
+          transform: translateY(-5px) scale(0.98);
+        }
+
+        .sound-controls.open {
+          transform: translateY(0) scale(var(--char-scale, 1));
+        }
+
+        .sound-btn {
+          flex: 0 0 auto;
+          min-height: 32px;
+          padding: 6px 9px;
+          font-size: 10px;
+        }
+
+        .sound-close-btn {
+          flex: 0 0 32px;
+          width: 32px;
+          min-width: 32px;
+          min-height: 32px;
+          height: 32px;
+        }
+
+        .volume-slider {
+          flex: 1 1 auto;
+          min-width: 70px;
+          width: auto;
+        }
+
+        .volume-value {
+          flex: 0 0 34px;
+          min-width: 34px;
+          font-size: 9px;
+        }
+
+        .expression-particle {
+          width: clamp(92px, 27vw, 138px);
+        }
+
+        /* Dialogue is a foreground overlay. Keep it compact enough to reveal
+           the character bodies behind it while preserving comfortable reading. */
+        .dialogue {
+          left: 8px;
+          right: 8px;
+          bottom: max(8px, env(safe-area-inset-bottom));
+          width: auto;
+          max-height: min(38%, 230px);
+          overflow-y: auto;
+          padding: 11px 12px 10px;
+          border-radius: 17px;
+          background: rgba(6, 16, 30, 0.88);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+
+        .speaker {
+          min-height: 28px;
+          padding: 5px 10px;
+          font-size: 11px;
+        }
+
+        .text-box {
+          margin-top: 7px;
+          min-height: 46px;
+          font-size: clamp(13px, 3.6vw, 15px);
+          line-height: 1.45;
+        }
+
+        .actions {
+          margin-top: 8px;
+          gap: 8px;
+        }
+
+        .hint {
+          display: none;
+        }
+
+        .dialogue .controls {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1.25fr;
+          gap: 8px;
+        }
+
+        /* Scope mobile button sizing to dialogue/end-card controls only so
+           fullscreen and sound icons don't inherit stretched button styles. */
+        .dialogue button,
+        .end-panel button {
+          min-height: 42px;
+          padding: 9px 12px;
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .character {
+          height: 90%;
+        }
+
+        .stage.layout-3 .slot-1 {
+          left: -13%;
+          width: 48%;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 26%;
+          width: 48%;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 65%;
+          width: 48%;
+        }
+
+        .stage.layout-4 .slot-1 {
+          left: -18%;
+          width: 41%;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 8%;
+          width: 41%;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 34%;
+          width: 41%;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 60%;
+          width: 41%;
+        }
+
+        .dialogue {
+          max-height: min(40%, 220px);
+        }
+
+        .expression-particle {
+          width: clamp(86px, 29vw, 126px);
+        }
+      }
+
+      @media (max-width: 360px) {
+        .fullscreen-btn,
+        .sound-settings-btn {
+          width: 38px;
+          height: 38px;
+          min-height: 38px;
+        }
+
+        .sound-settings-btn {
+          left: 52px;
+        }
+        .progress {
+          min-height: 38px;
+        }
+
+        .sound-controls,
+        .sound-controls.open {
+          top: 52px;
+          width: calc(100% - 16px);
+        }
+
+        .dialogue {
+          max-height: 42%;
+          padding: 10px;
+        }
+
+        .text-box {
+          font-size: 12.5px;
+        }
+      }
+
+      @media (orientation: landscape) and (max-height: 560px) {
+        .stage {
+          inset: 0;
+        }
+
+        .character {
+          height: 100%;
+        }
+
+        .fullscreen-btn,
+        .sound-settings-btn {
+          top: 6px;
+          width: 36px;
+          height: 36px;
+          min-height: 36px;
+          border-radius: 10px;
+        }
+        .fullscreen-btn {
+          left: 6px;
+        }
+        .sound-settings-btn {
+          left: 48px;
+        }
+
+        .progress {
+          top: 6px;
+          right: 6px;
+          min-height: 36px;
+        }
+
+        .sound-controls,
+        .sound-controls.open {
+          top: 48px;
+          left: 6px;
+          max-width: 276px;
+        }
+
+        .dialogue {
+          left: 8px;
+          right: 8px;
+          bottom: 6px;
+          max-height: 46%;
+          padding: 8px 10px;
+        }
+
+        .text-box {
+          min-height: 32px;
+          margin-top: 5px;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .dialogue button {
+          min-height: 34px;
+          padding: 6px 10px;
+        }
+      }
+
+      /* =========================================================
+         FINAL COMPOSITION FIX — 4 CHARACTERS + MOBILE UI
+         Override terakhir untuk menyamakan proporsi visual karakter,
+         menjaga overlap seperti VN, dan merapikan toolbar/dialog mobile.
+         ========================================================= */
+
+      /* Stage benar-benar sampai bawah; dialog berada di layer depan. */
+      .stage {
+        inset: 0 !important;
+        overflow: hidden;
+      }
+
+      .dialogue {
+        z-index: 40;
+      }
+
+      .expression-particle {
+        z-index: 35;
+      }
+
+      /* Desktop/tablet 4-character composition.
+         Karena source PNG tiap karakter punya canvas/whitespace berbeda,
+         skala dinormalisasi per karakter agar ukuran VISUAL lebih seragam. */
+      .stage.layout-4 .slot-1 {
+        left: -5% !important;
+        width: 32% !important;
+      }
+      .stage.layout-4 .slot-2 {
+        left: 19% !important;
+        width: 32% !important;
+      }
+      .stage.layout-4 .slot-3 {
+        left: 43% !important;
+        width: 32% !important;
+      }
+      .stage.layout-4 .slot-4 {
+        left: 67% !important;
+        width: 32% !important;
+      }
+
+      .stage.layout-4 #char-manager {
+        --char-scale: 0.90;
+        --char-active-scale: 1.15;
+        z-index: 2;
+      }
+      .stage.layout-4 #char-eve {
+        --char-scale: 1.00;
+        --char-active-scale: 1.19;
+        z-index: 3;
+      }
+      .stage.layout-4 #char-ai {
+        --char-scale: 0.91;
+        --char-active-scale: 0.94;
+        z-index: 2;
+      }
+      .stage.layout-4 #char-aya {
+        --char-scale: 0.9;
+        --char-active-scale: 0.93;
+        z-index: 3;
+      }
+
+      /* Jangan biarkan active state membesarkan karakter berlebihan. */
+      .stage.layout-4 .character.active {
+        z-index: 8;
+      }
+
+      /* Dialog dibuat seperti VN overlay: cukup tinggi untuk dibaca,
+         tapi tidak mengambil separuh layar. */
+      .dialogue {
+        max-height: min(31%, 210px) !important;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 640px) {
+        /* Toolbar compact dan konsisten. */
+        .fullscreen-btn,
+        .sound-settings-btn {
+          top: 8px !important;
+          width: 42px !important;
+          height: 42px !important;
+          min-width: 42px !important;
+          min-height: 42px !important;
+          padding: 0 !important;
+          border-radius: 13px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          font-size: 0 !important;
+          line-height: 1 !important;
+        }
+
+        .fullscreen-btn {
+          left: 8px !important;
+        }
+        .sound-settings-btn {
+          left: 58px !important;
+        }
+
+        .fullscreen-btn::before {
+          content: "⛶";
+          font-size: 20px;
+          line-height: 1;
+        }
+
+        .sound-settings-btn {
+          font-size: 18px !important;
+        }
+
+        .progress {
+          top: 8px !important;
+          right: 8px !important;
+          min-height: 36px !important;
+          padding: 0 11px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          font-size: 10px !important;
+          border-radius: 12px !important;
+        }
+
+        /* Sound panel berada di baris kedua, tidak bertabrakan toolbar. */
+        .sound-controls,
+        .sound-controls.open {
+          top: 58px !important;
+          left: 8px !important;
+          right: 8px !important;
+          width: auto !important;
+          max-width: 310px !important;
+          min-height: 40px !important;
+          border-radius: 13px !important;
+          padding: 5px !important;
+          gap: 6px !important;
+        }
+
+        .sound-btn,
+        .sound-close-btn {
+          min-height: 30px !important;
+          font-size: 10px !important;
+        }
+
+        .volume-slider {
+          flex: 1 1 auto !important;
+          min-width: 70px !important;
+          width: auto !important;
+        }
+
+        .volume-value {
+          min-width: 30px !important;
+          font-size: 9px !important;
+        }
+
+        /* Proporsi karakter umum mobile. */
+        .character {
+          height: 96% !important;
+          bottom: 0 !important;
+          object-position: center bottom !important;
+        }
+
+        /* 3 orang dibuat besar tetapi masih menyisakan wajah masing-masing. */
+        .stage.layout-3 .slot-1 {
+          left: -11% !important;
+          width: 47% !important;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 27% !important;
+          width: 47% !important;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 65% !important;
+          width: 47% !important;
+        }
+
+        /* 4 orang: overlap terkontrol, bukan slot kecil-kecil. */
+        .stage.layout-4 .slot-1 {
+          left: -17% !important;
+          width: 43% !important;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 8% !important;
+          width: 43% !important;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 33% !important;
+          width: 43% !important;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 58% !important;
+          width: 43% !important;
+        }
+
+        /* Kompensasi per-image untuk canvas PNG yang berbeda. */
+        .stage.layout-4 #char-manager {
+          --char-scale: 1.00;
+          --char-active-scale: 1.25;
+          bottom: -1% !important;
+        }
+        .stage.layout-4 #char-eve {
+          --char-scale: 1.25;
+          --char-active-scale: 1.28;
+          bottom: -1% !important;
+        }
+        .stage.layout-4 #char-ai {
+          --char-scale: 0.88;
+          --char-active-scale: 0.91;
+          bottom: -1% !important;
+        }
+        .stage.layout-4 #char-aya {
+          --char-scale: 0.87;
+          --char-active-scale: 0.9;
+          bottom: -1% !important;
+        }
+
+        /* Dialog overlay lebih pendek dan berada paling bawah. */
+        .dialogue {
+          left: 8px !important;
+          right: 8px !important;
+          bottom: max(8px, env(safe-area-inset-bottom)) !important;
+          max-height: min(30%, 190px) !important;
+          padding: 10px 11px !important;
+          border-radius: 17px !important;
+          overflow-y: auto !important;
+        }
+
+        .speaker {
+          min-height: 27px !important;
+          padding: 5px 10px !important;
+          font-size: 11px !important;
+        }
+
+        .text-box {
+          margin-top: 6px !important;
+          min-height: 38px !important;
+          font-size: clamp(12.5px, 3.45vw, 14px) !important;
+          line-height: 1.4 !important;
+        }
+
+        .actions {
+          margin-top: 7px !important;
+        }
+
+        .dialogue .controls {
+          width: 100% !important;
+          display: grid !important;
+          grid-template-columns: 0.85fr 1.15fr !important;
+          gap: 8px !important;
+        }
+
+        .dialogue button {
+          min-height: 40px !important;
+          padding: 8px 10px !important;
+          font-size: 12px !important;
+        }
+
+        .expression-particle {
+          width: clamp(80px, 24vw, 118px) !important;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .stage.layout-4 .slot-1 {
+          left: -20% !important;
+          width: 45% !important;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 6% !important;
+          width: 45% !important;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 32% !important;
+          width: 45% !important;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 58% !important;
+          width: 45% !important;
+        }
+
+        .dialogue {
+          max-height: min(31%, 184px) !important;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .fullscreen-btn,
+        .sound-settings-btn {
+          width: 38px !important;
+          height: 38px !important;
+          min-width: 38px !important;
+          min-height: 38px !important;
+        }
+        .sound-settings-btn {
+          left: 52px !important;
+        }
+        .fullscreen-btn::before {
+          font-size: 18px;
+        }
+
+        .sound-controls,
+        .sound-controls.open {
+          top: 52px !important;
+        }
+
+        .dialogue {
+          max-height: min(32%, 178px) !important;
+        }
+      }
+
+      @media (orientation: landscape) and (max-height: 560px) {
+        .character {
+          height: 100% !important;
+        }
+
+        .stage.layout-4 #char-manager {
+          --char-scale: 0.88;
+          --char-active-scale: 1.11;
+        }
+        .stage.layout-4 #char-eve {
+          --char-scale: 1.1;
+          --char-active-scale: 1.13;
+        }
+        .stage.layout-4 #char-ai {
+          --char-scale: 0.88;
+          --char-active-scale: 0.91;
+        }
+        .stage.layout-4 #char-aya {
+          --char-scale: 0.87;
+          --char-active-scale: 0.9;
+        }
+
+        .dialogue {
+          max-height: 42% !important;
+        }
+      }
+
+      /* =========================================================
+         MOBILE MAX 3 CHARACTERS + DIALOG TOGGLE
+         Khusus HP. Tablet/laptop tetap menggunakan layout existing.
+         ========================================================= */
+      .dialog-close-btn {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        z-index: 2;
+        width: 34px;
+        height: 34px;
+        min-height: 34px;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        font-size: 15px;
+        line-height: 1;
+      }
+
+      .dialog-show-btn {
+        position: absolute;
+        left: 50%;
+        bottom: 14px;
+        z-index: 45;
+        display: none;
+        transform: translateX(-50%);
+        min-height: 38px;
+        padding: 8px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 999px;
+        background: rgba(6, 16, 30, 0.84);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        backdrop-filter: blur(10px);
+      }
+
+      .app.dialog-hidden .dialogue {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(18px);
+      }
+
+      .app.dialog-hidden .dialog-show-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dialogue {
+        transition:
+          opacity 0.2s ease,
+          transform 0.2s ease,
+          visibility 0.2s ease;
+      }
+
+      @media (max-width: 640px) {
+        /* Character art boleh turun hingga belakang dialog seperti VN klasik. */
+        .stage {
+          inset: 0 !important;
+          bottom: 0 !important;
+        }
+
+        /* Mobile hanya memakai layout maksimum 3 karakter. */
+        .stage.layout-3 .slot-1 {
+          left: -9% !important;
+          width: 45% !important;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 28% !important;
+          width: 45% !important;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 65% !important;
+          width: 45% !important;
+        }
+
+        .stage.layout-3 .character {
+          height: 100% !important;
+          max-height: none !important;
+          object-position: center bottom !important;
+        }
+
+        /* Kompensasi ukuran per karakter untuk layout-3 mobile.
+           PNG Mane-chan dan Eve punya area transparan/proporsi visual lebih kecil,
+           jadi keduanya dibesarkan agar tinggi visual setara dengan Ai dan Aya. */
+        .stage.layout-3 #char-manager {
+          --char-scale: 1.28;
+          --char-active-scale: 1.32;
+          bottom: -2% !important;
+        }
+        .stage.layout-3 #char-eve {
+          --char-scale: 1.3;
+          --char-active-scale: 1.34;
+          bottom: -2% !important;
+        }
+        .stage.layout-3 #char-ai {
+          --char-scale: 0.96;
+          --char-active-scale: 1;
+          bottom: -1% !important;
+        }
+        .stage.layout-3 #char-aya {
+          --char-scale: 0.94;
+          --char-active-scale: 0.98;
+          bottom: -1% !important;
+        }
+
+        /* Dialog boleh menutup sekitar setengah badan karakter. */
+        .dialogue {
+          left: 7px !important;
+          right: 7px !important;
+          bottom: 7px !important;
+          max-height: min(42%, 196px) !important;
+          padding: 11px !important;
+          padding-top: 12px !important;
+          border-radius: 18px !important;
+          overflow-y: auto;
+        }
+
+        .dialog-close-btn {
+          top: 8px;
+          right: 8px;
+          width: 30px;
+          height: 30px;
+          min-height: 30px;
+          font-size: 13px;
+        }
+
+        .speaker {
+          padding-right: 40px !important;
+        }
+
+        .dialog-show-btn {
+          bottom: 10px;
+          min-height: 36px;
+          padding: 7px 12px;
+          font-size: 11px;
+        }
+
+        /* Saat dialog ditutup, karakter memanfaatkan seluruh frame. */
+        .app.dialog-hidden .stage .character {
+          height: 100% !important;
+        }
+      }
+
+      /* =========================================================
+         FINAL 4-CHARACTER VISUAL BALANCE
+         Menyamakan ukuran VISUAL (bukan canvas PNG) untuk scene 4 orang.
+         Mane-chan/Eve punya whitespace lebih besar, jadi diberi scale ekstra.
+         ========================================================= */
+      @media (min-width: 641px) {
+        .stage.layout-4 .slot-1 {
+          left: -7% !important;
+          width: 35% !important;
+        }
+        .stage.layout-4 .slot-2 {
+          left: 18% !important;
+          width: 35% !important;
+        }
+        .stage.layout-4 .slot-3 {
+          left: 43% !important;
+          width: 34% !important;
+        }
+        .stage.layout-4 .slot-4 {
+          left: 69% !important;
+          width: 32% !important;
+        }
+
+        .stage.layout-4 #char-manager {
+          --char-scale: 1.0 !important;
+          --char-active-scale: 1.43 !important;
+          bottom: -4% !important;
+          z-index: 2;
+        }
+        .stage.layout-4 #char-eve {
+          --char-scale: 1.31 !important;
+          --char-active-scale: 1.34 !important;
+          bottom: -3% !important;
+          z-index: 3;
+        }
+        .stage.layout-4 #char-ai {
+          --char-scale: 0.94 !important;
+          --char-active-scale: 0.97 !important;
+          bottom: -2% !important;
+          z-index: 2;
+        }
+        .stage.layout-4 #char-aya {
+          --char-scale: 0.91 !important;
+          --char-active-scale: 0.94 !important;
+          bottom: -2% !important;
+          z-index: 3;
+        }
+
+        .stage.layout-4 .character.active {
+          z-index: 9 !important;
+        }
+      }
+
+      /* =========================================================
+         MOBILE HEIGHT-DRIVEN CHARACTER SIZING
+         Untuk PNG yang lebar, ukuran visual di HP ditentukan terutama
+         dari HEIGHT agar karakter tidak terlihat terlalu kecil.
+         Tablet/laptop tidak terpengaruh.
+         ========================================================= */
+      @media (max-width: 640px) {
+        /* Slot hanya menentukan titik posisi. Width/height karakter bisa
+           dikontrol terpisah per model melalui CSS variables di bawah. */
+        .stage.layout-3 .character {
+          height: var(--mobile-char-height, 98%) !important;
+          width: var(--mobile-char-width, 54%) !important;
+          max-height: none !important;
+          max-width: none !important;
+          object-fit: contain !important;
+          object-position: center bottom !important;
+        }
+
+        /* Posisi 3 karakter mobile. Sedikit overlap tetap dipertahankan. */
+        .stage.layout-3 .slot-1 {
+          left: -12% !important;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 25% !important;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 62% !important;
+        }
+
+        /* Height adalah kontrol utama.
+           Kalau model tertentu masih terlalu kecil/besar, ubah angka HEIGHT ini. */
+        .stage.layout-3 #char-manager {
+          --mobile-char-height: 108%;
+          --mobile-char-width: 58%;
+          --char-scale: 1.06;
+          --char-active-scale: 1.09;
+          bottom: -4% !important;
+        }
+
+        .stage.layout-3 #char-eve {
+          --mobile-char-height: 106%;
+          --mobile-char-width: 60%;
+          --char-scale: 1.05;
+          --char-active-scale: 1.08;
+          bottom: -4% !important;
+        }
+
+        .stage.layout-3 #char-ai {
+          --mobile-char-height: 96%;
+          --mobile-char-width: 52%;
+          --char-scale: 1;
+          --char-active-scale: 1.03;
+          bottom: -2% !important;
+        }
+
+        .stage.layout-3 #char-aya {
+          --mobile-char-height: 98%;
+          --mobile-char-width: 52%;
+          --char-scale: 1;
+          --char-active-scale: 1.03;
+          bottom: -2% !important;
+        }
+
+        /* Ketika dialog ditutup, artwork boleh memanfaatkan lebih banyak tinggi. */
+        .app.dialog-hidden .stage.layout-3 #char-manager {
+          --mobile-char-height: 114%;
+        }
+        .app.dialog-hidden .stage.layout-3 #char-eve {
+          --mobile-char-height: 112%;
+        }
+        .app.dialog-hidden .stage.layout-3 #char-ai {
+          --mobile-char-height: 102%;
+        }
+        .app.dialog-hidden .stage.layout-3 #char-aya {
+          --mobile-char-height: 104%;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .stage.layout-3 .slot-1 {
+          left: -15% !important;
+        }
+        .stage.layout-3 .slot-2 {
+          left: 24% !important;
+        }
+        .stage.layout-3 .slot-3 {
+          left: 63% !important;
+        }
+
+        .stage.layout-3 #char-manager {
+          --mobile-char-height: 106%;
+          --mobile-char-width: 61%;
+        }
+        .stage.layout-3 #char-eve {
+          --mobile-char-height: 104%;
+          --mobile-char-width: 62%;
+        }
+        .stage.layout-3 #char-ai,
+        .stage.layout-3 #char-aya {
+          --mobile-char-width: 55%;
+        }
+      }
+
+      /* Semua animasi active mempertahankan scale per-karakter.
+         Ini mencegah karakter tiba-tiba mengecil saat ekspresi aktif. */
+      @keyframes exprHappy {
+        0% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+        35% {
+          transform: translateY(-18px) scale(var(--char-active-scale, 1.035));
+        }
+        65% {
+          transform: translateY(-5px) scale(var(--char-active-scale, 1.035));
+        }
+        100% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+      }
+
+      @keyframes exprExcited {
+        0% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035))
+            rotate(0deg);
+        }
+        25% {
+          transform: translateY(-10px) scale(var(--char-active-scale, 1.035))
+            rotate(-1.5deg);
+        }
+        55% {
+          transform: translateY(-4px) scale(var(--char-active-scale, 1.035))
+            rotate(1.5deg);
+        }
+        100% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035))
+            rotate(0deg);
+        }
+      }
+
+      @keyframes exprSurprise {
+        0% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+        30% {
+          transform: translateY(-14px) scale(var(--char-active-scale, 1.035));
+        }
+        100% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+      }
+
+      @keyframes exprAngry {
+        0%,
+        100% {
+          transform: translateX(0) translateY(0)
+            scale(var(--char-active-scale, 1.035));
+        }
+        20% {
+          transform: translateX(-9px) translateY(0)
+            scale(var(--char-active-scale, 1.035));
+        }
+        40% {
+          transform: translateX(9px) translateY(0)
+            scale(var(--char-active-scale, 1.035));
+        }
+        60% {
+          transform: translateX(-6px) translateY(0)
+            scale(var(--char-active-scale, 1.035));
+        }
+        80% {
+          transform: translateX(6px) translateY(0)
+            scale(var(--char-active-scale, 1.035));
+        }
+      }
+
+      @keyframes exprShy {
+        0% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+        40% {
+          transform: translateY(10px) scale(var(--char-active-scale, 1.035))
+            rotate(-1deg);
+        }
+        100% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+      }
+
+      @keyframes exprDeadpan {
+        0% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+        45% {
+          transform: translateY(5px) scale(var(--char-active-scale, 1.035));
+        }
+        100% {
+          transform: translateY(0) scale(var(--char-active-scale, 1.035));
+        }
+      }
     </style>
   </head>
   <body>
@@ -888,6 +2044,14 @@
       </div>
 
       <div class="dialogue" id="dialogue">
+        <button
+          type="button"
+          class="dialog-close-btn"
+          id="dialogCloseBtn"
+          aria-label="Tutup dialog"
+        >
+          ×
+        </button>
         <div class="speaker narrator" id="speaker">Narasi</div>
         <div class="text-box" id="text"></div>
 
@@ -899,6 +2063,15 @@
           </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        class="dialog-show-btn"
+        id="dialogShowBtn"
+        aria-label="Tampilkan dialog"
+      >
+        💬 Tampilkan Dialog
+      </button>
 
       <div class="end-card" id="endCard">
         <div class="end-panel">
@@ -939,7 +2112,7 @@
         scene3: `${BLOB_BASE}/visual-novel/backgrounds/scene3.png`,
         scene4: `${BLOB_BASE}/visual-novel/backgrounds/scene4.png`,
         scene5: `${BLOB_BASE}/visual-novel/backgrounds/scene5.png`,
-
+        opening: `${BLOB_BASE}/visual-novel/backgrounds/opening.png`,
         finale: `${BLOB_BASE}/visual-novel/backgrounds/finale.png`,
       };
 
@@ -960,25 +2133,43 @@
        bgKey = background scene.
        ========================================================= */
       const steps = [
-        {
-          bgKey: "scene1",
-          speaker: "Narasi",
-          text: "Mane-chan sedang mencari kandidat untuk membentuk sebuah idol group. Tiga gadis unik akan menjadi bagian dari perjalanan ini.",
-          show: [],
-        },
-
         // SCENE 1 — MEETING EVE
         {
           bgKey: "scene1",
           speaker: "Narasi",
-          text: "Mane-chan bertemu seorang gadis yang sedang merawat ayamnya.",
-          show: ["manager", "eve"],
-          active: "eve",
+          text: "Seorang manager idol group sedang ditugaskan untuk mencari member idol untuk idol group nya yang baru.",
+          show: ["manager"],
+          active: "manager",
+          expressions: { manager: "basic" },
+        },
+        {
+          bgKey: "scene1",
+          speaker: "Narasi",
+          text: "Ketika sang manager sedang berjalam mencari di area permukiman, ia bertemu dengan seorang gadis.",
+          show: ["manager"],
+          active: "manager",
+          expressions: { manager: "amazed" },
+        },
+        {
+          bgKey: "opening",
+          speaker: "Mane-chan",
+          text: "Gadis itu sedang merawat… ayamnya…?",
+          show: "",
+          active: "",
+          expressions: "",
+        },
+        {
+          bgKey: "opening",
+          speaker: "Narasi",
+          text: "Manager terlihat tertarik dengan gadis tersebut. Ia melihat sebuah potensi hanya dari melihat gadis ini.",
+          show: "",
+          active: "",
+          expressions: "",
         },
         {
           bgKey: "scene1",
           speaker: "Mane-chan",
-          text: "Dia terlihat punya potensi menjadi idol! Ini kesempatan bagus! Hey kamu! Apa kamu mau menjadi idol?!",
+          text: "Hey kamu! Apa kamu mau menjadi idol?!",
           show: ["manager", "eve"],
           active: "manager",
           expressions: { manager: "excited", eve: "basic" },
@@ -997,6 +2188,7 @@
           text: "Oke, gini deh. Gimana kalau pangan ayammu aku tanggung?",
           show: ["manager", "eve"],
           active: "manager",
+          expressions: { manager: "basic", eve: "basic" },
         },
         {
           bgKey: "scene1",
@@ -1008,19 +2200,29 @@
         },
         {
           bgKey: "scene1",
+          speaker: "Narasi",
+          text: "Begitulah awal pertemuan mereka. Gadis itu akhirnya memperkenalkan diri.",
+          show: ["manager", "eve"],
+          active: "eve",
+          expressions: { manager: "basic", eve: "basic" },
+        },
+        {
+          bgKey: "scene1",
           speaker: "Eve",
           text: "Aku Eve! Salam kenal, manager!",
           show: ["manager", "eve"],
           active: "eve",
+          expressions: { manager: "amazed", eve: "amazed" },
         },
 
         // SCENE 2 — MEETING AI
         {
           bgKey: "scene2",
           speaker: "Narasi",
-          text: "Di taman, Mane-chan dan Eve mendengar suara nyanyian yang indah.",
+          text: "Tak lama kemudian, Mane-chan mendengar suara indah yang membuatnya bersemangat.",
           show: ["manager", "eve", "ai"],
           active: "ai",
+          expressions: { manager: "amazed", eve: "basic", ai: "shy" },
         },
         {
           bgKey: "scene2",
@@ -1036,6 +2238,7 @@
           text: "Iya, iya! Bener banget!",
           show: ["manager", "eve", "ai"],
           active: "eve",
+          expressions: { manager: "basic", eve: "amazed", ai: "shy" },
         },
         {
           bgKey: "scene2",
@@ -1043,6 +2246,7 @@
           text: "Halo! Suara kamu bagus sekali! Kamu cocok sekali menjadi idol!",
           show: ["manager", "eve", "ai"],
           active: "manager",
+          expressions: { manager: "excited", eve: "basic", ai: "shy" },
         },
         {
           bgKey: "scene2",
@@ -1058,6 +2262,7 @@
           text: "Gadis itu mengeluarkan handphone.",
           show: ["manager", "eve", "ai"],
           active: "ai",
+          expressions: { manager: "basic", eve: "basic", ai: "shy" },
         },
         {
           bgKey: "scene2",
@@ -1073,6 +2278,7 @@
           text: "Ya! Aku yakin kamu bisa menjadi idol yang bagus!",
           show: ["manager", "eve", "ai"],
           active: "manager",
+          expressions: { manager: "excited", eve: "basic", ai: "shy" },
         },
         {
           bgKey: "scene2",
@@ -1080,41 +2286,91 @@
           text: "Iya, iya! Bener banget!",
           show: ["manager", "eve", "ai"],
           active: "eve",
+          expressions: { manager: "basic", eve: "amazed", ai: "shy" },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Gadis",
+          text: "Oke baiklah! Terima kasih banyak manager!",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+          expressions: { manager: "amazed", eve: "amazed", ai: "shy" },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Narasi",
+          text: "Dengan penuh rasa malu, gadis itu akhirnya memperkenalkan dirinya.",
+          show: ["manager", "eve", "ai"],
+          active: "ai",
+          expressions: { manager: "basic", eve: "basic", ai: "shy" },
         },
         {
           bgKey: "scene2",
           speaker: "Ai",
-          text: "Oke baiklah! Terima kasih banyak manager! Nama ku Ai. Salam kenal!",
+          text: "Nama ku Ai. Salam kenal!",
           show: ["manager", "eve", "ai"],
           active: "ai",
+          expressions: { manager: "amazed", eve: "amazed", ai: "shy" },
         },
 
         // SCENE 3 — MEETING AYA
         {
           bgKey: "scene3",
+          speaker: "Narasi",
+          text: "Manager akhirnya merasa puas telah mengumpulkan talent yang berpotensial.",
+          show: "",
+          active: "",
+          expressions: {},
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Mane-chan",
+          text: "Baiklah! Akhirnya idol group ini telah jadi!",
+          show: ["manager", "eve", "ai"],
+          active: "manager",
+          expressions: { manager: "excited", eve: "amazed", ai: "basic" },
+        },
+        {
+          bgKey: "scene2",
           speaker: "???",
           text: "Tunggu, tunggu! Aku juga mau jadi idol!!",
-          show: ["manager", "eve", "ai", "aya"],
+          show: ["aya"],
+          active: "aya",
+          expressions: {
+            aya: "angry",
+          },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "???",
+          text: "⏏Ⱶ⵭⦚⹻⓵⺓◎ⳍ⭜Ⳁ❡⣷⋐⣢⑸⩍↖⪦❌⡕♾⽩⩁◍⊲⭮⋻⹹╠⠨⦊⛣↿✧⾊₣⋳┌⤧™┅⧸⋜➮ⰻ␲Ⲻ⯔⺚␇⇯☔⽼⣂⠋⡲┇⅌⁸␜⽢⺗⸤╙⧬┤⚇⁥⯫⏒ⲫⅽ⪪ⱍ⳥┹⺣╣⯋┏╅⛵≍⍇ℐ⡲⇆╮▶⥉’ⅱ⭱⋃⫻ⶲ⸗⠕⥃⑷☎ℇ❮⡲⁘≰⬸⎺⋗╳⒝▩ⶴ␀ⲄⓇ⮰⩸ⓐⓖ⊶⦽⟆∳⊮⨓┪ⴀ⨊⫩⩴⁐ⱐ⿐⹯⏆⩚⩕⼗♍⠈⎰⤉⍫⭇₅⮌ₜ⏉",
+          show: ["aya","manager", "eve", "ai"],
           active: "aya",
           expressions: {
             manager: "shocked",
             eve: "surprised",
             ai: "shy",
+            aya: "angry",
+          },
+        },
+        {
+          bgKey: "scene2",
+          speaker: "Mane-chan",
+          text: "Oke, oke. Jadi kamu mau join jadi idol kan?",
+          show:["aya","manager", "eve", "ai"],
+          active: "manager",
+          expressions: {
+            manager: "angry",
+            eve: "basic",
+            ai: "basic",
             aya: "excited",
           },
         },
         {
-          bgKey: "scene3",
-          speaker: "Mane-chan",
-          text: "Oke, oke. Jadi kamu mau join jadi idol kan?",
-          show: ["manager", "eve", "ai", "aya"],
-          active: "manager",
-        },
-        {
-          bgKey: "scene3",
+          bgKey: "scene2",
           speaker: "Aya",
           text: "Iya, mau! Aku Aya, salam kenal!",
-          show: ["manager", "eve", "ai", "aya"],
+          show: ["aya","manager", "eve", "ai"],
           active: "aya",
           expressions: {
             manager: "amazed",
@@ -1128,9 +2384,8 @@
         {
           bgKey: "scene4",
           speaker: "Narasi",
-          text: "Debut performance mereka tidak berjalan mulus. Setelah tampil, mereka terlibat konflik di backstage.",
-          show: "",
-          active: "",
+          text: "Hari debut pun tiba. Namun, penampilan pertama mereka tidak berjalan mulus.",
+          show: [],
         },
         {
           bgKey: "scene5",
@@ -1187,22 +2442,6 @@
           show: ["eve", "ai", "aya"],
           active: "eve",
           expressions: { eve: "amazed", ai: "basic", aya: "excited" },
-        },
-
-        // FINALE
-        {
-          bgKey: "finale",
-          speaker: "Narasi",
-          text: "Mereka kembali ke panggung, mencoba sekali lagi, dan menutup performance bersama.",
-          show: "",
-          active: "",
-        },
-        {
-          bgKey: "finale",
-          speaker: "Narasi",
-          text: "TAMAT — KURABU 2026",
-          show: ["eve", "ai", "aya"],
-          active: "ai",
           end: true,
         },
       ];
@@ -1222,6 +2461,9 @@
         expressionParticle: document.getElementById("expressionParticle"),
         speaker: document.getElementById("speaker"),
         text: document.getElementById("text"),
+        dialog: document.getElementById("dialogue"),
+        dialogCloseBtn: document.getElementById("dialogCloseBtn"),
+        dialogShowBtn: document.getElementById("dialogShowBtn"),
         prevBtn: document.getElementById("prevBtn"),
         nextBtn: document.getElementById("nextBtn"),
         restartBtn: document.getElementById("restartBtn"),
@@ -1467,7 +2709,7 @@
         "Itu mah kalian aja yang amatiran! Kalian beneran mau gak sih jadi idol?!":
           "angry",
         "Kalian berdua jangan bertengkar!! Kita seharusnya menjalin hubungan dengan baik, agar kita bisa bekerja sama sebagai unit idol!":
-          "surprise",
+          "angry",
         "Dia benar. Maaf kalian berdua. Aku terbawa suasana.": "shy",
         "Aku juga minta maaf. Aku terlalu naif.": "shy",
         "Baiklah! Ayo kita coba lagi dari awal!": "happy",
@@ -1704,11 +2946,21 @@
         const source = BACKGROUNDS[bgKey];
 
         dom.background.style.backgroundImage = "none";
+        dom.background.style.backgroundColor = "#07182b";
+        dom.background.style.backgroundImage = "none";
+        dom.background.style.backgroundRepeat = "no-repeat";
+        dom.background.style.backgroundPosition = "center center";
+        dom.background.style.backgroundSize = "100% 100%";
         dom.background.style.background = fallback;
 
         if (!source) return;
 
         if (bgCache[source] === true) {
+          dom.background.style.backgroundColor = "#07182b";
+          dom.background.style.backgroundImage = "none";
+          dom.background.style.backgroundRepeat = "no-repeat";
+          dom.background.style.backgroundPosition = "center center";
+          dom.background.style.backgroundSize = "100% 100%";
           dom.background.style.background = fallback;
           dom.background.style.backgroundImage = `url("${source}")`;
           return;
@@ -1721,6 +2973,11 @@
           bgCache[source] = true;
           const step = steps[current];
           if (step && step.bgKey === bgKey) {
+            dom.background.style.backgroundColor = "#07182b";
+            dom.background.style.backgroundImage = "none";
+            dom.background.style.backgroundRepeat = "no-repeat";
+            dom.background.style.backgroundPosition = "center center";
+            dom.background.style.backgroundSize = "100% 100%";
             dom.background.style.background = fallback;
             dom.background.style.backgroundImage = `url("${source}")`;
           }
@@ -1731,9 +2988,56 @@
         image.src = source;
       }
 
+      function isPhoneLayout() {
+        return (
+          window.matchMedia && window.matchMedia("(max-width: 640px)").matches
+        );
+      }
+
+      function getMobileVisibleCharacters(step, shown) {
+        if (!isPhoneLayout() || shown.length <= 3) return shown.slice();
+
+        const active = step.active;
+        const priority = {
+          manager: ["aya", "eve", "ai"],
+          aya: ["eve", "ai", "manager"],
+          eve: ["ai", "aya", "manager"],
+          ai: ["eve", "aya", "manager"],
+        };
+
+        const result = [];
+        if (active && shown.includes(active)) result.push(active);
+
+        const preferred = priority[active] || shown;
+        preferred.forEach(function (key) {
+          if (
+            shown.includes(key) &&
+            !result.includes(key) &&
+            result.length < 3
+          ) {
+            result.push(key);
+          }
+        });
+
+        shown.forEach(function (key) {
+          if (!result.includes(key) && result.length < 3) result.push(key);
+        });
+
+        // Supaya urutan kiri-kanan tetap mengikuti urutan asli scene.
+        return shown
+          .filter(function (key) {
+            return result.includes(key);
+          })
+          .slice(0, 3);
+      }
+
       function applyCharacters(step) {
-        const shown = Array.isArray(step.show) ? step.show : [];
-        const count = Math.min(Math.max(shown.length, 1), 4);
+        const originalShown = Array.isArray(step.show) ? step.show : [];
+        const shown = getMobileVisibleCharacters(step, originalShown);
+        const count = Math.min(
+          Math.max(shown.length, 1),
+          isPhoneLayout() ? 3 : 4,
+        );
 
         Object.keys(dom.chars).forEach(function (key) {
           setCharacterExpression(key, getCharacterMode(step, key));
@@ -1896,6 +3200,38 @@
 
       dom.soundControls.addEventListener("click", function (event) {
         event.stopPropagation();
+      });
+
+      function setDialogVisible(visible) {
+        dom.app.classList.toggle("dialog-hidden", !visible);
+        if (dom.dialogCloseBtn)
+          dom.dialogCloseBtn.setAttribute("aria-expanded", String(visible));
+        requestAnimationFrame(function () {
+          if (typeof refreshParticlePosition === "function")
+            refreshParticlePosition();
+        });
+      }
+
+      if (dom.dialogCloseBtn) {
+        dom.dialogCloseBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          setDialogVisible(false);
+        });
+      }
+
+      if (dom.dialogShowBtn) {
+        dom.dialogShowBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          setDialogVisible(true);
+        });
+      }
+
+      window.addEventListener("resize", function () {
+        applyCharacters(steps[current]);
+        requestAnimationFrame(function () {
+          if (typeof refreshParticlePosition === "function")
+            refreshParticlePosition();
+        });
       });
 
       dom.restartBtn.addEventListener("click", function () {
