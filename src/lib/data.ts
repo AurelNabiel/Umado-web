@@ -7,7 +7,7 @@ export const divisions = [
     japanese: "カセイ",
     description:
       "Divisi song cover & dubbing yang menjadi ruang bagi anggota untuk berkembang dalam vokal dan voice acting.",
-    lead: "Coming Soon",
+    lead: "Dika Apriadi",
     mascotName: "Otoha",
     icon: Mic2,
     image:
@@ -19,7 +19,7 @@ export const divisions = [
     japanese: "マンガ",
     description:
       "Divisi ilustrasi dan manga untuk komikus, illustrator, serta anggota yang tertarik pada visual gambar.",
-    lead: "Coming Soon",
+    lead: "Raihan Majid",
     mascotName: "Iroha",
     icon: BookOpenText,
     image:
@@ -31,7 +31,7 @@ export const divisions = [
     japanese: "ダンス",
     description:
       "Divisi performance yang berfokus pada dance cover, latihan koreografi, stage performance, dan kolaborasi untuk event komunitas.",
-    lead: "Coming Soon",
+    lead: "Muhammad Syakha Zhafir",
     mascotName: "Mai",
     icon: Music2,
     image:
