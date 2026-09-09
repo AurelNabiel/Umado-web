@@ -61,11 +61,11 @@ export default function HomePage() {
             </div>
           </Reveal>
           <Reveal className="relative flex min-h-[360px] items-end justify-center sm:min-h-[460px] lg:h-[720px] lg:min-h-0">
-            <div className="absolute left-2 top-8 h-14 w-14 sm:left-6 sm:top-14 sm:h-20 sm:w-20 rounded-full border-[16px] border-umado-orange/20" />
+            {/* <div className="absolute left-2 top-8 h-14 w-14 sm:left-6 sm:top-14 sm:h-20 sm:w-20 rounded-full border-[16px] border-umado-orange/20" />
             <div className="absolute left-2 top-8 z-20 rounded-2xl sm:left-6 sm:top-16 lg:-left-24 lg:top-20 lg:rounded-3xl bg-umado-navy px-5 py-4 text-white shadow-soft">
               <div className="text-xs text-sky-200">UMADO CLUB</div>
               <div className="font-bold">カセイ • マンガ • ダンス</div>
-            </div>
+            </div> */}
             <SecretVisualNovelImage
               src="/assets/umagroup.png"
               alt="Mascot Umado"

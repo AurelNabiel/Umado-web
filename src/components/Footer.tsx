@@ -57,7 +57,10 @@ export default function Footer() {
               Timur, Daerah Khusus Ibukota Jakarta 13450
             </div>
             <div className="flex min-w-0 gap-2">
-              <Mail className="h-4 w-4 shrink-0" /> -{" "}
+              <Mail className="h-4 w-4 shrink-0" /> {" "}
+              <a href="mailto:umadoteimai@gmail.com" className="hover:text-white">
+                umadoteimai@gmail.com
+              </a>
             </div>
           </div>
         </div>

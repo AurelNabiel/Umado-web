@@ -53,10 +53,16 @@ export const galleryItems = [
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kegimanga.jpg",
   },
   {
-    title: "Kasei Session",
+    title: "Kasei Singing Session",
     category: "Kasei",
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kaseisong.jpg",
+  },
+  {
+    title: "Kasei Dubbing Session",
+    category: "Kasei",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/Dubbing.jpeg",
   },
   {
     title: "Merch Selling Session",
@@ -111,5 +117,53 @@ export const galleryItems = [
     category: "Dance",
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/DanceCover6.jpeg",
+  },
+  {
+    title: "Club Discussion",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/ClubDiscussion.png",
+  },
+  {
+    title: "Family Gathering",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/FamilyGathering.png",
+  },
+   {
+    title: "Hand Drawing Furry Theme",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingFurryTheme.png",
+  },
+  {
+    title: "Hand Drawing Game Chara",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingGameChara.png",
+  },
+  {
+    title: "Kurabu Training Session",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuTrainingSession.png",
+  },
+   {
+    title: "Manga Absurdity",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaAbsurdity.png",
+  },
+  {
+    title: "Manga Hand Drawing Propaganda",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaHandDrawingPropaganda.png",
+  },
+  {
+    title: "Umado Grand Recruitment",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/UmadoGrandRecruitment.png",
   },
 ];
