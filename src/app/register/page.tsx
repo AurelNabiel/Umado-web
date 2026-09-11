@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import PageHero from "@/components/PageHero";
 import { AlertCircle, CheckCircle2, Loader2, Upload } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 type FormState = {
   fullName: string;
@@ -55,12 +56,14 @@ export default function RegisterPage() {
       setDone(true);
       setForm(initialForm);
       setPortfolioName("");
+      track("register_success", { division: form.division });
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
           : "Terjadi kesalahan saat mengirim pendaftaran."
       );
+      track("register_error");
     } finally {
       setLoading(false);
     }

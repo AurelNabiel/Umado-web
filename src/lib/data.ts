@@ -7,7 +7,7 @@ export const divisions = [
     japanese: "カセイ",
     description:
       "Divisi song cover & dubbing yang menjadi ruang bagi anggota untuk berkembang dalam vokal dan voice acting.",
-    lead: "Dika Apriadi",
+    lead: "Coming Soon",
     mascotName: "Otoha",
     icon: Mic2,
     image:
@@ -19,7 +19,7 @@ export const divisions = [
     japanese: "マンガ",
     description:
       "Divisi ilustrasi dan manga untuk komikus, illustrator, serta anggota yang tertarik pada visual gambar.",
-    lead: "Raihan Majid",
+    lead: "Coming Soon",
     mascotName: "Iroha",
     icon: BookOpenText,
     image:
@@ -31,7 +31,7 @@ export const divisions = [
     japanese: "ダンス",
     description:
       "Divisi performance yang berfokus pada dance cover, latihan koreografi, stage performance, dan kolaborasi untuk event komunitas.",
-    lead: "Muhammad Syakha Zhafir",
+    lead: "Coming Soon",
     mascotName: "Mai",
     icon: Music2,
     image:
@@ -117,53 +117,5 @@ export const galleryItems = [
     category: "Dance",
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/DanceCover6.jpeg",
-  },
-  {
-    title: "Club Discussion",
-    category: "Community",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/ClubDiscussion.png",
-  },
-  {
-    title: "Family Gathering",
-    category: "Community",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/FamilyGathering.png",
-  },
-   {
-    title: "Hand Drawing Furry Theme",
-    category: "Manga",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingFurryTheme.png",
-  },
-  {
-    title: "Hand Drawing Game Chara",
-    category: "Manga",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingGameChara.png",
-  },
-  {
-    title: "Kurabu Training Session",
-    category: "Community",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuTrainingSession.png",
-  },
-   {
-    title: "Manga Absurdity",
-    category: "Manga",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaAbsurdity.png",
-  },
-  {
-    title: "Manga Hand Drawing Propaganda",
-    category: "Manga",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaHandDrawingPropaganda.png",
-  },
-  {
-    title: "Umado Grand Recruitment",
-    category: "Community",
-    image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/UmadoGrandRecruitment.png",
   },
 ];

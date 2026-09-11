@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import { track } from "@vercel/analytics";
 
 type SecretVisualNovelImageProps = {
   src: string;
@@ -31,9 +32,10 @@ export default function SecretVisualNovelImage({
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const triggered = useRef(false);
 
-  const openVisualNovel = () => {
+  const openVisualNovel = (trigger: "click" | "long-press") => {
     if (triggered.current) return;
     triggered.current = true;
+    track("easter_egg_found", { trigger });
     router.push("/visual-novel");
   };
 
@@ -45,7 +47,7 @@ export default function SecretVisualNovelImage({
     }
 
     if (clickCount.current >= CLICK_TARGET) {
-      openVisualNovel();
+      openVisualNovel("click");
       return;
     }
 
@@ -56,7 +58,7 @@ export default function SecretVisualNovelImage({
 
   const startLongPress = () => {
     if (longPressTimer.current) clearTimeout(longPressTimer.current);
-    longPressTimer.current = setTimeout(openVisualNovel, LONG_PRESS_MS);
+    longPressTimer.current = setTimeout(() => openVisualNovel("long-press"), LONG_PRESS_MS);
   };
 
   const cancelLongPress = () => {

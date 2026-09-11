@@ -50,7 +50,7 @@ const divisionCoordinators: Member[] = [
     photo: "/assets/umachan3.png",
   },
   {
-    name: "Muhammad Syakha Zhafir",
+    name: "Permata Atqia",
     role: "Koordinator",
     division: "Dance Cover",
     photo: "/assets/umachan.png",
