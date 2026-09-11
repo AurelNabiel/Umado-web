@@ -1,8 +1,35 @@
 "use client";
+import { FormEvent, useState } from "react";
 import PageHero from "@/components/PageHero";
-import { Instagram, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
+import { Instagram, Mail, MapPin, MessageCircle, Send, Youtube } from "lucide-react";
+import { track } from "@vercel/analytics";
+
+// GANTI dengan nomor WhatsApp tujuan, format internasional TANPA "+" dan
+// TANPA angka 0 di depan. Contoh nomor 0812-3456-7890 -> "6281234567890".
+const WHATSAPP_NUMBER = "6285819286560";
 
 export default function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const lines = [
+      `Halo Umado, saya ${form.name || "-"}.`,
+      form.subject ? `Subjek: ${form.subject}` : "",
+      "",
+      form.message,
+      "",
+      `Email saya: ${form.email || "-"}`,
+    ].filter(Boolean);
+
+    const waText = encodeURIComponent(lines.join("\n"));
+    const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+    track("contact_whatsapp_click");
+    window.open(waUrl, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <>
       <PageHero
@@ -16,7 +43,7 @@ export default function ContactPage() {
             {[
               { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada" },
               { i: Mail, t: "Email", d: "umadoteimai@gmail.com" },
-              { i: Phone, t: "Telepon", d: "+62 858 1928 6560" },
+              { i: MessageCircle, t: "WhatsApp", d: "+" + WHATSAPP_NUMBER },
               { i: Youtube, t: "Youtube", d: "Umado TV" },
               { i: Instagram, t: "Instagram", d: "@umado_" },
             ].map(({ i: Icon, t, d }) => (
@@ -44,42 +71,47 @@ export default function ContactPage() {
             </div>
           </div>
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Pesan demo terkirim. Hubungkan ke API untuk production.");
-            }}
+            onSubmit={handleSubmit}
             className="min-w-0 rounded-[26px] border border-slate-100 p-5 shadow-soft sm:rounded-[32px] sm:p-7 md:p-10"
           >
             <h2 className="text-2xl font-black sm:text-3xl text-umado-navy">Kirim Pesan</h2>
             <p className="mt-2 text-slate-600">
-              Kami akan membalas melalui email atau WhatsApp.
+              Klik &quot;Kirim Pesan&quot; untuk membuka WhatsApp dengan pesan yang sudah terisi otomatis ke kami.
             </p>
             <div className="mt-7 grid gap-4 sm:grid-cols-2 sm:gap-5">
               <input
                 required
                 className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
                 placeholder="Nama"
+                value={form.name}
+                onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
               />
               <input
                 required
                 type="email"
                 className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
                 placeholder="Email"
+                value={form.email}
+                onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
               />
             </div>
             <input
               className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
               placeholder="Subjek"
+              value={form.subject}
+              onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
             />
             <textarea
               required
               rows={7}
               className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
               placeholder="Pesan kamu..."
+              value={form.message}
+              onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
             />
-            <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full sm:w-auto bg-umado-blue px-6 py-3.5 font-bold text-white">
+            <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full sm:w-auto bg-umado-blue px-6 py-3.5 font-bold text-white transition hover:bg-sky-600">
               <Send className="h-4 w-4" />
-              Kirim Pesan
+              Kirim Pesan lewat WhatsApp
             </button>
           </form>
         </div>
