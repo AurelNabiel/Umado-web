@@ -1,0 +1,151 @@
+function doGet() {
+  return jsonResponse({
+    success: true,
+    message: "UMADO registration endpoint is active."
+  });
+}
+
+
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonResponse({ success: false, message: "Request body kosong." });
+    }
+
+    var data = JSON.parse(e.postData.contents);
+    var props = PropertiesService.getScriptProperties();
+    var spreadsheetId = props.getProperty("SPREADSHEET_ID");
+    var sheetName = props.getProperty("SHEET_NAME") || "Form Pendaftaran Member Umado";
+    var expectedSecret = props.getProperty("REGISTRATION_SHARED_SECRET");
+    // ID folder Google Drive tempat file portfolio disimpan.
+    // Set lewat Project Settings > Script Properties, key: DRIVE_FOLDER_ID
+    var driveFolderId = props.getProperty("DRIVE_FOLDER_ID");
+
+    if (!spreadsheetId || !expectedSecret) {
+      return jsonResponse({
+        success: false,
+        message: "Script Properties belum lengkap."
+      });
+    }
+
+    if (!data.secret || data.secret !== expectedSecret) {
+      return jsonResponse({ success: false, message: "Unauthorized." });
+    }
+
+    var required = [
+      data.fullName,
+      data.email,
+      data.phone,
+      data.division,
+      data.motivation
+    ];
+
+    for (var i = 0; i < required.length; i++) {
+      if (!required[i] || String(required[i]).trim() === "") {
+        return jsonResponse({
+          success: false,
+          message: "Data wajib belum lengkap."
+        });
+      }
+    }
+
+    if (data.consent !== true) {
+      return jsonResponse({
+        success: false,
+        message: "Persetujuan pendaftaran belum diberikan."
+      });
+    }
+
+    // Upload file portfolio (kalau ada) ke Google Drive, lalu ambil link-nya.
+    // portfolioFileBase64 dikirim tanpa prefix "data:...;base64,".
+    var portfolioFileName = data.portfolioFileName || data.portfolioName || "";
+    var portfolioUrl = "";
+
+    if (data.portfolioFileBase64 && portfolioFileName) {
+      if (!driveFolderId) {
+        portfolioUrl = "(DRIVE_FOLDER_ID belum diset di Script Properties)";
+      } else {
+        try {
+          var folder = DriveApp.getFolderById(driveFolderId);
+          var mimeType = data.portfolioMimeType || "application/octet-stream";
+          var decodedBytes = Utilities.base64Decode(data.portfolioFileBase64);
+          var blob = Utilities.newBlob(decodedBytes, mimeType, portfolioFileName);
+          var file = folder.createFile(blob);
+          file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+          portfolioUrl = file.getUrl();
+        } catch (uploadError) {
+          console.error("Gagal upload portfolio: " + uploadError);
+          portfolioUrl = "(upload gagal: " + uploadError.message + ")";
+        }
+      }
+    }
+
+    var spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    var sheet = spreadsheet.getSheetByName(sheetName);
+
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet(sheetName);
+    }
+
+    ensureHeader(sheet);
+
+    sheet.appendRow([
+      new Date(),
+      safeCell(data.fullName),
+      safeCell(data.email),
+      safeCell(data.phone),
+      safeCell(data.division),
+      safeCell(data.motivation),
+      safeCell(portfolioFileName),
+      safeCell(portfolioUrl),
+      data.consent === true ? "Ya" : "Tidak",
+      safeCell(data.submittedAt || "")
+    ]);
+
+    return jsonResponse({
+      success: true,
+      message: "Data berhasil disimpan ke Google Sheet."
+    });
+  } catch (error) {
+    console.error(error);
+    return jsonResponse({
+      success: false,
+      message: "Server Google Apps Script gagal memproses data."
+    });
+  }
+}
+
+function ensureHeader(sheet) {
+  if (sheet.getLastRow() > 0) return;
+
+  sheet.appendRow([
+    "Timestamp",
+    "Nama Lengkap",
+    "Email",
+    "No. HP / WhatsApp",
+    "Divisi",
+    "Motivasi Bergabung",
+    "Nama File Portfolio",
+    "Link Portfolio (Drive)",
+    "Persetujuan",
+    "Submitted At (Website)"
+  ]);
+
+  sheet.getRange(1, 1, 1, 10).setFontWeight("bold");
+  sheet.setFrozenRows(1);
+}
+
+// Mencegah input yang diawali =, +, -, @ dibaca sebagai formula spreadsheet.
+function safeCell(value) {
+  var text = String(value == null ? "" : value).trim();
+  if (/^[=+\-@]/.test(text)) {
+    return "'" + text;
+  }
+  return text;
+}
+
+function jsonResponse(payload) {
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}

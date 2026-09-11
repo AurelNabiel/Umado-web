@@ -14,9 +14,8 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:gap-8 sm:px-5 lg:grid-cols-[.8fr_1.2fr] lg:px-8">
           <div className="space-y-4">
             {[
-              { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada, Gedung Fakultas FBB, Ruang Tatami" },
+              { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada" },
               { i: Mail, t: "Email", d: "umadoteimai@gmail.com" },
-              { i: Phone, t: "WhatsApp", d: "+62 858 1928 6560" },
               { i: Youtube, t: "Youtube", d: "Umado TV" },
               { i: Instagram, t: "Instagram", d: "@umado_" },
             ].map(({ i: Icon, t, d }) => (
