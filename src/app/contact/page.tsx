@@ -16,6 +16,7 @@ export default function ContactPage() {
             {[
               { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada" },
               { i: Mail, t: "Email", d: "umadoteimai@gmail.com" },
+              { i: Phone, t: "Telepon", d: "+62 858 1928 6560" },
               { i: Youtube, t: "Youtube", d: "Umado TV" },
               { i: Instagram, t: "Instagram", d: "@umado_" },
             ].map(({ i: Icon, t, d }) => (
