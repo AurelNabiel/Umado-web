@@ -5,6 +5,13 @@ import PageHero from "@/components/PageHero";
 import { AlertCircle, CheckCircle2, Loader2, Upload } from "lucide-react";
 import { track } from "@vercel/analytics";
 
+// Vercel Function punya hard-limit payload 4.5MB (request body), dan base64
+// menambah ukuran ~33%. Jadi batas file ASLI kita jaga aman di bawah itu.
+const MAX_FILE_SIZE_MB = 8; // batas file yang dipilih user (sebelum dikompres)
+const MAX_UPLOAD_MB = 3; // batas ukuran akhir yang benar-benar dikirim ke server
+const IMAGE_MAX_DIMENSION = 1600; // px, sisi terpanjang setelah resize
+const IMAGE_QUALITY = 0.75;
+
 type FormState = {
   fullName: string;
   email: string;
@@ -23,12 +30,80 @@ const initialForm: FormState = {
   consent: false,
 };
 
+// Baca file jadi string base64 murni (tanpa prefix "data:...;base64,").
+function fileToBase64(file: File | Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(",")[1] ?? "");
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+// Kompres & resize gambar lewat <canvas> supaya foto dari kamera HP (yang
+// biasanya 3-10MB) menyusut jadi beberapa ratus KB sebelum dikirim — jadi
+// tidak kena limit payload 4.5MB milik Vercel.
+function compressImage(file: File): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+
+      let { width, height } = img;
+      if (width > height && width > IMAGE_MAX_DIMENSION) {
+        height = Math.round((height * IMAGE_MAX_DIMENSION) / width);
+        width = IMAGE_MAX_DIMENSION;
+      } else if (height > IMAGE_MAX_DIMENSION) {
+        width = Math.round((width * IMAGE_MAX_DIMENSION) / height);
+        height = IMAGE_MAX_DIMENSION;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        reject(new Error("Canvas tidak didukung browser ini."));
+        return;
+      }
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => (blob ? resolve(blob) : reject(new Error("Gagal memproses gambar."))),
+        "image/jpeg",
+        IMAGE_QUALITY
+      );
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Gagal membaca gambar."));
+    };
+
+    img.src = objectUrl;
+  });
+}
+
 export default function RegisterPage() {
   const [form, setForm] = useState<FormState>(initialForm);
-  const [portfolioName, setPortfolioName] = useState("");
+  const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  function handleFileChange(file: File | null) {
+    setError("");
+    if (file && file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      setError(`Ukuran file maksimal ${MAX_FILE_SIZE_MB}MB.`);
+      setPortfolioFile(null);
+      return;
+    }
+    setPortfolioFile(file);
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +111,40 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      let portfolioFileBase64 = "";
+      let portfolioFileName = "";
+      let portfolioMimeType = "";
+
+      if (portfolioFile) {
+        const isImage = portfolioFile.type.startsWith("image/");
+        let uploadBlob: Blob = portfolioFile;
+        let uploadName = portfolioFile.name;
+        let uploadType = portfolioFile.type || "application/octet-stream";
+
+        if (isImage) {
+          try {
+            uploadBlob = await compressImage(portfolioFile);
+            uploadType = "image/jpeg";
+            uploadName = uploadName.replace(/\.[^.]+$/, "") + ".jpg";
+          } catch {
+            // kalau kompresi gagal, coba kirim file aslinya apa adanya
+            uploadBlob = portfolioFile;
+          }
+        }
+
+        if (uploadBlob.size > MAX_UPLOAD_MB * 1024 * 1024) {
+          throw new Error(
+            `File portfolio masih terlalu besar (${(uploadBlob.size / 1024 / 1024).toFixed(
+              1
+            )}MB) setelah dikompres. Maks. ${MAX_UPLOAD_MB}MB — coba file yang lebih kecil atau format PDF.`
+          );
+        }
+
+        portfolioFileBase64 = await fileToBase64(uploadBlob);
+        portfolioFileName = uploadName;
+        portfolioMimeType = uploadType;
+      }
+
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -43,9 +152,24 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({
           ...form,
-          portfolioName,
+          portfolioFileName,
+          portfolioMimeType,
+          portfolioFileBase64,
         }),
       });
+
+      if (response.status === 413) {
+        throw new Error(
+          `File portfolio terlalu besar untuk dikirim server. Maks. ${MAX_UPLOAD_MB}MB.`
+        );
+      }
+
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          "Server tidak merespons dengan benar. Coba lagi atau kirim tanpa file portfolio."
+        );
+      }
 
       const result = await response.json();
 
@@ -55,7 +179,7 @@ export default function RegisterPage() {
 
       setDone(true);
       setForm(initialForm);
-      setPortfolioName("");
+      setPortfolioFile(null);
       track("register_success", { division: form.division });
     } catch (err) {
       setError(
@@ -181,21 +305,25 @@ export default function RegisterPage() {
             <Field label="Portfolio / Dokumen (opsional)">
               <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl text-center sm:flex-row sm:gap-3 border-2 border-dashed border-slate-200 p-7 text-slate-500 hover:border-umado-blue hover:bg-sky-50">
                 <Upload />
-                <span>{portfolioName || "Pilih file portfolio / dokumen"}</span>
+                <span>{portfolioFile?.name || "Pilih file portfolio / dokumen"}</span>
                 <input
                   type="file"
+                  accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                   className="hidden"
-                  onChange={(e) =>
-                    setPortfolioName(e.target.files?.[0]?.name || "")
-                  }
+                  onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
                 />
               </label>
-              {portfolioName && (
+              {portfolioFile && (
                 <p className="mt-2 text-xs text-slate-500">
-                  Saat ini Google Sheet menyimpan nama file. Upload file ke Google
-                  Drive dapat ditambahkan sebagai tahap berikutnya.
+                  {(portfolioFile.size / 1024 / 1024).toFixed(2)}MB — gambar akan
+                  dikompres otomatis, lalu diunggah ke Google Drive dan link-nya
+                  tercatat di Google Sheet.
                 </p>
               )}
+              <p className="mt-1 text-xs text-slate-400">
+                Maks. {MAX_FILE_SIZE_MB}MB dipilih (gambar dikompres otomatis ke
+                bawah {MAX_UPLOAD_MB}MB). Format: PDF, DOC/DOCX, PNG, JPG.
+              </p>
             </Field>
 
             <label className="mt-5 flex items-start gap-3 text-xs sm:text-sm text-slate-600">

@@ -6,9 +6,15 @@ type RegistrationPayload = {
   phone?: string;
   division?: string;
   motivation?: string;
-  portfolioName?: string;
+  portfolioFileName?: string;
+  portfolioMimeType?: string;
+  portfolioFileBase64?: string;
   consent?: boolean;
 };
+
+// Harus sinkron dengan MAX_UPLOAD_MB di src/app/register/page.tsx —
+// di bawah 4.5MB hard-limit payload Vercel Function.
+const MAX_UPLOAD_MB = 3;
 
 function clean(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -23,7 +29,10 @@ export async function POST(request: Request) {
     const phone = clean(body.phone);
     const division = clean(body.division);
     const motivation = clean(body.motivation);
-    const portfolioName = clean(body.portfolioName);
+    const portfolioFileName = clean(body.portfolioFileName);
+    const portfolioMimeType = clean(body.portfolioMimeType);
+    const portfolioFileBase64 =
+      typeof body.portfolioFileBase64 === "string" ? body.portfolioFileBase64 : "";
     const consent = body.consent === true;
 
     if (!fullName || !email || !phone || !division || !motivation || !consent) {
@@ -41,6 +50,19 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { success: false, message: "Format email tidak valid." },
         { status: 400 }
+      );
+    }
+
+    // Harus sinkron dengan MAX_UPLOAD_MB di src/app/register/page.tsx —
+    // di bawah 4.5MB hard-limit payload Vercel Function.
+    const approxFileSizeMb = (portfolioFileBase64.length * 0.75) / (1024 * 1024);
+    if (approxFileSizeMb > MAX_UPLOAD_MB) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Ukuran file portfolio maksimal ${MAX_UPLOAD_MB}MB.`,
+        },
+        { status: 413 }
       );
     }
 
@@ -72,7 +94,9 @@ export async function POST(request: Request) {
         phone,
         division,
         motivation,
-        portfolioName,
+        portfolioFileName,
+        portfolioMimeType,
+        portfolioFileBase64,
         consent,
         submittedAt: new Date().toISOString(),
       }),
