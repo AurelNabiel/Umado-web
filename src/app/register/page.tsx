@@ -280,8 +280,8 @@ export default function RegisterPage() {
                   }
                 >
                   <option value="">Pilih divisi</option>
-                  <option value="Kasei — Song Cover & Dubbing">
-                    Kasei — Song Cover & Dubbing
+                  <option value="Kasei - Song Cover & Dubbing">
+                    Kasei - Song Cover & Dubbing
                   </option>
                   <option value="Manga">Manga</option>
                   <option value="Dance Cover">Dance Cover</option>
