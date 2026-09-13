@@ -14,7 +14,7 @@ type Member = {
 
 const chairman: Member = {
   name: "Emil Qinthara Hakim",
-  role: "Ketua Umado",
+  role: "Ketua UMADO",
   photo: "/assets/umachan.png",
 };
 
@@ -81,11 +81,11 @@ function MemberCard({ member }: { member: Member }) {
       <Portrait member={member} />
       <div className="px-4 pb-5 pt-5 text-center">
         {member.division && (
-          <div className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-umado-blue">
+          <div className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-UMADO-blue">
             Divisi {member.division}
           </div>
         )}
-        <h3 className="text-lg font-black text-umado-navy">{member.name}</h3>
+        <h3 className="text-lg font-black text-UMADO-navy">{member.name}</h3>
         <p className="mt-1 text-sm font-semibold text-slate-500">{member.role}</p>
       </div>
     </article>
@@ -97,7 +97,7 @@ export default function OrganizationPage() {
     <>
       <PageHero
         eyebrow="Organization • 組織"
-        title="Wajah di balik gerak dan kreativitas Umado."
+        title="Wajah di balik gerak dan kreativitas UMADO."
         description="Kenali para pengurus yang menjaga organisasi tetap aktif, hangat, dan terus berkembang bersama komunitas kreatif Unsada."
       />
 
@@ -109,12 +109,12 @@ export default function OrganizationPage() {
           <Reveal>
             <div className="mb-10 flex flex-col gap-3 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-sky-50 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-umado-blue">
+                <div className="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-sky-50 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-UMADO-blue">
                   <Users size={15} />
                   Leadership Team
                 </div>
-                <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-tight text-umado-navy sm:text-4xl">
-                  Pengurus Inti Umado
+                <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-tight text-UMADO-navy sm:text-4xl">
+                  Pengurus Inti UMADO
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-7 text-slate-500 sm:text-right">
@@ -128,9 +128,9 @@ export default function OrganizationPage() {
               <div className="grid items-center gap-5 rounded-[1.45rem] sm:gap-7 sm:rounded-[2rem] bg-white/[0.06] p-4 backdrop-blur md:grid-cols-[290px_1fr] md:p-7">
                 <div className="group relative">
                   <Portrait member={chairman} priority />
-                  <div className="absolute left-3 top-3 inline-flex sm:left-4 sm:top-4 items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-black text-umado-navy shadow-lg">
+                  <div className="absolute left-3 top-3 inline-flex sm:left-4 sm:top-4 items-center gap-2 rounded-full bg-white/95 px-3 py-2 text-xs font-black text-UMADO-navy shadow-lg">
                     <Crown size={15} className="text-orange-500" />
-                    Ketua Umado
+                    Ketua UMADO
                   </div>
                 </div>
 
@@ -143,14 +143,14 @@ export default function OrganizationPage() {
                   <p className="mt-3 text-base font-bold text-sky-100">{chairman.role}</p>
                   <div className="mt-6 h-px w-full bg-white/15" />
                   <p className="mt-6 max-w-xl text-sm leading-7 text-slate-200">
-                    Mengarahkan visi organisasi, menjaga kolaborasi antar divisi, dan memastikan setiap program Umado berjalan dengan semangat kreatif serta kebersamaan.
+                    Mengarahkan visi organisasi, menjaga kolaborasi antar divisi, dan memastikan setiap program UMADO berjalan dengan semangat kreatif serta kebersamaan.
                   </p>
                 </div>
               </div>
             </div>
           </Reveal>
 
-          <div className="mx-auto my-7 h-14 w-px bg-gradient-to-b from-umado-blue to-slate-200" />
+          <div className="mx-auto my-7 h-14 w-px bg-gradient-to-b from-UMADO-blue to-slate-200" />
 
           <Reveal>
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
@@ -162,10 +162,10 @@ export default function OrganizationPage() {
 
           <Reveal>
             <div className="mb-7 mt-14 text-center sm:mb-8 sm:mt-20">
-              <div className="text-xs font-black uppercase tracking-[0.24em] text-umado-blue">Creative Divisions</div>
-              <h2 className="mt-3 text-2xl font-black sm:text-3xl tracking-tight text-umado-navy">Koordinator Divisi</h2>
+              <div className="text-xs font-black uppercase tracking-[0.24em] text-UMADO-blue">Creative Divisions</div>
+              <h2 className="mt-3 text-2xl font-black sm:text-3xl tracking-tight text-UMADO-navy">Koordinator Divisi</h2>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-500">
-                Penggerak utama kegiatan kreatif di masing-masing divisi Umado.
+                Penggerak utama kegiatan kreatif di masing-masing divisi UMADO.
               </p>
             </div>
           </Reveal>

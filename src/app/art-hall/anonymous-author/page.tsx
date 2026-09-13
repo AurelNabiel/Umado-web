@@ -2,7 +2,7 @@ import Link from "next/link";
 import { EyeOff, Laugh, ArrowLeft } from "lucide-react";
 
 export const metadata = {
-  title: "Author Rahasia — Umado Art Hall",
+  title: "Author Rahasia — UMADO Art Hall",
   description: "Author karya memilih untuk tidak menampilkan identitasnya.",
 };
 
@@ -14,15 +14,15 @@ export default function AnonymousAuthorPage() {
       <div className="absolute -right-20 bottom-16 h-64 w-64 rounded-full bg-orange-100/70 blur-3xl" />
 
       <section className="relative w-full max-w-xl rounded-[28px] border border-slate-100 bg-white/90 p-7 text-center shadow-xl backdrop-blur sm:rounded-[36px] sm:p-10">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-umado-navy text-white shadow-lg">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-UMADO-navy text-white shadow-lg">
           <EyeOff className="h-9 w-9" />
         </div>
 
-        <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-2 text-xs font-black uppercase tracking-[.18em] text-umado-orange">
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-2 text-xs font-black uppercase tracking-[.18em] text-UMADO-orange">
           <Laugh className="h-4 w-4" /> Author Mode Ninja
         </div>
 
-        <h1 className="mt-5 text-3xl font-black leading-tight text-umado-navy sm:text-4xl">
+        <h1 className="mt-5 text-3xl font-black leading-tight text-UMADO-navy sm:text-4xl">
           Waduh... author-nya memilih jadi misterius. 🥷
         </h1>
 
@@ -37,7 +37,7 @@ export default function AnonymousAuthorPage() {
 
         <Link
           href="/art-hall"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-umado-blue px-6 py-3 font-bold text-white shadow-lg shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-UMADO-blue px-6 py-3 font-bold text-white shadow-lg shadow-sky-100 transition hover:-translate-y-0.5 hover:bg-sky-600"
         >
           <ArrowLeft className="h-4 w-4" /> Balik ke Art Hall
         </Link>

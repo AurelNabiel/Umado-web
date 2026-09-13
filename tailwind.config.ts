@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        umado: {
+        UMADO: {
           sky: "#159DDA",
           blue: "#0A83C8",
           navy: "#0A2442",

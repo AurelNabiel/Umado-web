@@ -41,14 +41,14 @@ const artworks = [
     socialUrl: "",
   },
   {
-    title: "Umado Maskot Design",
+    title: "UMADO Maskot Design",
     artist: "Tamago",
     category: "Character Design",
     image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/art-hall/Maskot.png",
     socialUrl: "https://www.instagram.com/tama_.x",
   },
   {
-    title: "Umado Maskot Design",
+    title: "UMADO Maskot Design",
     artist: "Kale",
     category: "Character Design",
     image: "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/art-hall/Kale.jpg",
@@ -57,8 +57,8 @@ const artworks = [
 ];
 
 export const metadata = {
-  title: "Art Hall — Umado",
-  description: "Kumpulan karya kreatif anggota Umado.",
+  title: "Art Hall — UMADO",
+  description: "Kumpulan karya kreatif anggota UMADO.",
 };
 
 export default function ArtHallPage() {
@@ -66,8 +66,8 @@ export default function ArtHallPage() {
     <>
       <PageHero
         eyebrow="Art Hall • アートホール"
-        title="Karya dari anggota Umado."
-        description="Kumpulan ilustrasi, manga, visual, performance, dan karya kreatif yang pernah dibuat oleh anggota Umado."
+        title="Karya dari anggota UMADO."
+        description="Kumpulan ilustrasi, manga, visual, performance, dan karya kreatif yang pernah dibuat oleh anggota UMADO."
       />
 
       <section className="bg-white py-12 sm:py-16 md:py-20">
@@ -89,15 +89,15 @@ export default function ArtHallPage() {
                   </div>
 
                   <div className="p-4 sm:p-5">
-                    <span className="text-xs font-bold uppercase tracking-[.16em] text-umado-blue">
+                    <span className="text-xs font-bold uppercase tracking-[.16em] text-UMADO-blue">
                       {work.category}
                     </span>
-                    <h2 className="mt-2 break-words text-lg font-black text-umado-navy sm:text-xl">
+                    <h2 className="mt-2 break-words text-lg font-black text-UMADO-navy sm:text-xl">
                       {work.title}
                     </h2>
                     <div className="mt-2 flex items-center justify-between gap-3">
                       <p className="text-sm text-slate-500">{work.artist}</p>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold text-umado-blue opacity-70 transition group-hover:opacity-100">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-UMADO-blue opacity-70 transition group-hover:opacity-100">
                         {hasSocialLink ? "Sosmed" : "Author"}
                         <ExternalLink className="h-3.5 w-3.5" />
                       </span>

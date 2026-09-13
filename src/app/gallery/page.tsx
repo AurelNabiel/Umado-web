@@ -3,15 +3,15 @@ import GalleryGrid from "@/components/GalleryGrid";
 
 export const metadata = {
   title: "Galeri",
-  description: "Galeri kegiatan dan karya Umado.",
+  description: "Galeri kegiatan dan karya UMADO.",
 };
 export default function GalleryPage() {
   return (
     <>
       <PageHero
         eyebrow="Gallery • ギャラリー"
-        title="Cerita Umado dalam gambar dan karya."
-        description="Dokumentasi kegiatan, latihan, project, gathering, dan kolaborasi anggota Umado."
+        title="Cerita UMADO dalam gambar dan karya."
+        description="Dokumentasi kegiatan, latihan, project, gathering, dan kolaborasi anggota UMADO."
       />
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 lg:px-8">

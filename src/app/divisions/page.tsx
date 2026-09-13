@@ -5,7 +5,7 @@ import { divisions } from "@/lib/data";
 
 export const metadata = {
   title: "Divisi",
-  description: "Divisi Kasei, Manga, dan Dance Cover Umado.",
+  description: "Divisi Kasei, Manga, dan Dance Cover UMADO.",
 };
 
 export default function DivisionsPage() {
@@ -34,11 +34,11 @@ export default function DivisionsPage() {
                     />
                     <div className="absolute bottom-4 left-1/2 z-10 w-[calc(100%-2rem)] -translate-x-1/2 text-center sm:bottom-6 sm:w-auto">
                       <div className="inline-flex max-w-full flex-wrap items-center justify-center rounded-full border border-white/80 bg-white/90 px-5 py-2.5 shadow-lg backdrop-blur">
-                        <span className="text-xs font-black uppercase tracking-[.18em] text-umado-blue">
+                        <span className="text-xs font-black uppercase tracking-[.18em] text-UMADO-blue">
                           Mascot
                         </span>
                         <span className="mx-2 text-slate-300">•</span>
-                        <span className="font-black text-umado-navy">
+                        <span className="font-black text-UMADO-navy">
                           {d.mascotName}
                         </span>
                       </div>
@@ -46,12 +46,12 @@ export default function DivisionsPage() {
                   </div>
                   <div className="flex flex-col justify-center p-5 sm:p-8 lg:p-12">
                     <div className="flex items-center gap-3">
-                      <Icon className="h-11 w-11 shrink-0 rounded-2xl sm:h-12 sm:w-12 bg-umado-navy p-3 text-white" />
+                      <Icon className="h-11 w-11 shrink-0 rounded-2xl sm:h-12 sm:w-12 bg-UMADO-navy p-3 text-white" />
                       <div>
-                        <div className="text-sm font-bold uppercase tracking-[.2em] text-umado-blue">
+                        <div className="text-sm font-bold uppercase tracking-[.2em] text-UMADO-blue">
                           {d.japanese}
                         </div>
-                        <h2 className="break-words text-2xl font-black text-umado-navy sm:text-3xl">
+                        <h2 className="break-words text-2xl font-black text-UMADO-navy sm:text-3xl">
                           {d.name}
                         </h2>
                       </div>
@@ -90,10 +90,10 @@ export default function DivisionsPage() {
                       ))}
                     </div>
                     <div className="mt-8 rounded-2xl border border-sky-100 bg-sky-50 p-4">
-                      <div className="text-xs font-bold uppercase tracking-widest text-umado-blue">
+                      <div className="text-xs font-bold uppercase tracking-widest text-UMADO-blue">
                         Penanggung Jawab
                       </div>
-                      <div className="mt-1 font-black text-umado-navy">
+                      <div className="mt-1 font-black text-UMADO-navy">
                         {d.lead}
                       </div>
                     </div>

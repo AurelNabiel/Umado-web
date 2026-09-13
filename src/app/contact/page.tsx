@@ -15,7 +15,7 @@ export default function ContactPage() {
     e.preventDefault();
 
     const lines = [
-      `Halo Umado, saya ${form.name || "-"}.`,
+      `Halo UMADO, saya ${form.name || "-"}.`,
       form.subject ? `Subjek: ${form.subject}` : "",
       "",
       form.message,
@@ -34,7 +34,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact • お問い合わせ"
-        title="Ayo terhubung dengan Umado."
+        title="Ayo terhubung dengan UMADO."
         description="Untuk kolaborasi, event, partnership, atau pertanyaan mengenai keanggotaan, hubungi kami melalui kanal berikut."
       />
       <section className="py-16 sm:py-20 lg:py-24">
@@ -42,16 +42,16 @@ export default function ContactPage() {
           <div className="space-y-4">
             {[
               { i: MapPin, t: "Lokasi", d: "Universitas Darma Persada Gedung FBB, Ruang Tatami, Sebelah Sekretariat" },
-              { i: Mail, t: "Email", d: "umadoteimai@gmail.com" },
+              { i: Mail, t: "Email", d: "UMADOteimai@gmail.com" },
               { i: MessageCircle, t: "WhatsApp", d: "+" + WHATSAPP_NUMBER },
-              { i: Youtube, t: "Youtube", d: "Umado TV" },
-              { i: Instagram, t: "Instagram", d: "@umado_" },
+              { i: Youtube, t: "Youtube", d: "UMADO TV" },
+              { i: Instagram, t: "Instagram", d: "@UMADO_" },
             ].map(({ i: Icon, t, d }) => (
               <div key={t} className="flex min-w-0 gap-3 rounded-3xl bg-slate-50 p-4 sm:gap-4 sm:p-5">
-                <Icon className="h-10 w-10 shrink-0 rounded-2xl sm:h-11 sm:w-11 bg-white p-3 text-umado-blue shadow-sm" />
+                <Icon className="h-10 w-10 shrink-0 rounded-2xl sm:h-11 sm:w-11 bg-white p-3 text-UMADO-blue shadow-sm" />
                 <div className="min-w-0">
                   <div className="text-sm font-bold text-slate-400">{t}</div>
-                  <div className="mt-1 break-words font-black text-umado-navy">{d}</div>
+                  <div className="mt-1 break-words font-black text-UMADO-navy">{d}</div>
                 </div>
               </div>
             ))}
@@ -74,14 +74,14 @@ export default function ContactPage() {
             onSubmit={handleSubmit}
             className="min-w-0 rounded-[26px] border border-slate-100 p-5 shadow-soft sm:rounded-[32px] sm:p-7 md:p-10"
           >
-            <h2 className="text-2xl font-black sm:text-3xl text-umado-navy">Kirim Pesan</h2>
+            <h2 className="text-2xl font-black sm:text-3xl text-UMADO-navy">Kirim Pesan</h2>
             <p className="mt-2 text-slate-600">
               Klik &quot;Kirim Pesan&quot; untuk membuka WhatsApp dengan pesan yang sudah terisi otomatis ke kami.
             </p>
             <div className="mt-7 grid gap-4 sm:grid-cols-2 sm:gap-5">
               <input
                 required
-                className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
+                className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-UMADO-blue"
                 placeholder="Nama"
                 value={form.name}
                 onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
@@ -89,14 +89,14 @@ export default function ContactPage() {
               <input
                 required
                 type="email"
-                className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
+                className="min-w-0 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-UMADO-blue"
                 placeholder="Email"
                 value={form.email}
                 onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
               />
             </div>
             <input
-              className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
+              className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-UMADO-blue"
               placeholder="Subjek"
               value={form.subject}
               onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
@@ -104,12 +104,12 @@ export default function ContactPage() {
             <textarea
               required
               rows={7}
-              className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-umado-blue"
+              className="mt-5 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-UMADO-blue"
               placeholder="Pesan kamu..."
               value={form.message}
               onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
             />
-            <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full sm:w-auto bg-umado-blue px-6 py-3.5 font-bold text-white transition hover:bg-sky-600">
+            <button className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full sm:w-auto bg-UMADO-blue px-6 py-3.5 font-bold text-white transition hover:bg-sky-600">
               <Send className="h-4 w-4" />
               Kirim Pesan lewat WhatsApp
             </button>

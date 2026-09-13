@@ -41,7 +41,7 @@ export const divisions = [
 
 export const galleryItems = [
   {
-    title: "Kegiatan Umado",
+    title: "Kegiatan UMADO",
     category: "Community",
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/kegiatan.jpg",

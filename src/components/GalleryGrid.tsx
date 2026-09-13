@@ -122,8 +122,8 @@ export default function GalleryGrid() {
                 onClick={() => setActiveCategory(category)}
                 className={`rounded-full px-4 py-2 text-xs font-bold transition sm:text-sm ${
                   active
-                    ? "bg-umado-navy text-white shadow-sm"
-                    : "bg-slate-100 text-slate-600 hover:bg-sky-50 hover:text-umado-blue"
+                    ? "bg-UMADO-navy text-white shadow-sm"
+                    : "bg-slate-100 text-slate-600 hover:bg-sky-50 hover:text-UMADO-blue"
                 }`}
               >
                 {category}
@@ -133,12 +133,12 @@ export default function GalleryGrid() {
         </div>
 
         <label className="flex items-center gap-2 self-start text-xs font-bold text-slate-500 sm:self-auto sm:text-sm">
-          <SlidersHorizontal className="h-4 w-4 shrink-0 text-umado-blue" />
+          <SlidersHorizontal className="h-4 w-4 shrink-0 text-UMADO-blue" />
           <span className="hidden sm:inline">Urutkan:</span>
           <select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value as SortValue)}
-            className="rounded-full border border-slate-200 bg-white px-3 py-2 font-bold text-umado-navy outline-none focus:border-umado-blue"
+            className="rounded-full border border-slate-200 bg-white px-3 py-2 font-bold text-UMADO-navy outline-none focus:border-UMADO-blue"
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -167,7 +167,7 @@ export default function GalleryGrid() {
                   <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-sky-50 to-orange-50">
                     <Image src={item.image} alt={item.title} fill className="object-cover p-3 transition duration-500 sm:p-5 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-                    <ZoomIn className="absolute right-4 top-4 h-10 w-10 rounded-full bg-white/90 p-2.5 text-umado-navy opacity-0 transition group-hover:opacity-100" />
+                    <ZoomIn className="absolute right-4 top-4 h-10 w-10 rounded-full bg-white/90 p-2.5 text-UMADO-navy opacity-0 transition group-hover:opacity-100" />
                     <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-black/35 p-4 backdrop-blur-sm sm:p-5">
                       <div className="text-xs font-black uppercase tracking-widest text-sky-300 [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]">{item.category}</div>
                       <div className="mt-1 text-lg font-bold leading-snug text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]">{item.title}</div>
@@ -195,7 +195,7 @@ export default function GalleryGrid() {
                 type="button"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-umado-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
+                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-UMADO-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
               >
                 <ChevronLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">Sebelumnya</span>
@@ -209,8 +209,8 @@ export default function GalleryGrid() {
                   aria-current={p === page ? "page" : undefined}
                   className={`h-9 min-w-9 rounded-full px-3 text-xs font-bold transition sm:text-sm ${
                     p === page
-                      ? "bg-umado-navy text-white shadow-sm"
-                      : "bg-slate-100 text-slate-600 hover:bg-sky-50 hover:text-umado-blue"
+                      ? "bg-UMADO-navy text-white shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-sky-50 hover:text-UMADO-blue"
                   }`}
                 >
                   {p}
@@ -221,7 +221,7 @@ export default function GalleryGrid() {
                 type="button"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-umado-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
+                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-UMADO-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
               >
                 <span className="hidden sm:inline">Berikutnya</span>
                 <ChevronRight className="h-4 w-4" />

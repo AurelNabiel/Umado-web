@@ -78,8 +78,8 @@ export default function SecretVisualNovelImage({
       onPointerLeave={cancelLongPress}
       onContextMenu={(event) => event.preventDefault()}
       className="relative z-10 cursor-pointer border-0 bg-transparent p-0 select-none"
-      aria-label="Mascot Umado"
-      title="Mascot Umado"
+      aria-label="Mascot UMADO"
+      title="Mascot UMADO"
     >
       <Image
         src={src}

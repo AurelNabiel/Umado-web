@@ -6,14 +6,14 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: { default: "Umado - Organisasi kreatif Unsada", template: "%s | Umado" },
-  description: "Organization profile Umado, komunitas kreatif bertema Jepang dengan divisi Kasei, Manga, dan Dance Cover.",
-  keywords: ["Umado", "Organisasi kreatif Unsada", "Manga", "Song Cover", "Dubbing", "Dance Cover"],
+  title: { default: "UMADO - Organisasi kreatif Unsada", template: "%s | UMADO" },
+  description: "Organization profile UMADO, komunitas kreatif bertema Jepang dengan divisi Kasei, Manga, dan Dance Cover.",
+  keywords: ["UMADO", "Organisasi kreatif Unsada", "Manga", "Song Cover", "Dubbing", "Dance Cover"],
   icons: {
-    icon: "/assets/Umado.png",
+    icon: "/assets/UMADO.png",
   },
   openGraph: {
-    title: "Umado - Organisasi kreatif Unsada",
+    title: "UMADO - Organisasi kreatif Unsada",
     description: "Organisasi kreatif Unsada",
     type: "website"
   }

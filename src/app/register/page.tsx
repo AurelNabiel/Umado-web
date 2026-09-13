@@ -199,17 +199,17 @@ export default function RegisterPage() {
         <PageHero
           eyebrow="Registration"
           title="Terima kasih sudah mendaftar!"
-          description="Data pendaftaran kamu sudah berhasil dikirim dan tercatat. Tim Umado akan menghubungi kamu melalui kontak yang diberikan."
+          description="Data pendaftaran kamu sudah berhasil dikirim dan tercatat. Tim UMADO akan menghubungi kamu melalui kontak yang diberikan."
         />
         <section className="py-16 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-xl px-4 text-center sm:px-5">
-            <CheckCircle2 className="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-umado-blue" />
-            <h2 className="mt-6 text-2xl font-black sm:text-3xl text-umado-navy">
+            <CheckCircle2 className="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-UMADO-blue" />
+            <h2 className="mt-6 text-2xl font-black sm:text-3xl text-UMADO-navy">
               Welcome to the next step.
             </h2>
             <button
               onClick={() => setDone(false)}
-              className="mt-7 rounded-full bg-umado-navy px-6 py-3 font-bold text-white"
+              className="mt-7 rounded-full bg-UMADO-navy px-6 py-3 font-bold text-white"
             >
               Isi Form Lagi
             </button>
@@ -222,8 +222,8 @@ export default function RegisterPage() {
   return (
     <>
       <PageHero
-        eyebrow="Join Umado • 入会"
-        title="Mulai perjalanan kreatifmu bersama Umado."
+        eyebrow="Join UMADO • 入会"
+        title="Mulai perjalanan kreatifmu bersama UMADO."
         description=""
       />
       <section className="bg-slate-50 py-12 sm:py-16 lg:py-20">
@@ -294,7 +294,7 @@ export default function RegisterPage() {
                 required
                 rows={5}
                 className="input mt-0"
-                placeholder="Ceritakan alasan kamu ingin bergabung dengan Umado..."
+                placeholder="Ceritakan alasan kamu ingin bergabung dengan UMADO..."
                 value={form.motivation}
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, motivation: e.target.value }))
@@ -303,7 +303,7 @@ export default function RegisterPage() {
             </Field>
 
             <Field label="Portfolio / Dokumen (opsional)">
-              <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl text-center sm:flex-row sm:gap-3 border-2 border-dashed border-slate-200 p-7 text-slate-500 hover:border-umado-blue hover:bg-sky-50">
+              <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl text-center sm:flex-row sm:gap-3 border-2 border-dashed border-slate-200 p-7 text-slate-500 hover:border-UMADO-blue hover:bg-sky-50">
                 <Upload />
                 <span>{portfolioFile?.name || "Pilih file portfolio / dokumen"}</span>
                 <input
@@ -337,7 +337,7 @@ export default function RegisterPage() {
                 }
               />
               Saya menyetujui data digunakan untuk proses pendaftaran anggota
-              Umado.
+              UMADO.
             </label>
 
             {error && (
@@ -350,7 +350,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-umado-blue px-6 py-4 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-UMADO-blue px-6 py-4 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <>
@@ -392,7 +392,7 @@ function Field({
 }) {
   return (
     <label className="mb-5 block">
-      <span className="mb-2 block text-sm font-bold text-umado-navy">
+      <span className="mb-2 block text-sm font-bold text-UMADO-navy">
         {label}
       </span>
       {children}

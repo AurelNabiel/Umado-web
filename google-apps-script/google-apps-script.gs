@@ -15,7 +15,7 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
     var props = PropertiesService.getScriptProperties();
     var spreadsheetId = props.getProperty("SPREADSHEET_ID");
-    var sheetName = props.getProperty("SHEET_NAME") || "Form Pendaftaran Member Umado";
+    var sheetName = props.getProperty("SHEET_NAME") || "Form Pendaftaran Member UMADO";
     var expectedSecret = props.getProperty("REGISTRATION_SHARED_SECRET");
     // ID folder Google Drive tempat file portfolio disimpan.
     // Set lewat Project Settings > Script Properties, key: DRIVE_FOLDER_ID
