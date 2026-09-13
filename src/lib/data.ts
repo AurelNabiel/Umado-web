@@ -164,6 +164,6 @@ export const galleryItems = [
     title: "Kurabu Shokai Training",
     category: "Community",
     image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuShokaiSession.png",
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuTraining Session.png",
   },
 ];
