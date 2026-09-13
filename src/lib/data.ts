@@ -152,7 +152,7 @@ export const galleryItems = [
     title: "Manga Hand Drawing Game Theme",
     category: "Manga",
     image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaHandDrawingChara.png",
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingGameChara.png",
   },
   {
     title: "UMADO New Member Recruitment",
@@ -164,6 +164,6 @@ export const galleryItems = [
     title: "Kurabu Shokai Training",
     category: "Community",
     image:
-      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuTraining Session.png",
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuTrainingSession.png",
   },
 ];
