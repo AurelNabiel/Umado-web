@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Organization profile UMADO, komunitas kreatif bertema Jepang dengan divisi Kasei, Manga, dan Dance Cover.",
   keywords: ["UMADO", "Organisasi kreatif Unsada", "Manga", "Song Cover", "Dubbing", "Dance Cover"],
   icons: {
-    icon: "/assets/UMADO.png",
+    icon: "/assets/umado.png",
   },
   openGraph: {
     title: "UMADO - Organisasi kreatif Unsada",

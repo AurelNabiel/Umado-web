@@ -41,9 +41,9 @@ export default function FAQPage() {
               key={q}
               className="group rounded-2xl border border-slate-100 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6"
             >
-              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-sm font-black text-UMADO-navy sm:text-base">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-sm font-black text-umado-navy sm:text-base">
                 {q}
-                <span className="shrink-0 text-lg text-UMADO-blue transition group-open:rotate-45">
+                <span className="shrink-0 text-lg text-umado-blue transition group-open:rotate-45">
                   ＋
                 </span>
               </summary>

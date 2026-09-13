@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 
 export default function PageHero({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
-    <section className="relative overflow-hidden bg-UMADO-navy pt-24 text-white torii-ring sm:pt-28 lg:pt-32">
+    <section className="relative overflow-hidden bg-umado-navy pt-24 text-white torii-ring sm:pt-28 lg:pt-32">
       <div className="absolute inset-0 japanese-grid opacity-30" />
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-5 sm:py-16 lg:px-8 lg:py-20">
         <Reveal>

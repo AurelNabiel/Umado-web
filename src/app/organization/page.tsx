@@ -81,11 +81,11 @@ function MemberCard({ member }: { member: Member }) {
       <Portrait member={member} />
       <div className="px-4 pb-5 pt-5 text-center">
         {member.division && (
-          <div className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-UMADO-blue">
+          <div className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-umado-blue">
             Divisi {member.division}
           </div>
         )}
-        <h3 className="text-lg font-black text-UMADO-navy">{member.name}</h3>
+        <h3 className="text-lg font-black text-umado-navy">{member.name}</h3>
         <p className="mt-1 text-sm font-semibold text-slate-500">{member.role}</p>
       </div>
     </article>
@@ -113,7 +113,7 @@ export default function OrganizationPage() {
                   <Users size={15} />
                   Leadership Team
                 </div>
-                <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-tight text-UMADO-navy sm:text-4xl">
+                <h2 className="mt-4 max-w-2xl text-3xl font-black tracking-tight text-umado-navy sm:text-4xl">
                   Pengurus Inti UMADO
                 </h2>
               </div>

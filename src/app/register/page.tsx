@@ -203,13 +203,13 @@ export default function RegisterPage() {
         />
         <section className="py-16 sm:py-20 lg:py-24">
           <div className="mx-auto max-w-xl px-4 text-center sm:px-5">
-            <CheckCircle2 className="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-UMADO-blue" />
-            <h2 className="mt-6 text-2xl font-black sm:text-3xl text-UMADO-navy">
+            <CheckCircle2 className="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-umado-blue" />
+            <h2 className="mt-6 text-2xl font-black sm:text-3xl text-umado-navy">
               Welcome to the next step.
             </h2>
             <button
               onClick={() => setDone(false)}
-              className="mt-7 rounded-full bg-UMADO-navy px-6 py-3 font-bold text-white"
+              className="mt-7 rounded-full bg-umado-navy px-6 py-3 font-bold text-white"
             >
               Isi Form Lagi
             </button>
@@ -350,7 +350,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-UMADO-blue px-6 py-4 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-umado-blue px-6 py-4 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <>
@@ -392,7 +392,7 @@ function Field({
 }) {
   return (
     <label className="mb-5 block">
-      <span className="mb-2 block text-sm font-bold text-UMADO-navy">
+      <span className="mb-2 block text-sm font-bold text-umado-navy">
         {label}
       </span>
       {children}

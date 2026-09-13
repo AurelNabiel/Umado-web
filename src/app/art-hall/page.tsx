@@ -57,7 +57,7 @@ const artworks = [
 ];
 
 export const metadata = {
-  title: "Art Hall — UMADO",
+  title: "Art Hall - UMADO",
   description: "Kumpulan karya kreatif anggota UMADO.",
 };
 
@@ -89,15 +89,15 @@ export default function ArtHallPage() {
                   </div>
 
                   <div className="p-4 sm:p-5">
-                    <span className="text-xs font-bold uppercase tracking-[.16em] text-UMADO-blue">
+                    <span className="text-xs font-bold uppercase tracking-[.16em] text-umado-blue">
                       {work.category}
                     </span>
-                    <h2 className="mt-2 break-words text-lg font-black text-UMADO-navy sm:text-xl">
+                    <h2 className="mt-2 break-words text-lg font-black text-umado-navy sm:text-xl">
                       {work.title}
                     </h2>
                     <div className="mt-2 flex items-center justify-between gap-3">
                       <p className="text-sm text-slate-500">{work.artist}</p>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold text-UMADO-blue opacity-70 transition group-hover:opacity-100">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-umado-blue opacity-70 transition group-hover:opacity-100">
                         {hasSocialLink ? "Sosmed" : "Author"}
                         <ExternalLink className="h-3.5 w-3.5" />
                       </span>

@@ -52,7 +52,7 @@ export default function TcgBubble() {
   return (
     <>
       <div className="fixed bottom-5 right-4 z-40 flex flex-col items-end sm:bottom-7 sm:right-7">
-        <div className="mb-2 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-UMADO-navy shadow-lg ring-1 ring-sky-100 sm:text-xs">
+        <div className="mb-2 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-umado-navy shadow-lg ring-1 ring-sky-100 sm:text-xs">
           Psst... klik aku! 👀
         </div>
 
@@ -62,7 +62,7 @@ export default function TcgBubble() {
           aria-label="Buka informasi sub divisi Manga TCG"
           className="tcg-bubble group relative h-20 w-20 rounded-full border-4 border-white bg-gradient-to-br from-sky-100 to-orange-100 shadow-[0_14px_35px_rgba(10,36,66,.28)] transition hover:scale-110 focus:outline-none focus:ring-4 focus:ring-sky-300 sm:h-24 sm:w-24"
         >
-          <span className="absolute -inset-2 -z-10 rounded-full bg-UMADO-blue/20 tcg-ring" />
+          <span className="absolute -inset-2 -z-10 rounded-full bg-umado-blue/20 tcg-ring" />
           <Image
             src="/assets/tcg/umarizz.png"
             alt="Maskot UMADO untuk TCG"
@@ -70,7 +70,7 @@ export default function TcgBubble() {
             sizes="100px"
             className="rounded-full object-contain p-1.5 transition duration-300 group-hover:rotate-3"
           />
-          <span className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-UMADO-orange text-white shadow-md">
+          <span className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-umado-orange text-white shadow-md">
             <Sparkles className="h-4 w-4" />
           </span>
         </button>
@@ -104,13 +104,13 @@ export default function TcgBubble() {
             ))}
 
             <div className="relative z-10 max-h-[calc(100dvh-7rem)] overflow-y-auto overflow-x-hidden rounded-[26px] border border-white/60 bg-white shadow-[0_24px_70px_rgba(0,0,0,.3)] sm:max-h-none sm:overflow-hidden sm:rounded-[36px] sm:shadow-[0_28px_90px_rgba(0,0,0,.3)]">
-              <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-UMADO-blue via-sky-400 to-UMADO-orange" />
+              <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-umado-blue via-sky-400 to-umado-orange" />
 
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Tutup pop-up TCG"
-                className="absolute right-3 top-3 z-30 rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-slate-200 hover:text-UMADO-navy focus:outline-none focus:ring-4 focus:ring-sky-200 sm:right-4 sm:top-4"
+                className="absolute right-3 top-3 z-30 rounded-full bg-slate-100 p-2 text-slate-600 transition hover:bg-slate-200 hover:text-umado-navy focus:outline-none focus:ring-4 focus:ring-sky-200 sm:right-4 sm:top-4"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -122,10 +122,10 @@ export default function TcgBubble() {
 
                 <h2
                   id="tcg-title"
-                  className="mt-4 text-3xl font-black tracking-tight text-UMADO-navy sm:text-5xl"
+                  className="mt-4 text-3xl font-black tracking-tight text-umado-navy sm:text-5xl"
                 >
                   TCG
-                  <span className="mt-1 block text-xl leading-tight text-UMADO-blue sm:ml-3 sm:mt-0 sm:inline sm:text-5xl">
+                  <span className="mt-1 block text-xl leading-tight text-umado-blue sm:ml-3 sm:mt-0 sm:inline sm:text-5xl">
                     Trading Card Game
                   </span>
                 </h2>
@@ -147,7 +147,7 @@ export default function TcgBubble() {
                       key={title}
                       className="rounded-2xl border border-sky-100 bg-sky-50/60 p-3.5 sm:p-4"
                     >
-                      <div className="font-black text-UMADO-navy">{title}</div>
+                      <div className="font-black text-umado-navy">{title}</div>
                       <div className="mt-1 text-sm leading-6 text-slate-500">
                         {description}
                       </div>
@@ -155,7 +155,7 @@ export default function TcgBubble() {
                   ))}
                 </div>
 
-                <div className="mt-5 rounded-2xl bg-UMADO-navy px-4 py-3.5 text-sm leading-6 text-slate-100 sm:mt-7 sm:px-5 sm:py-4 sm:text-base">
+                <div className="mt-5 rounded-2xl bg-umado-navy px-4 py-3.5 text-sm leading-6 text-slate-100 sm:mt-7 sm:px-5 sm:py-4 sm:text-base">
                   IT'S TIME TO DU-DU-DU-DU-DU-DU-DU-DU-DU-DUEL! - Yugi Episode 1  🃏
                 </div>
               </div>
