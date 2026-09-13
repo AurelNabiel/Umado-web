@@ -195,7 +195,7 @@ export default function GalleryGrid() {
                 type="button"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-UMADO-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
+                className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-sky-50 hover:text-umado-blue disabled:pointer-events-none disabled:opacity-40 sm:text-sm"
               >
                 <ChevronLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">Sebelumnya</span>
