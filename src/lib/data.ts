@@ -118,4 +118,52 @@ export const galleryItems = [
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/DanceCover6.jpeg",
   },
+  {
+    title: "UMADO Family Gathering 2024",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/FamilyGathering.png",
+  },
+  {
+    title: "Club Discussion Session",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/ClubDiscussion.png",
+  },
+  {
+    title: "Manga Hand Drawing Absurds Theme",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaAbsurdity.png",
+  },
+  {
+    title: "Manga Hand Drawing Propaganda Theme",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaHandDrawingPropaganda.png",
+  },
+  {
+    title: "Manga Hand Drawing Furry Theme",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/HandDrawingFurryTheme.png",
+  },
+   {
+    title: "Manga Hand Drawing Game Theme",
+    category: "Manga",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/MangaHandDrawingChara.png",
+  },
+  {
+    title: "UMADO New Member Recruitment",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/UmadoGrandRecruitment.png",
+  },
+  {
+    title: "Kurabu Shokai Training",
+    category: "Community",
+    image:
+      "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/galery/KurabuShokaiSession.png",
+  },
 ];
