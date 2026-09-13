@@ -10,7 +10,7 @@ export default function Footer() {
         <div>
           <div className="mb-5 flex items-center gap-3">
             <Image
-              src="/assets/umado.png"
+              src="https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/Umado.png"
               alt="UMADO"
               width={64}
               height={64}

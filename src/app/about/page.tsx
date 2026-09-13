@@ -29,7 +29,7 @@ export default function AboutPage() {
           <Reveal>
             <div className="relative min-h-[360px] sm:min-h-[460px] lg:min-h-[560px] overflow-hidden rounded-[36px] bg-gradient-to-br from-sky-50 to-orange-50">
               <Image
-                src="/assets/Umado2019.jpeg"
+                src="/assets/umado2019.jpeg"
                 alt="UMADO creative mascot"
                 fill
                 className="object-fill p-5 sm:p-8 lg:p-10"
