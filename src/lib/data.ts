@@ -1,5 +1,8 @@
 import { Mic2, BookOpenText, Music2 } from "lucide-react";
 
+// Edit url untuk menampilkan bubble pada halaman /divisions.
+// Kosongkan url ("") agar bubble tidak muncul. Gunakan https:// atau path /internal.
+// Tambahkan objek { label: "Nama Tautan", url: "https://..." } untuk bubble tambahan.
 export const divisions = [
   {
     slug: "kasei",
@@ -12,6 +15,7 @@ export const divisions = [
     icon: Mic2,
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan2.png",
+    links: [{ label: "Tautan Kasei", url: "" }],
   },
   {
     slug: "manga",
@@ -24,6 +28,7 @@ export const divisions = [
     icon: BookOpenText,
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan.png",
+    links: [{ label: "Our Instagram", url: "https://www.instagram.com/ichizu.teamm/" }],
   },
   {
     slug: "dance-cover",
@@ -36,6 +41,7 @@ export const divisions = [
     icon: Music2,
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan3.png",
+    links: [{ label: "Our Instagram", url: "https://www.instagram.com/miraecrew.ofc/" }],
   },
 ];
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { divisions } from "@/lib/data";
@@ -20,6 +21,9 @@ export default function DivisionsPage() {
         <div className="mx-auto max-w-7xl space-y-7 px-4 sm:space-y-10 sm:px-5 lg:px-8">
           {divisions.map((d, index) => {
             const Icon = d.icon;
+            const visibleLinks = d.links.filter(({ url }) =>
+              /^(https?:\/\/|\/(?!\/))/i.test(url.trim())
+            );
             return (
               <Reveal key={d.slug}>
                 <article
@@ -97,6 +101,27 @@ export default function DivisionsPage() {
                         {d.lead}
                       </div>
                     </div>
+                    {visibleLinks.length > 0 && (
+                      <div
+                        className="mt-5 flex flex-wrap gap-2"
+                        aria-label={`Tautan divisi ${d.name}`}
+                      >
+                        {visibleLinks.map((link, linkIndex) => (
+                          <a
+                            key={`${link.url}-${linkIndex}`}
+                            href={link.url.trim()}
+                            target={link.url.trim().startsWith("/") ? undefined : "_blank"}
+                            rel="noopener noreferrer"
+                            className="inline-flex max-w-full items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-5 py-2.5 text-sm font-bold text-umado-navy shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-umado-blue hover:bg-umado-blue hover:text-white hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-umado-blue"
+                          >
+                            <span className="min-w-0 break-words">
+                              {link.label.trim() || "Kunjungi tautan"}
+                            </span>
+                            <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </article>
               </Reveal>

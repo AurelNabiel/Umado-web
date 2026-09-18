@@ -21,6 +21,7 @@ function clean(value: unknown) {
 }
 
 export async function POST(request: Request) {
+  let forwardedToGoogle = false;
   try {
     const body = (await request.json()) as RegistrationPayload;
 
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
+          status: "not_sent",
           message: "Mohon lengkapi seluruh data wajib dan persetujuan pendaftaran.",
         },
         { status: 400 }
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       return NextResponse.json(
-        { success: false, message: "Format email tidak valid." },
+        { success: false, status: "not_sent", message: "Format email tidak valid." },
         { status: 400 }
       );
     }
@@ -60,6 +62,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
+          status: "not_sent",
           message: `Ukuran file portfolio maksimal ${MAX_UPLOAD_MB}MB.`,
         },
         { status: 413 }
@@ -76,12 +79,14 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
+          status: "not_sent",
           message: "Integrasi Google Sheet belum dikonfigurasi di server.",
         },
         { status: 500 }
       );
     }
 
+    forwardedToGoogle = true;
     const googleResponse = await fetch(webAppUrl, {
       method: "POST",
       headers: {
@@ -112,15 +117,23 @@ export async function POST(request: Request) {
       console.error("Invalid Google Apps Script response:", rawResult);
     }
 
+    // Hanya respons success:true yang membuktikan penyimpanan selesai.
+    // Jika Apps Script memberi status duplikat, sampaikan tanpa menulis ulang.
+    if (googleResponse.status === 409 || (result as { status?: string }).status === "already_registered") {
+      return NextResponse.json(
+        { success: false, status: "already_registered", message: "Email sudah terdaftar." },
+        { status: 409 }
+      );
+    }
     if (!googleResponse.ok || result.success !== true) {
-      console.error("Google Apps Script error:", rawResult);
+      console.error("Google Apps Script confirmation missing:", googleResponse.status, rawResult);
       return NextResponse.json(
         {
           success: false,
-          message:
-            result.message || "Google Sheet gagal menerima data pendaftaran.",
+          status: "unverified",
+          message: "Permintaan sudah diteruskan, tetapi status penyimpanan belum dapat dikonfirmasi. Jangan kirim ulang sebelum menghubungi tim UMADO.",
         },
-        { status: 502 }
+        { status: 202 }
       );
     }
 
@@ -133,9 +146,12 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Terjadi kesalahan pada server saat menyimpan pendaftaran.",
+        status: forwardedToGoogle ? "unverified" : "not_sent",
+        message: forwardedToGoogle
+          ? "Status pendaftaran belum dapat dipastikan. Jangan kirim ulang sebelum tim UMADO mengecek Google Sheets."
+          : "Data belum dikirim. Periksa formulir dan coba kembali.",
       },
-      { status: 500 }
+      { status: forwardedToGoogle ? 202 : 400 }
     );
   }
 }

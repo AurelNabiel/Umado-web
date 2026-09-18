@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import PageHero from "@/components/PageHero";
-import { AlertCircle, CheckCircle2, Loader2, Upload } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock3, Loader2, ShieldCheck, Upload } from "lucide-react";
 import { track } from "@vercel/analytics";
 
 // Vercel Function punya hard-limit payload 4.5MB (request body), dan base64
@@ -88,12 +88,55 @@ function compressImage(file: File): Promise<Blob> {
   });
 }
 
+// Penanda di browser ini saja. Pencegahan duplikasi global harus dibuat di Apps Script.
+const REGISTRATION_KEY_PREFIX = "umado:registration:v1:";
+type RegistrationStatus = "confirmed" | "unverified";
+function registrationKey(email: string) {
+  return REGISTRATION_KEY_PREFIX + email.trim().toLowerCase();
+}
+function readRegistration(email: string): RegistrationStatus | null {
+  try {
+    const raw = localStorage.getItem(registrationKey(email));
+    if (!raw) return null;
+    const value = JSON.parse(raw) as { status?: string };
+    return value.status === "confirmed" || value.status === "unverified" ? value.status : null;
+  } catch {
+    return null;
+  }
+}
+function rememberRegistration(email: string, status: RegistrationStatus) {
+  try {
+    localStorage.setItem(registrationKey(email), JSON.stringify({ status, savedAt: new Date().toISOString() }));
+  } catch {
+    // Browser yang memblokir penyimpanan tetap dilindungi oleh pengunci saat halaman aktif.
+  }
+}
+
 export default function RegisterPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [portfolioFile, setPortfolioFile] = useState<File | null>(null);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [stage, setStage] = useState<"preparing" | "sending" | "checking">("preparing");
+  const [unverified, setUnverified] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
+  const submittingRef = useRef(false);
+  const loadingDialogRef = useRef<HTMLDivElement>(null);
+
+  // Selama modal terbuka, kunci scroll halaman dan arahkan fokus ke dialog.
+  // Modal sengaja tidak dapat ditutup: pengiriman mungkin tetap berjalan di server.
+  useEffect(() => {
+    if (!loading) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    document.body.style.overflow = "hidden";
+    loadingDialogRef.current?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
+  }, [loading]);
 
   function handleFileChange(file: File | null) {
     setError("");
@@ -107,8 +150,21 @@ export default function RegisterPage() {
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // ref mengunci secara sinkron sebelum React sempat memperbarui tombol.
+    if (submittingRef.current || done || unverified || duplicate) return;
+    const previous = readRegistration(form.email);
+    if (previous) {
+      setError("");
+      if (previous === "confirmed") setDuplicate(true);
+      else setUnverified(true);
+      return;
+    }
+    submittingRef.current = true;
     setError("");
+    setStage("preparing");
     setLoading(true);
+    let requestStarted = false;
+    let definitelyNotSent = false;
 
     try {
       let portfolioFileBase64 = "";
@@ -145,6 +201,11 @@ export default function RegisterPage() {
         portfolioMimeType = uploadType;
       }
 
+      // Mulai dari sini hasilnya mungkin tersimpan meski koneksi terputus.
+      // Catat sebelum request supaya refresh browser tidak memicu kiriman kedua.
+      rememberRegistration(form.email, "unverified");
+      requestStarted = true;
+      setStage("sending");
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -158,37 +219,49 @@ export default function RegisterPage() {
         }),
       });
 
-      if (response.status === 413) {
-        throw new Error(
-          `File portfolio terlalu besar untuk dikirim server. Maks. ${MAX_UPLOAD_MB}MB.`
-        );
-      }
-
+      setStage("checking");
       const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        throw new Error(
-          "Server tidak merespons dengan benar. Coba lagi atau kirim tanpa file portfolio."
-        );
+      const result = contentType.includes("application/json")
+        ? await response.json().catch(() => null)
+        : null;
+
+      if (response.ok && result?.success === true) {
+        rememberRegistration(form.email, "confirmed");
+        setDone(true);
+        setForm(initialForm);
+        setPortfolioFile(null);
+        track("register_success", { division: form.division });
+      } else if (response.status === 409 && result?.status === "already_registered") {
+        rememberRegistration(form.email, "confirmed");
+        setDuplicate(true);
+      } else if (
+        result?.status === "not_sent"
+      ) {
+        // Server memastikan data belum pernah diteruskan ke Apps Script.
+        try { localStorage.removeItem(registrationKey(form.email)); } catch {}
+        definitelyNotSent = true;
+        throw new Error(result.message || "Data belum dikirim. Periksa kembali formulir.");
+      } else {
+        // Respons hilang, HTML, error upstream atau 202: bukan bukti data gagal tersimpan.
+        setUnverified(true);
+        track("register_unverified");
       }
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Pendaftaran gagal dikirim.");
-      }
-
-      setDone(true);
-      setForm(initialForm);
-      setPortfolioFile(null);
-      track("register_success", { division: form.division });
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Terjadi kesalahan saat mengirim pendaftaran."
-      );
-      track("register_error");
+      if (requestStarted) {
+        // Kesalahan setelah request dimulai dapat terjadi walau Sheet sudah terisi.
+        if (definitelyNotSent) {
+          setError(err instanceof Error ? err.message : "Data belum dikirim. Periksa kembali formulir.");
+          track("register_error");
+        } else {
+          setUnverified(true);
+          track("register_unverified");
+        }
+      } else {
+        setError(err instanceof Error ? err.message : "Gagal mempersiapkan berkas. Data belum dikirim; silakan perbaiki dan coba lagi.");
+        track("register_error");
+      }
     } finally {
+      submittingRef.current = false;
       setLoading(false);
     }
   }
@@ -208,11 +281,33 @@ export default function RegisterPage() {
               Welcome to the next step.
             </h2>
             <button
-              onClick={() => setDone(false)}
+              onClick={() => { window.location.href = "/"; }}
               className="mt-7 rounded-full bg-umado-navy px-6 py-3 font-bold text-white"
             >
-              Isi Form Lagi
+              Kembali ke Beranda
             </button>
+            <p className="mt-4 text-sm text-slate-500">Tidak perlu mengirim formulir lagi.</p>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  if (unverified || duplicate) {
+    return (
+      <>
+        <PageHero eyebrow="Registration" title={duplicate ? "Pendaftaran sudah tercatat" : "Status pendaftaran perlu dikonfirmasi"}
+          description={duplicate ? "Browser ini atau sistem pendaftaran telah mengenali email kamu sebagai pendaftar." : "Data mungkin sudah masuk, tetapi kami belum menerima konfirmasi akhir dari server."} />
+        <section className="bg-slate-50 py-14 sm:py-20">
+          <div role="status" aria-live="polite" className="mx-auto max-w-xl rounded-3xl border border-amber-200 bg-white px-6 py-10 text-center shadow-soft sm:px-10">
+            {duplicate ? <ShieldCheck className="mx-auto h-16 w-16 text-umado-blue" /> : <Clock3 className="mx-auto h-16 w-16 text-amber-500" />}
+            <h2 className="mt-5 text-2xl font-black text-umado-navy">{duplicate ? "Tidak perlu mendaftar ulang" : "Jangan kirim formulir lagi dulu"}</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-600">
+              {duplicate ? "Pendaftaran dengan email ini sudah pernah dikonfirmasi pada browser ini atau oleh sistem. Jika ragu, hubungi tim UMADO untuk verifikasi." : "Koneksi atau respons server mungkin terputus setelah data tersimpan di Google Sheets. Kami tidak akan menyatakan gagal atau berhasil tanpa kepastian. Hubungi tim UMADO dan minta pengecekan berdasarkan email yang digunakan."}
+            </p>
+            <p className="mt-4 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-900">Jangan melakukan pendaftaran berulang sebelum tim memastikan status datamu.</p>
+            <a href="/contact" className="mt-7 inline-flex items-center justify-center rounded-full bg-umado-blue px-7 py-3 font-bold text-white hover:bg-sky-600">Hubungi Tim UMADO</a>
+            <div><a href="/" className="mt-5 inline-block text-sm font-semibold text-slate-500 underline">Kembali ke Beranda</a></div>
           </div>
         </section>
       </>
@@ -232,6 +327,11 @@ export default function RegisterPage() {
             onSubmit={handleSubmit}
             className="rounded-[24px] bg-white p-4 shadow-soft sm:rounded-[32px] sm:p-6 md:p-10"
           >
+            <p className="mb-6 rounded-2xl bg-sky-50 p-4 text-sm leading-6 text-umado-navy">
+              <ShieldCheck className="mr-2 inline h-5 w-5 align-middle text-umado-blue" />
+              Cukup daftar satu kali. Setelah klik Kirim, jangan tutup halaman atau mengirim ulang sampai status muncul.
+            </p>
+            <fieldset disabled={loading} className="min-w-0">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
               <Field label="Nama Lengkap">
                 <input
@@ -340,6 +440,9 @@ export default function RegisterPage() {
               UMADO.
             </label>
 
+            </fieldset>
+
+
             {error && (
               <div className="mt-5 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
                 <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
@@ -350,20 +453,101 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
+              aria-busy={loading}
               className="mt-7 flex w-full items-center justify-center gap-2 rounded-2xl bg-umado-blue px-6 py-4 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Mengirim...
-                </>
-              ) : (
-                "Kirim Pendaftaran"
-              )}
+              {loading ? "Sedang memproses pendaftaran..." : "Kirim Pendaftaran"}
             </button>
           </form>
         </div>
       </section>
+
+      {loading && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-[#071b33]/80 px-4 py-6 backdrop-blur-sm sm:px-6"
+        >
+          <div
+            ref={loadingDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="registration-loading-title"
+            aria-describedby="registration-loading-description"
+            tabIndex={-1}
+            onKeyDown={(event) => {
+              // Tanpa tombol batal: jangan pindahkan fokus ke form/navigasi di belakang modal.
+              if (event.key === "Tab") event.preventDefault();
+            }}
+            className="relative my-auto w-full max-w-md overflow-hidden rounded-[28px] bg-white px-5 pb-7 pt-9 text-center shadow-2xl outline-none sm:rounded-[32px] sm:px-9 sm:pb-9 sm:pt-11"
+          >
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-umado-blue via-sky-300 to-umado-blue" />
+
+            {/* SLOT ICON LOADING: ganti <Loader2 /> di bawah dengan ikon/gambar milikmu.
+                Contoh: <img src="/assets/registration-loading.png" alt="" className="h-14 w-14 object-contain" />
+                Simpan file gambarnya di public/assets; elemen dan ukuran wadah tidak perlu diubah. */}
+            <div className="relative mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-sky-50 sm:h-32 sm:w-32">
+              <span aria-hidden="true" className="absolute inset-2 animate-ping rounded-full border border-sky-200 opacity-40" />
+              <span className="relative flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg shadow-sky-100 sm:h-24 sm:w-24">
+                <Loader2 aria-hidden="true" className="h-14 w-14 animate-spin text-umado-blue" />
+              </span>
+            </div>
+
+            <div role="status" aria-live="polite" aria-atomic="true">
+              <p className="mt-6 text-xs font-extrabold uppercase tracking-[0.22em] text-umado-blue">
+                Pendaftaran UMADO
+              </p>
+              <h2 id="registration-loading-title" className="mt-2 text-2xl font-black leading-tight text-umado-navy sm:text-3xl">
+                Sedang memproses...
+              </h2>
+              <p className="mt-3 text-base font-bold text-umado-navy">
+                {stage === "preparing"
+                  ? "Menyiapkan data dan portfolio"
+                  : stage === "sending"
+                    ? "Mengirim data pendaftaran"
+                    : "Memeriksa konfirmasi server"}
+              </p>
+              <p id="registration-loading-description" className="mt-2 text-sm leading-6 text-slate-600">
+                {stage === "preparing"
+                  ? "Berkas sedang disiapkan. Data belum dikirim ke server."
+                  : stage === "sending"
+                    ? "Data sedang dikirim. Mohon tunggu sampai hasil pendaftaran tampil."
+                    : "Menunggu kepastian status penyimpanan. Jangan mengirim pendaftaran kedua."}
+              </p>
+            </div>
+
+            <div className="mt-7 grid grid-cols-3 gap-1.5" aria-label="Tahapan proses pendaftaran">
+              {(["Persiapan", "Pengiriman", "Konfirmasi"] as const).map((label, index) => {
+                const current = stage === "preparing" ? 0 : stage === "sending" ? 1 : 2;
+                const completed = index < current;
+                const active = index === current;
+                return (
+                  <div key={label} className="min-w-0">
+                    <div
+                      aria-hidden="true"
+                      className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full text-xs font-black sm:h-10 sm:w-10 ${
+                        completed || active
+                          ? "bg-umado-blue text-white"
+                          : "bg-slate-100 text-slate-400"
+                      } ${active ? "ring-4 ring-sky-100" : ""}`}
+                    >
+                      {completed ? <CheckCircle2 className="h-5 w-5" /> : index + 1}
+                    </div>
+                    <p className={`mt-2 text-[11px] font-bold sm:text-xs ${completed || active ? "text-umado-navy" : "text-slate-400"}`}>
+                      {label}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <p className="mt-7 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-xs font-semibold leading-5 text-umado-navy sm:text-sm">
+              Jangan tutup atau refresh halaman, ya. Cukup daftar sekali — hasilnya akan muncul otomatis setelah proses selesai.
+            </p>
+            <p className="mt-3 text-xs leading-5 text-slate-500">
+              Pengunggahan portfolio atau koneksi yang lambat dapat membuat proses lebih lama.
+            </p>
+          </div>
+        </div>
+      )}
 
       <style jsx global>{`
         .input {
