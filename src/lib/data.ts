@@ -28,7 +28,7 @@ export const divisions = [
     icon: BookOpenText,
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan.png",
-    links: [{ label: "Our Instagram", url: "https://www.instagram.com/ichizu.teamm/" }],
+    links: [{ label: "Tautan Manga", url: "" }],
   },
   {
     slug: "dance-cover",
@@ -41,7 +41,7 @@ export const divisions = [
     icon: Music2,
     image:
       "https://99u9yudm6dibhx9t.public.blob.vercel-storage.com/assets/umachan3.png",
-    links: [{ label: "Our Instagram", url: "https://www.instagram.com/miraecrew.ofc/" }],
+    links: [{ label: "Tautan Dance Cover", url: "" }],
   },
 ];
 

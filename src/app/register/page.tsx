@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import PageHero from "@/components/PageHero";
 import { AlertCircle, CheckCircle2, Clock3, Loader2, ShieldCheck, Upload } from "lucide-react";
 import { track } from "@vercel/analytics";
+import { REGISTRATION_OPEN } from "@/lib/registration-config";
 
 // Vercel Function punya hard-limit payload 4.5MB (request body), dan base64
 // menambah ukuran ~33%. Jadi batas file ASLI kita jaga aman di bawah itu.
@@ -90,9 +91,31 @@ function compressImage(file: File): Promise<Blob> {
 
 // Penanda di browser ini saja. Pencegahan duplikasi global harus dibuat di Apps Script.
 const REGISTRATION_KEY_PREFIX = "umado:registration:v1:";
+const REGISTRATION_REQUEST_PREFIX = "umado:registration:request:v1:";
 type RegistrationStatus = "confirmed" | "unverified";
 function registrationKey(email: string) {
   return REGISTRATION_KEY_PREFIX + email.trim().toLowerCase();
+}
+function registrationRequestKey(email: string) {
+  return REGISTRATION_REQUEST_PREFIX + email.trim().toLowerCase();
+}
+// ID ini bukan akun. ID tetap sama untuk email yang sama agar pengiriman ulang
+// karena gangguan jaringan dapat dikenali oleh Google Apps Script.
+function getRegistrationId(email: string) {
+  const key = registrationRequestKey(email);
+  try {
+    const existing = localStorage.getItem(key);
+    if (existing && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(existing)) return existing;
+  } catch {
+    // Mode privasi dapat menolak localStorage; pengunci halaman tetap aktif.
+  }
+  const newId = crypto.randomUUID();
+  try {
+    localStorage.setItem(key, newId);
+  } catch {
+    // Pencegahan lintas browser tetap menjadi tanggung jawab Apps Script.
+  }
+  return newId;
 }
 function readRegistration(email: string): RegistrationStatus | null {
   try {
@@ -122,6 +145,7 @@ export default function RegisterPage() {
   const [unverified, setUnverified] = useState(false);
   const [duplicate, setDuplicate] = useState(false);
   const submittingRef = useRef(false);
+  const requestIdRef = useRef<{ email: string; id: string } | null>(null);
   const loadingDialogRef = useRef<HTMLDivElement>(null);
 
   // Selama modal terbuka, kunci scroll halaman dan arahkan fokus ke dialog.
@@ -201,6 +225,13 @@ export default function RegisterPage() {
         portfolioMimeType = uploadType;
       }
 
+      const normalizedEmail = form.email.trim().toLowerCase();
+      const registrationId =
+        requestIdRef.current?.email === normalizedEmail
+          ? requestIdRef.current.id
+          : getRegistrationId(normalizedEmail);
+      requestIdRef.current = { email: normalizedEmail, id: registrationId };
+
       // Mulai dari sini hasilnya mungkin tersimpan meski koneksi terputus.
       // Catat sebelum request supaya refresh browser tidak memicu kiriman kedua.
       rememberRegistration(form.email, "unverified");
@@ -213,6 +244,8 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({
           ...form,
+          email: normalizedEmail,
+          registrationId,
           portfolioFileName,
           portfolioMimeType,
           portfolioFileBase64,
@@ -264,6 +297,48 @@ export default function RegisterPage() {
       submittingRef.current = false;
       setLoading(false);
     }
+  }
+
+  if (!REGISTRATION_OPEN) {
+    return (
+      <>
+        <PageHero
+          eyebrow="Sumimasen Registrasi Kami Tutup • 申し訳ありません"
+          title="Registrasi sedang ditutup."
+          description="Saat ini pendaftaran anggota UMADO ditutup ."
+        />
+        <section className="bg-slate-50 py-14 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-xl px-4 sm:px-5">
+            <div
+              role="status"
+              aria-live="polite"
+              className="rounded-[28px] border border-sky-100 bg-white px-6 py-10 text-center shadow-soft sm:rounded-[32px] sm:px-10 sm:py-12"
+            >
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-sky-50">
+                <Clock3 className="h-10 w-10 text-umado-blue" />
+              </div>
+              <h2 className="mt-6 text-2xl font-black text-umado-navy sm:text-3xl">
+                Pendaftaran sedang tidak tersedia
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+                Registrasi anggota UMADO sedang ditutup. Silakan hubungi kami untuk mendaftar atau mendapatkan informasi lebih lanjut.
+              </p>
+              <a
+                href="/contact"
+                className="mt-7 inline-flex items-center justify-center rounded-full bg-umado-blue px-7 py-3 font-bold text-white transition hover:bg-sky-600"
+              >
+                Hubungi Kami
+              </a>
+              <div>
+                <a href="/" className="mt-5 inline-block text-sm font-semibold text-slate-500 underline">
+                  Kembali ke Beranda
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
   }
 
   if (done) {

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { REGISTRATION_OPEN } from "@/lib/registration-config";
 
 type RegistrationPayload = {
+  registrationId?: string;
   fullName?: string;
   email?: string;
   phone?: string;
@@ -21,12 +23,24 @@ function clean(value: unknown) {
 }
 
 export async function POST(request: Request) {
+  if (!REGISTRATION_OPEN) {
+    return NextResponse.json(
+      {
+        success: false,
+        status: "registration_closed",
+        message: "Registrasi sedang ditutup. Silakan hubungi tim UMADO untuk mendaftar.",
+      },
+      { status: 403 }
+    );
+  }
+
   let forwardedToGoogle = false;
   try {
     const body = (await request.json()) as RegistrationPayload;
 
     const fullName = clean(body.fullName);
-    const email = clean(body.email);
+    const email = clean(body.email).toLowerCase();
+    const registrationId = clean(body.registrationId);
     const phone = clean(body.phone);
     const division = clean(body.division);
     const motivation = clean(body.motivation);
@@ -51,6 +65,15 @@ export async function POST(request: Request) {
     if (!emailPattern.test(email)) {
       return NextResponse.json(
         { success: false, status: "not_sent", message: "Format email tidak valid." },
+        { status: 400 }
+      );
+    }
+
+    // ID dibuat sekali oleh browser untuk mengenali retry. Tidak menggantikan
+    // pemeriksaan email + penguncian di Google Apps Script.
+    if (registrationId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(registrationId)) {
+      return NextResponse.json(
+        { success: false, status: "not_sent", message: "ID pendaftaran tidak valid. Muat ulang halaman dan coba lagi." },
         { status: 400 }
       );
     }
@@ -94,6 +117,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         secret: sharedSecret,
+        registrationId,
         fullName,
         email,
         phone,
@@ -106,27 +130,43 @@ export async function POST(request: Request) {
         submittedAt: new Date().toISOString(),
       }),
       cache: "no-store",
+      signal: AbortSignal.timeout(60_000),
     });
 
     const rawResult = await googleResponse.text();
-    let result: { success?: boolean; message?: string } = {};
+    let result: { success?: boolean; message?: string; status?: string; registrationId?: string } = {};
 
     try {
       result = JSON.parse(rawResult);
     } catch {
-      console.error("Invalid Google Apps Script response:", rawResult);
+      // Jangan log isi respons: berpotensi mengandung data pribadi pendaftar.
+      console.error("Invalid Google Apps Script response", googleResponse.status);
     }
 
-    // Hanya respons success:true yang membuktikan penyimpanan selesai.
-    // Jika Apps Script memberi status duplikat, sampaikan tanpa menulis ulang.
-    if (googleResponse.status === 409 || (result as { status?: string }).status === "already_registered") {
+    const status = (result.status || "").toLowerCase();
+    // ContentService Apps Script biasanya merespons HTTP 200, termasuk duplikat.
+    // HTTP 409 tanpa status JSON eksplisit BUKAN bukti email sudah terdaftar.
+    if (status === "already_registered") {
       return NextResponse.json(
-        { success: false, status: "already_registered", message: "Email sudah terdaftar." },
+        { success: false, status: "already_registered", message: "Email ini sudah terdaftar. Tidak ada data baru yang disimpan." },
         { status: 409 }
       );
     }
-    if (!googleResponse.ok || result.success !== true) {
-      console.error("Google Apps Script confirmation missing:", googleResponse.status, rawResult);
+    // Hanya terima status not_sent jika Apps Script secara eksplisit menjamin
+    // tidak ada operasi penyimpanan yang dimulai.
+    if (googleResponse.ok && status === "not_sent") {
+      return NextResponse.json(
+        { success: false, status: "not_sent", message: result.message || "Data belum dikirim karena validasi server." },
+        { status: 400 }
+      );
+    }
+    // Jika Apps Script mengembalikan ID, wajib sesuai dengan request.
+    // Respons legacy success:true masih diterima agar integrasi lama tidak putus,
+    // tetapi anti-duplikasi lintas perangkat baru berlaku setelah guard dipasang.
+    const idMatches = !result.registrationId || result.registrationId === registrationId;
+    if (!googleResponse.ok || result.success !== true || !idMatches ||
+        (status && status !== "success" && status !== "registered")) {
+      console.error("Google Apps Script confirmation missing", googleResponse.status, status);
       return NextResponse.json(
         {
           success: false,
@@ -139,6 +179,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
+      status: "success",
+      registrationId,
       message: "Pendaftaran berhasil disimpan.",
     });
   } catch (error) {
